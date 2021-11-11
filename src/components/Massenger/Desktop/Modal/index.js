@@ -1,4 +1,3 @@
-import { Camera } from "@mui/icons-material";
 import {
   Container,
   Grid,
@@ -6,7 +5,6 @@ import {
   TextField,
   TextareaAutosize,
   Typography,
-  Badge,
   Avatar,
   Button,
 } from "@mui/material";

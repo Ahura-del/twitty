@@ -1,6 +1,7 @@
 import "./home.css";
 import Logo from "../../assets/logo.svg";
 import Layout from "../../assets/chat.png";
+import LinkMui from '@mui/material/Link'
 import {Link} from 'react-router-dom'
 import { Button, Slide } from "@mui/material";
 function index() {
@@ -28,11 +29,11 @@ function index() {
             <h2>Simple , Free , Fast</h2>
             <h2>Chat application </h2>
             <p>
-              Whit Twitty , You'll get fast , free , secure messaging , avalible
+              With Twitty , You'll get fast , free , secure messaging , avalible
               on phone and desktop <br/>
               all over world. <br/>
               Your message will not be saved anywhere <br/> 
-              <code>You can see source code in <a href="/">github</a></code>
+              <code>You can see source code in <LinkMui href="https://github.com/Ahura-del/twitty.git" target="_blank" rel="noreferrer" >github</LinkMui></code>
             </p>
 
             <div className="btn-container">
