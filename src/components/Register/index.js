@@ -89,7 +89,7 @@ function index() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link to="/login">
-                  <Typography color="primary">
+                  <Typography color="primary" component={'span'} variant={'body2'}>
                   Login
                   </Typography>
                 </Link>

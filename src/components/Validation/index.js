@@ -17,7 +17,7 @@ function index() {
       style={{ height: "100vh" }}
     >
         <Grid item>
-        <Typography marginBottom={5}>
+        <Typography marginBottom={5} component={'span'} variant={'body2'}>
             Please check your email <br/> and enter validation code
         </Typography>
         <ReactInputVerificationCode

@@ -68,14 +68,14 @@ function index() {
                 <Grid container>
                   <Grid item xs>
                     <Link to="/fpass">
-                      <Typography color="error">
+                      <Typography color="error" component={'span'} variant={'body2'}>
                       Forgot password?
                       </Typography>
                     </Link>
                   </Grid>
                   <Grid item>
                     <Link to='/register'>
-                     <Typography color="primary">
+                     <Typography color="primary" component={'span'} variant={'body2'}>
                       Register
                      </Typography>
                     </Link>

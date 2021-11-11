@@ -35,8 +35,12 @@ function Index(props) {
   const changeInput = (e) => {
     console.log(e.target.files);
   };
-  //close modal function
-  const handleClose = () => props.hide();
+  //close and open modal function
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => setOpen(false);
+  React.useEffect(()=>{
+      if(props.state) setOpen(true)
+  } , [props.state])
 
   //modal types
   const modalType = () => {
@@ -93,7 +97,7 @@ function Index(props) {
               />
             </Grid>
             <Grid item>
-              <Typography style={{ color: "#000", marginTop: 10 }}>
+              <Typography style={{ color: "#000", marginTop: 10 }} component={'span'} variant={'body2'}>
                 Bio
               </Typography>
               <TextareaAutosize
@@ -182,7 +186,7 @@ function Index(props) {
         <Grid container>
           <Container>
             <Grid item>
-              <Typography style={{ color: "#000", textAlign: "center" }}>
+              <Typography style={{ color: "#000", textAlign: "center" }} component={'span'} variant={'body2'}>
                 Please enter your account password
               </Typography>
             </Grid>
@@ -218,7 +222,7 @@ function Index(props) {
         <Grid container>
           <Container>
             <Grid item style={{ textAlign: "center" }}>
-              <Typography style={{ color: "#000" }}>
+              <Typography style={{ color: "#000" }} component={'span'} variant={'body2'}>
                 Are you sure logout ?
               </Typography>
             </Grid>
@@ -252,7 +256,7 @@ function Index(props) {
 
   return (
     <div>
-      <Modal open={props.open} onClose={handleClose}>
+      <Modal open={open} onClose={handleClose}>
         <Box sx={style}>{modalType()}</Box>
       </Modal>
     </div>

@@ -28,16 +28,27 @@ import {
 import CustomListItem from "./ContactItem";
 import useWidthDimensions from "../../../custom/useWidthDimensions";
 import { Box } from "@mui/system";
-import AccModal from './Modal'
-
-
+import AccModal from "./Modal";
 
 function Index() {
-    //modal
-    const [showModal , setShowModal] = useState(false)
-    const [modalLabel , setModalLabel] = useState('')
-    const modalClose = ()=> setShowModal(false)
-    //
+  //ref
+  const ref = React.createRef();
+  const FancyListItem = React.forwardRef((props, ref) => {
+    return (
+      <ListItem ref={ref} {...props}>
+        {" "}
+        {props.children}{" "}
+      </ListItem>
+    );
+  });
+
+  //modal
+
+  const [open, setOpen] = useState(false);
+  const [modalLabel, setModalLabel] = useState("");
+
+  //WidthDimensions
+
   const { width } = useWidthDimensions();
   const [xs, setXs] = useState({ small: 3, big: 9 });
   useEffect(() => {
@@ -48,9 +59,11 @@ function Index() {
     }
   }, [width]);
 
+  //Drawer
+
   const [position, setPosition] = useState({ left: false });
 
-  const toggleDrawer = (anchor, open , modal , modalLabel) => (event) => {
+  const toggleDrawer = (anchor, open, modal, modalLabel) => (event) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -58,10 +71,11 @@ function Index() {
       return;
     }
     setPosition({ ...position, [anchor]: open });
-    setShowModal(modal)
-    setModalLabel(modalLabel)
+    setOpen(modal);
+    setModalLabel(modalLabel);
   };
 
+  //list drawer
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 330 }}
@@ -77,70 +91,77 @@ function Index() {
       }}
     >
       <List style={{ width: "100%" }}>
-        <ListItem
+        <FancyListItem
+          ref={ref}
           button
           key="Profile"
           style={{ marginBottom: 30, marginTop: 30 }}
-          onClick={toggleDrawer(anchor, false , true , 'profile')}
+          onClick={toggleDrawer(anchor, false, true, "profile")}
         >
           <ListItemAvatar>
             <Avatar alt="Remy Sharp" src={pic} sx={{ width: 40, height: 40 }} />
           </ListItemAvatar>
           <ListItemText primary="Account Profile" />
-        </ListItem>
-        <ListItem
+        </FancyListItem>
+
+        <FancyListItem
+          ref={ref}
           button
           key="ChangePassword"
           style={{ marginBottom: 30 }}
-          onClick={toggleDrawer(anchor, false,true , 'restPass')}
+          onClick={toggleDrawer(anchor, false, true, "restPass")}
         >
           <ListItemIcon>
             <VpnKey style={{ color: "white" }} />
           </ListItemIcon>
           <ListItemText primary="Change Password" />
-        </ListItem>
-        <ListItem
+        </FancyListItem>
+
+        <FancyListItem
+          ref={ref}
           button
           key="DeleteAccount"
           style={{ marginBottom: 30 }}
-          onClick={toggleDrawer(anchor, false ,true , 'delAcc')}
+          onClick={toggleDrawer(anchor, false, true, "delAcc")}
         >
           <ListItemIcon>
             <DeleteForever style={{ color: "white" }} />
           </ListItemIcon>
           <ListItemText primary="Delete Account" />
-        </ListItem>
-        <ListItem key="Notification" style={{ marginBottom: 30 }}>
+        </FancyListItem>
+
+        <FancyListItem
+          ref={ref}
+          key="Notification"
+          style={{ marginBottom: 30 }}
+        >
           <ListItemIcon>
             <Notifications style={{ color: "white" }} />
           </ListItemIcon>
           <ListItemText primary="Notification" />
           <Switch defaultChecked color="warning" />
-        </ListItem>
+        </FancyListItem>
       </List>
       <List>
-        <ListItem
+        <FancyListItem
+          ref={ref}
           button
           key="Logout"
           style={{ marginBottom: 30 }}
-          onClick={toggleDrawer(anchor, false , true , "logout")}
+          onClick={toggleDrawer(anchor, false, true, "logout")}
         >
           <ListItemIcon>
             <Logout style={{ color: "white" }} />
           </ListItemIcon>
           <ListItemText primary="Logout" />
-        </ListItem>
+        </FancyListItem>
       </List>
     </Box>
   );
 
-
-
-
-
   return (
     <>
-    <AccModal open={showModal} label={modalLabel} hide={modalClose} />
+      <AccModal label={modalLabel} state={open} />
       <Drawer
         anchor={"left"}
         open={position["left"]}
@@ -187,7 +208,7 @@ function Index() {
               </Grid>
               <Typography
                 className="recent-text"
-                component="p"
+                component="span"
                 style={{
                   color: "white",
                   marginTop: 20,
@@ -227,7 +248,7 @@ function Index() {
               </Grid>
               <Typography
                 className="recent-text"
-                component="p"
+                component="span"
                 style={{
                   color: "white",
                   marginTop: 20,
@@ -259,7 +280,7 @@ function Index() {
             <Add style={{ color: "white" }} fontSize="large" />
           </Fab>
         </Grid>
-        <Grid item xs={xs.big} style={{background:"#392E34"}}></Grid>
+        <Grid item xs={xs.big} style={{ background: "#392E34" }}></Grid>
       </Grid>
     </>
   );
