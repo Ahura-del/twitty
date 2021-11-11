@@ -1,0 +1,21 @@
+
+
+@media (min-width: 600px) and (max-width: 1300px) {
+    .search-area{
+        display: none;
+    }
+    .triger-area{
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .recent-text{
+        display: none;
+    }
+    .list-text-area{
+        display: none;
+    }
+    .divider{
+        display: none;
+    }
+ }
