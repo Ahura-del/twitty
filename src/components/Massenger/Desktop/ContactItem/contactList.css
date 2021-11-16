@@ -1,11 +1,10 @@
 
 .list-item{
     transition: all .2s ease;
- 
 }
 .list-item:hover{
     cursor: pointer;
-    transform: scale(1.1);
+    transform: scale(1.03);
     transition: all .2s ease;
 }
 

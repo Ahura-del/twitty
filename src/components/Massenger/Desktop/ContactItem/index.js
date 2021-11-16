@@ -1,7 +1,7 @@
 import {
   Avatar,
+  Badge,
   Divider,
-  Grid,
   ListItem,
   ListItemAvatar,
   ListItemText,
@@ -23,28 +23,44 @@ function index() {
           primary="Tedi"
           secondary={
             <>
-              <Grid container justifyContent="space-between">
-                <Grid item>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                    style={{ color: "gray", marginTop: "10px" }}
-                  >
-                    Hi , how are ...
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Typography
-                    style={{ color: "gray", marginTop: "10px" }}
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                  >
-                    Online
-                  </Typography>
-                </Grid>
-              </Grid>
+              <Typography
+                component="span"
+                variant="body2"
+                style={{
+                  color: "gray",
+                  marginTop: "10px",
+                  display: "inline-block",
+                }}
+              >
+                Hi , how are ...
+              </Typography>
+            </>
+          }
+        />
+        <ListItemText
+          className="list-text-area"
+          style={{ color: "white", marginLeft: 20, textAlign: "right" }}
+          primary={
+            <>
+              <Typography variant="body2" style={{ textAlign: "right" }}>
+                <Badge badgeContent={1} color="warning" />
+              </Typography>
+            </>
+          }
+          secondary={
+            <>
+              <Typography
+                component="span"
+                variant="body2"
+                style={{
+                  color: "gray",
+                  marginTop: "10px",
+                  display: "inline-block",
+                  textAlign: "right",
+                }}
+              >
+                Online
+              </Typography>
             </>
           }
         />

@@ -26,21 +26,41 @@ import {
   Add,
 } from "@mui/icons-material";
 import CustomListItem from "./ContactItem";
-import useWidthDimensions from "../../../custom/useWidthDimensions";
+import useWidthDimensions from "../../../Hook/useWidthDimensions";
 import { Box } from "@mui/system";
 import AccModal from "./Modal";
 
 function Index() {
-  //ref
-  const ref = React.createRef();
-  const FancyListItem = React.forwardRef((props, ref) => {
-    return (
-      <ListItem ref={ref} {...props}>
-        {" "}
-        {props.children}{" "}
-      </ListItem>
-    );
-  });
+
+  //check notification 
+  const [notification , setNotification] = useState(false)
+
+  //fab style and setting
+  const fabStyle = {
+    large: {
+      right: 50,
+      position: "absolute",
+      bottom: 50,
+      background: "#FF6B00",
+      zIndex:10
+    },
+    small: {
+      right: "50%",
+      transform: `translateX(50%) `,
+      position: "absolute",
+      bottom: 50,
+      background: "#FF6B00",
+    },
+  };
+
+
+  const fabModal = () => {
+      setOpen(true)
+      setModalLabel("fab")
+      if(open){
+        setOpen(false)
+      }
+  }
 
   //modal
 
@@ -91,8 +111,7 @@ function Index() {
       }}
     >
       <List style={{ width: "100%" }}>
-        <FancyListItem
-          ref={ref}
+        <ListItem
           button
           key="Profile"
           style={{ marginBottom: 30, marginTop: 30 }}
@@ -102,10 +121,9 @@ function Index() {
             <Avatar alt="Remy Sharp" src={pic} sx={{ width: 40, height: 40 }} />
           </ListItemAvatar>
           <ListItemText primary="Account Profile" />
-        </FancyListItem>
+        </ListItem>
 
-        <FancyListItem
-          ref={ref}
+        <ListItem
           button
           key="ChangePassword"
           style={{ marginBottom: 30 }}
@@ -115,10 +133,9 @@ function Index() {
             <VpnKey style={{ color: "white" }} />
           </ListItemIcon>
           <ListItemText primary="Change Password" />
-        </FancyListItem>
+        </ListItem>
 
-        <FancyListItem
-          ref={ref}
+        <ListItem
           button
           key="DeleteAccount"
           style={{ marginBottom: 30 }}
@@ -128,10 +145,9 @@ function Index() {
             <DeleteForever style={{ color: "white" }} />
           </ListItemIcon>
           <ListItemText primary="Delete Account" />
-        </FancyListItem>
+        </ListItem>
 
-        <FancyListItem
-          ref={ref}
+        <ListItem
           key="Notification"
           style={{ marginBottom: 30 }}
         >
@@ -139,12 +155,11 @@ function Index() {
             <Notifications style={{ color: "white" }} />
           </ListItemIcon>
           <ListItemText primary="Notification" />
-          <Switch defaultChecked color="warning" />
-        </FancyListItem>
+          <Switch defaultChecked color="warning"  value={notification} onChange={()=> setNotification(!notification)}  />
+        </ListItem>
       </List>
       <List>
-        <FancyListItem
-          ref={ref}
+        <ListItem
           button
           key="Logout"
           style={{ marginBottom: 30 }}
@@ -154,7 +169,7 @@ function Index() {
             <Logout style={{ color: "white" }} />
           </ListItemIcon>
           <ListItemText primary="Logout" />
-        </FancyListItem>
+        </ListItem>
       </List>
     </Box>
   );
@@ -185,7 +200,7 @@ function Index() {
           }}
         >
           {xs.small === 3 ? (
-            <Container maxWidth="sm" className="container-list">
+            <Container maxWidth="sm" className="container-list" style={{overflow:"hidden"}}>
               <Grid
                 container
                 columnSpacing={{ xs: 10 }}
@@ -206,26 +221,38 @@ function Index() {
                   />
                 </Grid>
               </Grid>
-              <Typography
-                className="recent-text"
-                component="span"
-                style={{
-                  color: "white",
-                  marginTop: 20,
-                  marginBottom: 20,
-                  fontWeight: "bold",
-                  fontSize: 30,
-                }}
-              >
-                Recent
-              </Typography>
+              <Grid item>
+                <Typography
+                  className="recent-text"
+                  component="p"
+                  style={{
+                    color: "white",
+                    marginTop: 20,
+                    marginBottom: 20,
+                    fontWeight: "bold",
+                    fontSize: 30,
+                  }}
+                >
+                  Recent
+                </Typography>
+              </Grid>
+                  <Grid item >
 
               <List
+                className="list-container"
                 sx={{ width: "100%" }}
-                style={{ background: "transparent" }}
+                
               >
+              {/* <Typography style={{color:"#ccc"}} fontSize={30} textAlign="center" >
+                Empty Chat!
+              </Typography> */}
                 <CustomListItem />
+                <CustomListItem />
+                <CustomListItem />
+                <CustomListItem />
+                
               </List>
+                  </Grid>
             </Container>
           ) : (
             <>
@@ -233,49 +260,37 @@ function Index() {
                 container
                 columnSpacing={{ xs: 10 }}
                 justifyContent="center"
+                alignItems="center"
                 className="triger-area"
               >
                 <Grid item>
                   <Menu
-                    style={{ color: "white", cursor: "pointer" }}
+                    style={{
+                      color: "white",
+                      cursor: "pointer",
+                      marginBottom: 20,
+                    }}
                     fontSize="large"
                     onClick={toggleDrawer("left", true)}
                   />
                 </Grid>
-                <Grid item className="search-area">
-                  <Search style={{ color: "white" }} fontSize="large" />
+
+                <Grid item>
+                  <List
+                    // sx={{ width: "100%" }}
+
+                    style={{ background: "transparent" }}
+                  >
+                    <CustomListItem />
+                  </List>
                 </Grid>
               </Grid>
-              <Typography
-                className="recent-text"
-                component="span"
-                style={{
-                  color: "white",
-                  marginTop: 20,
-                  marginBottom: 20,
-                  fontWeight: "bold",
-                  fontSize: 30,
-                }}
-              >
-                Recent
-              </Typography>
-
-              <List
-                sx={{ width: "100%" }}
-                style={{ background: "transparent" }}
-              >
-                <CustomListItem />
-              </List>
             </>
           )}
           <Fab
-            aria-label="add"
-            style={{
-              position: "absolute",
-              bottom: 50,
-              right: 50,
-              background: "#FF6B00",
-            }}
+            className="fab-btn"
+            style={xs.small === 3 ? fabStyle.large : fabStyle.small}
+            onClick={fabModal}
           >
             <Add style={{ color: "white" }} fontSize="large" />
           </Fab>
