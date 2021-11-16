@@ -2,6 +2,7 @@ import React from "react";
 import {  Container, Grid } from "@mui/material";
 import ChatHeader from './ChatHeader'
 import ChatContact from './ChatContent'
+import ChatFooter from './ChatFooter'
 function Index() {
   return (
     <Grid container>
