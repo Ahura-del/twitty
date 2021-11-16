@@ -1,57 +1,72 @@
-import { MoreHoriz } from '@mui/icons-material'
-import { Avatar, Grid, Typography } from '@mui/material'
-import React from 'react'
-import Pic from '../../../../../assets/img2.png'
+import { MoreHoriz } from "@mui/icons-material";
+import { Avatar, Badge, Grid, Typography } from "@mui/material";
+import React from "react";
+import Pic from "../../../../../assets/img2.png";
 function Index() {
-    return (
-        <Grid
-          container
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+  return (
+    <Grid
+      container
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <Grid item>
+        <Grid container>
           <Grid item>
-            <Grid container>
+            <Badge
+              color="success"
+              badgeContent=" "
+              overlap="circular"
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+            >
+              <Avatar
+                src={Pic}
+                alt="user"
+                sx={{ width: 80, height: 80 }}
+                style={{ cursor: "pointer" }}
+              />
+            </Badge>
+          </Grid>
+          <Grid item style={{ marginLeft: 20 }}>
+            <Grid
+              container
+              direction="column"
+              style={{ height: "100%" }}
+              justifyContent="space-around"
+            >
               <Grid item>
-                <Avatar src={Pic} alt="user" sx={{ width: 80, height: 80 }} style={{cursor:"pointer"}}/>
+                <Typography style={{ color: "white" }} fontSize="24px">
+                  Ahura
+                </Typography>
               </Grid>
-              <Grid item style={{ marginLeft: 20 }}>
-                <Grid
-                  container
-                  direction="column"
-                  style={{ height: "100%" }}
-                  justifyContent="space-around"
-                >
-                  <Grid item>
-                    <Typography style={{ color: "white" }} fontSize="24px">
-                      Ahura
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography style={{ color: "gray" }}>Online</Typography>
-                  </Grid>
-                </Grid>
+              <Grid item>
+                <Typography style={{ color: "gray" }}>Online</Typography>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item>
-            <div
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 100,
-                background: "#000",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                cursor: "pointer",
-              }}
-            >
-              <MoreHoriz style={{ color: "#fff" }} fontSize="large" />
-            </div>
-          </Grid>
         </Grid>
-    )
+      </Grid>
+      <Grid item>
+        <div
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 100,
+            background: "#000",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            cursor: "pointer",
+          }}
+        >
+          <MoreHoriz style={{ color: "#fff" }} fontSize="large" />
+        </div>
+      </Grid>
+    </Grid>
+  );
 }
 
-export default Index
+export default Index;
