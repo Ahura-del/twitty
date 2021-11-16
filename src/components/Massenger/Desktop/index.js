@@ -32,13 +32,30 @@ import AccModal from "./Modal";
 import { useDispatch} from "react-redux";
 import { modalState } from "../../../Redux";
 function Index() {
-  //redux
+
+  //-----------redux---------------
+  
   const dispatch = useDispatch();
 
-  //check notification
+
+  //---------search input visible------------
+  const [searchVisible , setSearchVisible] = useState(false)
+  const searchInputStyle = {
+    show:{
+      visibility:"visible",
+      width:250
+    },
+    hide:{
+      visibility:"hidden",
+      width:0
+    }
+  }
+
+  //--------check notification-------------
   const [notification, setNotification] = useState(false);
 
-  //fab style and setting
+  //---------fab style and setting-----------
+
   const fabStyle = {
     large: {
       right: 50,
@@ -60,11 +77,12 @@ function Index() {
     setModalLabel("fab");
     dispatch(modalState(true));
   };
-  //modal
+  
+  //---------modal------------
 
   const [modalLabel, setModalLabel] = useState("");
 
-  //WidthDimensions
+  //-------------WidthDimensions------------
 
   const { width } = useWidthDimensions();
   const [xs, setXs] = useState({ small: 3, big: 9 });
@@ -76,7 +94,7 @@ function Index() {
     }
   }, [width]);
 
-  //Drawer
+  //-------------Drawer---------------
 
   const [position, setPosition] = useState({ left: false });
 
@@ -92,7 +110,8 @@ function Index() {
     setModalLabel(modalLabel);
   };
 
-  //list drawer
+  //----------------list drawer-------------
+  
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 330 }}
@@ -207,6 +226,7 @@ function Index() {
               <Grid
                 container
                 columnSpacing={{ xs: 10 }}
+                alignItems="center"
                 justifyContent="space-between"
                 className="trigger-area"
               >
@@ -218,9 +238,11 @@ function Index() {
                   />
                 </Grid>
                 <Grid item className="search-area">
+                  <input type="text" name="searchInput" id="searchInput" style={searchVisible ? searchInputStyle.show : searchInputStyle.hide} placeholder="Search..." />
                   <Search
                     style={{ color: "white", cursor: "pointer" }}
                     fontSize="large"
+                    onClick={()=>setSearchVisible(!searchVisible)}
                   />
                 </Grid>
               </Grid>
