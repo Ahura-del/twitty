@@ -38,18 +38,7 @@ function Index() {
   const dispatch = useDispatch();
 
 
-  //---------search input visible------------
-  const [searchVisible , setSearchVisible] = useState(false)
-  const searchInputStyle = {
-    show:{
-      visibility:"visible",
-      width:250
-    },
-    hide:{
-      visibility:"hidden",
-      width:0
-    }
-  }
+ 
 
   //--------check notification-------------
   const [notification, setNotification] = useState(false);
@@ -87,12 +76,27 @@ function Index() {
   const { width } = useWidthDimensions();
   const [xs, setXs] = useState({ small: 3, big: 9 });
   useEffect(() => {
-    if (width < 1300 && width > 600) {
+    if (width <= 1300 && width > 600) {
       setXs({ small: 1, big: 11 });
     } else {
       setXs({ small: 3, big: 9 });
     }
   }, [width]);
+
+
+ //---------search input visible------------
+ const [searchVisible , setSearchVisible] = useState(false)
+ const searchInputStyle = {
+   show:{
+     visibility:"visible",
+     width: "100%"
+   },
+   hide:{
+     visibility:"hidden",
+     width:0
+   }
+ }
+
 
   //-------------Drawer---------------
 
@@ -225,7 +229,7 @@ function Index() {
             >
               <Grid
                 container
-                columnSpacing={{ xs: 10 }}
+                spacing={1}
                 alignItems="center"
                 justifyContent="space-between"
                 className="trigger-area"
@@ -237,8 +241,10 @@ function Index() {
                     onClick={toggleDrawer("left", true)}
                   />
                 </Grid>
+                <Grid item xs={6} >
+                  <input type="text" name="searchInput" autoComplete="off" id="searchInput" style={searchVisible ? searchInputStyle.show : searchInputStyle.hide} placeholder="Search..." />
+                </Grid>
                 <Grid item className="search-area">
-                  <input type="text" name="searchInput" id="searchInput" style={searchVisible ? searchInputStyle.show : searchInputStyle.hide} placeholder="Search..." />
                   <Search
                     style={{ color: "white", cursor: "pointer" }}
                     fontSize="large"
