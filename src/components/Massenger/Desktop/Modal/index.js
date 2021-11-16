@@ -11,7 +11,8 @@ import {
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import personPic from "../../../../assets/person.png";
-
+import {useDispatch, useSelector} from 'react-redux'
+import {modalState} from '../../../../Redux'
 const style = {
   position: "absolute",
   top: "50%",
@@ -27,6 +28,9 @@ const style = {
 };
 
 function Index(props) {
+  //redux
+  const dispatch = useDispatch()
+  const modalStateSelect = useSelector(state => state.modalState.state)
 
   // fab functionality 
   const [fabUser , setFabUser] = useState('')
@@ -51,10 +55,13 @@ function Index(props) {
   };
   //close and open modal function
   const [open, setOpen] = React.useState(false);
-  const handleClose = () => setOpen(false);
+  const handleClose = () =>{
+    setOpen(false);
+    dispatch(modalState(false))
+  } 
   React.useEffect(()=>{
-      if(props.state) setOpen(true)
-  } , [props.state])
+      if(modalStateSelect) setOpen(true)
+  } , [modalStateSelect])
 
   //modal types
   

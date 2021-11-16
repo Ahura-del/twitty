@@ -29,11 +29,15 @@ import CustomListItem from "./ContactItem";
 import useWidthDimensions from "../../../Hook/useWidthDimensions";
 import { Box } from "@mui/system";
 import AccModal from "./Modal";
-
+import { useDispatch, useSelector } from "react-redux";
+import { modalState } from "../../../Redux";
 function Index() {
+  //redux
+  const dispatch = useDispatch();
+  const modalStateSelect = useSelector((state) => state.modalState.state);
 
-  //check notification 
-  const [notification , setNotification] = useState(false)
+  //check notification
+  const [notification, setNotification] = useState(false);
 
   //fab style and setting
   const fabStyle = {
@@ -42,7 +46,7 @@ function Index() {
       position: "absolute",
       bottom: 50,
       background: "#FF6B00",
-      zIndex:10
+      zIndex: 10,
     },
     small: {
       right: "50%",
@@ -53,18 +57,12 @@ function Index() {
     },
   };
 
-
   const fabModal = () => {
-      setOpen(true)
-      setModalLabel("fab")
-      if(open){
-        setOpen(false)
-      }
-  }
-
+    setModalLabel("fab");
+    dispatch(modalState(true));
+  };
   //modal
 
-  const [open, setOpen] = useState(false);
   const [modalLabel, setModalLabel] = useState("");
 
   //WidthDimensions
@@ -91,7 +89,7 @@ function Index() {
       return;
     }
     setPosition({ ...position, [anchor]: open });
-    setOpen(modal);
+    dispatch(modalState(modal));
     setModalLabel(modalLabel);
   };
 
@@ -147,15 +145,17 @@ function Index() {
           <ListItemText primary="Delete Account" />
         </ListItem>
 
-        <ListItem
-          key="Notification"
-          style={{ marginBottom: 30 }}
-        >
+        <ListItem key="Notification" style={{ marginBottom: 30 }}>
           <ListItemIcon>
             <Notifications style={{ color: "white" }} />
           </ListItemIcon>
           <ListItemText primary="Notification" />
-          <Switch defaultChecked color="warning"  value={notification} onChange={()=> setNotification(!notification)}  />
+          <Switch
+            defaultChecked
+            color="warning"
+            value={notification}
+            onChange={() => setNotification(!notification)}
+          />
         </ListItem>
       </List>
       <List>
@@ -176,7 +176,7 @@ function Index() {
 
   return (
     <>
-      <AccModal label={modalLabel} state={open} />
+      <AccModal label={modalLabel} />
       <Drawer
         anchor={"left"}
         open={position["left"]}
@@ -200,7 +200,11 @@ function Index() {
           }}
         >
           {xs.small === 3 ? (
-            <Container maxWidth="sm" className="container-list" style={{overflow:"hidden"}}>
+            <Container
+              maxWidth="sm"
+              className="container-list"
+              style={{ overflow: "hidden" }}
+            >
               <Grid
                 container
                 columnSpacing={{ xs: 10 }}
@@ -236,23 +240,17 @@ function Index() {
                   Recent
                 </Typography>
               </Grid>
-                  <Grid item >
-
-              <List
-                className="list-container"
-                sx={{ width: "100%" }}
-                
-              >
-              {/* <Typography style={{color:"#ccc"}} fontSize={30} textAlign="center" >
+              <Grid item>
+                <List className="list-container" sx={{ width: "100%" }}>
+                  {/* <Typography style={{color:"#ccc"}} fontSize={30} textAlign="center" >
                 Empty Chat!
               </Typography> */}
-                <CustomListItem />
-                <CustomListItem />
-                <CustomListItem />
-                <CustomListItem />
-                
-              </List>
-                  </Grid>
+                  <CustomListItem />
+                  <CustomListItem />
+                  <CustomListItem />
+                  <CustomListItem />
+                </List>
+              </Grid>
             </Container>
           ) : (
             <>
