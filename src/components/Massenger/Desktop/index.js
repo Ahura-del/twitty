@@ -15,7 +15,7 @@ import {
 import React, { useEffect, useState } from "react";
 import "./desktop.css";
 import pic from "../../../assets/img2.png";
-
+import ChatBox from './ChatBox'
 import {
   Menu,
   Search,
@@ -111,7 +111,7 @@ function Index() {
   };
 
   //----------------list drawer-------------
-  
+
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 330 }}
@@ -314,7 +314,12 @@ function Index() {
             <Add style={{ color: "white" }} fontSize="large" />
           </Fab>
         </Grid>
-        <Grid item xs={xs.big} style={{ background: "#392E34" }}></Grid>
+
+        <Grid item xs={xs.big} style={{ background: "#392E34" }}>
+
+                    <ChatBox />
+
+        </Grid>
       </Grid>
     </>
   );
