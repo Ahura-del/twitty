@@ -29,12 +29,11 @@ import CustomListItem from "./ContactItem";
 import useWidthDimensions from "../../../Hook/useWidthDimensions";
 import { Box } from "@mui/system";
 import AccModal from "./Modal";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { modalState } from "../../../Redux";
 function Index() {
   //redux
   const dispatch = useDispatch();
-  const modalStateSelect = useSelector((state) => state.modalState.state);
 
   //check notification
   const [notification, setNotification] = useState(false);

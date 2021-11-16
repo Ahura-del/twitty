@@ -7,12 +7,17 @@ import {
   Typography,
   Avatar,
   Button,
+  List,
+ 
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import personPic from "../../../../assets/person.png";
-import {useDispatch, useSelector} from 'react-redux'
-import {modalState} from '../../../../Redux'
+import Pic1 from "../../../../assets/img2.png";
+
+import { useDispatch, useSelector } from "react-redux";
+import { modalState } from "../../../../Redux";
+import UserItem from './SearchUserItem'
 const style = {
   position: "absolute",
   top: "50%",
@@ -29,19 +34,16 @@ const style = {
 
 function Index(props) {
   //redux
-  const dispatch = useDispatch()
-  const modalStateSelect = useSelector(state => state.modalState.state)
+  const dispatch = useDispatch();
+  const modalStateSelect = useSelector((state) => state.modalState.state);
 
-  // fab functionality 
-  const [fabUser , setFabUser] = useState('')
-  
+  // fab functionality
+  const [fabUser, setFabUser] = useState("");
 
   //profile account save btn
 
-
-
   //choose image
-  const [pic, setPic] = useState('');
+  const [pic, setPic] = useState("");
   const choseImage = () => {
     document.querySelector("#newPic").click();
   };
@@ -55,16 +57,16 @@ function Index(props) {
   };
   //close and open modal function
   const [open, setOpen] = React.useState(false);
-  const handleClose = () =>{
+  const handleClose = () => {
     setOpen(false);
-    dispatch(modalState(false))
-  } 
-  React.useEffect(()=>{
-      if(modalStateSelect) setOpen(true)
-  } , [modalStateSelect])
+    dispatch(modalState(false));
+  };
+  React.useEffect(() => {
+    if (modalStateSelect) setOpen(true);
+  }, [modalStateSelect]);
 
   //modal types
-  
+
   const modalType = () => {
     if (props.label === "profile") {
       return (
@@ -89,7 +91,7 @@ function Index(props) {
               <Avatar
                 alt="Profile"
                 style={{ cursor: "pointer" }}
-                src={pic.length >0 ? pic : personPic}
+                src={pic.length > 0 ? pic : personPic}
                 sx={{ width: 100, height: 100 }}
                 onClick={choseImage}
               />
@@ -119,7 +121,11 @@ function Index(props) {
               />
             </Grid>
             <Grid item>
-            <Typography style={{ color: "#000", marginTop: 10 }} component={'div'} variant={'body2'}>
+              <Typography
+                style={{ color: "#000", marginTop: 10 }}
+                component={"div"}
+                variant={"body2"}
+              >
                 Bio
               </Typography>
               <TextareaAutosize
@@ -129,14 +135,13 @@ function Index(props) {
                   resize: "none",
                   marginTop: 10,
                   padding: 10,
-                  fontSize:20,
-                  fontFamily:"roboto",
-                  boxSizing:'border-box',
-                  borderRadius:5,
-                  borderWidth:1,
-                  borderColor:"#555",
-                  borderStyle:"solid"
-
+                  fontSize: 20,
+                  fontFamily: "roboto",
+                  boxSizing: "border-box",
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  borderColor: "#555",
+                  borderStyle: "solid",
                 }}
               />
             </Grid>
@@ -216,7 +221,11 @@ function Index(props) {
         <Grid container>
           <Container>
             <Grid item>
-              <Typography style={{ color: "#000", textAlign: "center" }} component={'span'} variant={'body2'}>
+              <Typography
+                style={{ color: "#000", textAlign: "center" }}
+                component={"span"}
+                variant={"body2"}
+              >
                 Please enter your account password
               </Typography>
             </Grid>
@@ -252,7 +261,11 @@ function Index(props) {
         <Grid container>
           <Container>
             <Grid item style={{ textAlign: "center" }}>
-              <Typography style={{ color: "#000" }} component={'span'} variant={'body2'}>
+              <Typography
+                style={{ color: "#000" }}
+                component={"span"}
+                variant={"body2"}
+              >
                 Are you sure logout ?
               </Typography>
             </Grid>
@@ -282,19 +295,17 @@ function Index(props) {
         </Grid>
       );
     }
-    if(props.label === "fab"){
+    if (props.label === "fab") {
       return (
         <Grid container>
           <Container>
-            
             <Grid item>
               <TextField
                 margin="normal"
-                required
                 fullWidth
                 placeholder="Username"
                 autoFocus
-                onChange={(e)=> setFabUser(e.target.value)}
+                onChange={(e) => setFabUser(e.target.value)}
                 value={fabUser}
                 variant="outlined"
                 name="searchUser"
@@ -305,9 +316,18 @@ function Index(props) {
               />
             </Grid>
             <Grid item>
-              <Typography style={{color:"#000" , marginTop:20}}>
-                {fabUser}
-              </Typography>
+              <Grid container>
+                <List sx={{ width: "100%" }}>
+                  <UserItem pic={Pic1} name="Ahura" bio="Hello world! I'm Ahura" />
+                  <UserItem pic={Pic1} name="Ahura" bio="Hello world! I'm Ahura" />
+
+                  <UserItem pic={Pic1} name="Ahura" bio="Hello world! I'm Ahura" />
+
+                  <UserItem pic={Pic1} name="Ahura" bio="Hello world! I'm Ahura" />
+
+                
+                </List>
+              </Grid>
             </Grid>
           </Container>
         </Grid>
