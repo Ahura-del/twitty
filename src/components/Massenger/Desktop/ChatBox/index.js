@@ -6,8 +6,8 @@ import ChatFooter from './ChatFooter'
 function Index() {
   return (
     <Grid container>
-      <Container style={{ paddingTop: 40, paddingBottom: 30 }} fixed>
-      <Grid container direction="column" rowSpacing={1}>
+      <Container style={{ paddingTop: 40, paddingBottom: 30 , height:"100vh" }} fixed>
+      <Grid container direction="column" sx={{height:"100%"}}>
         <ChatHeader  />
         <ChatContact />
         <ChatFooter />

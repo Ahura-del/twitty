@@ -1,14 +1,17 @@
-import { EmojiEmotions, Telegram } from "@mui/icons-material";
+import {  Telegram } from "@mui/icons-material";
 import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "./ChatFooter.css";
 import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
-
+import InputEmoji from 'react-input-emoji'
 function Index() {
 
-    //----------chat input -----------
-    const [chat , setChat] = useState('')
-
+  //------------pick emoji
+  const [ text, setText ] = useState('')
+const handleOnEnter = (text) => {
+    console.log('enter', text)
+    setText('')
+  }
 
   //-------------WidthDimensions------------
 
@@ -25,24 +28,27 @@ function Index() {
     <Grid item className="chat-footer">
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item xs={xs.big}>
-          <input
-            type="text"
-            name="chat-footer-input"
-            id="chat-footer-input"
-            autoComplete="off"
-            autoFocus
-            value={chat}
-            onChange={e=>setChat(e.target.value)}
-            placeholder="Your message ..."
+         
+          <InputEmoji 
+          value={text}
+          onChange={setText}
+          cleanOnEnter
+          onEnter={handleOnEnter}
+          placeholder="Your message ..."
+          fontSize={20}
+          borderRadius={15}
           />
+          
+          
         </Grid>
         <Grid item xs={xs.small} sx={{ height: "100%" }}>
-          <Grid container justifyContent="space-around">
-            <EmojiEmotions
-              sx={{ fontSize: 35, color: "gray", cursor: "pointer" }}
+        
+            <Telegram
+              sx={{ fontSize: 35, cursor: "pointer" }}
+              style={text.length > 0 ? { color: "#FF6B00" } : { color: "gray" }}
+              onClick={() => handleOnEnter(text)}
             />
-            <Telegram sx={{ fontSize: 35, cursor: "pointer" }} style={chat.length>0 ? {color:"#FF6B00"} : {color:"gray"} } />
-          </Grid>
+          
         </Grid>
       </Grid>
     </Grid>
