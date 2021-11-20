@@ -63,15 +63,10 @@ function Index() {
     },
   };
 
-  const fabModal = () => {
-    setModalLabel("fab");
-    dispatch(modalState(true));
+  const fabModal = () => {    
+    dispatch(modalState(true , "fab"));
   };
   
-  //---------modal------------
-
-  const [modalLabel, setModalLabel] = useState("");
-
   //-------------WidthDimensions------------
 
   const { width } = useWidthDimensions();
@@ -111,8 +106,7 @@ function Index() {
       return;
     }
     setPosition({ ...position, [anchor]: open });
-    dispatch(modalState(modal));
-    setModalLabel(modalLabel);
+    dispatch(modalState(modal , modalLabel));
   };
 
   //----------------list drawer-------------
@@ -199,7 +193,7 @@ function Index() {
 
   return (
     <>
-      <AccModal label={modalLabel} />
+      <AccModal />
       <Drawer
         anchor={"left"}
         open={position["left"]}

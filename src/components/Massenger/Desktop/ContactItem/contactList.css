@@ -1,13 +1,13 @@
 
 .rce-citem{
     background: transparent;
-    transition: all .2s ease;
+    transition: all .3s ease-in-out;
 }
 .rce-citem:hover{
     background: transparent;
     cursor: pointer;
-    transform: scale(1.01);
-    transition: all .3s ease;
+    transform: scale(1.03);
+    transition: all .3s ease-in-out;
 }
 .rce-citem-body--top-title {
     color: #fff;

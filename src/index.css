@@ -28,10 +28,18 @@ a {
   .react-input-emoji--placeholder
   .ginger-module-highlighter {
   height: 60px !important;
+  
 }
-
+.react-input-emoji--container{
+  background: #270F1A !important;
+  color:#fdfdfd !important;
+  border: none !important;
+}
 .react-input-emoji--input {
   display: flex;
   align-items: center;
   min-height: 60px !important;
+  background: transparent !important;
+  color:#fdfdfd !important;
+
 }

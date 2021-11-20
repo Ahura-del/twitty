@@ -14,7 +14,7 @@ import { Box } from "@mui/system";
 import React, { useState } from "react";
 import personPic from "../../../../assets/person.png";
 import Pic1 from "../../../../assets/img2.png";
-
+import avatarPic from '../../../../assets/userAvatar.png'
 import { useDispatch, useSelector } from "react-redux";
 import { modalState } from "../../../../Redux";
 import UserItem from './SearchUserItem'
@@ -25,18 +25,18 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 600,
   bgcolor: "#fff",
-  border: "2px solid #000",
+  border: "none",
   color: "white",
   borderRadius: 5,
   boxShadow: 24,
   p: 4,
 };
 
-function Index(props) {
+function Index() {
   //redux
   const dispatch = useDispatch();
   const modalStateSelect = useSelector((state) => state.modalState.state);
-
+  const modalLabel = useSelector(state => state.modalState.label)
   // fab functionality
   const [fabUser, setFabUser] = useState("");
 
@@ -68,7 +68,7 @@ function Index(props) {
   //modal types
 
   const modalType = () => {
-    if (props.label === "profile") {
+    if (modalLabel === "profile") {
       return (
         <Grid container>
           <Container>
@@ -159,7 +159,7 @@ function Index(props) {
         </Grid>
       );
     }
-    if (props.label === "restPass") {
+    if (modalLabel === "restPass") {
       return (
         <Grid container>
           <Container>
@@ -216,7 +216,7 @@ function Index(props) {
         </Grid>
       );
     }
-    if (props.label === "delAcc") {
+    if (modalLabel === "delAcc") {
       return (
         <Grid container>
           <Container>
@@ -256,20 +256,20 @@ function Index(props) {
         </Grid>
       );
     }
-    if (props.label === "logout") {
+    if (modalLabel === "logout") {
       return (
         <Grid container>
           <Container>
             <Grid item style={{ textAlign: "center" }}>
               <Typography
-                style={{ color: "#000" }}
+                style={{ color: "#000" , fontSize:20 }}
                 component={"span"}
                 variant={"body2"}
               >
                 Are you sure logout ?
               </Typography>
             </Grid>
-            <Grid container columnSpacing={2}>
+            <Grid container justifyContent="center">
               <Grid item xs={6}>
                 <Button
                   variant="contained"
@@ -277,25 +277,25 @@ function Index(props) {
                   color="error"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  No
+                  Log out
                 </Button>
               </Grid>
-              <Grid item xs={6}>
+              {/* <Grid item xs={6}>
                 <Button
                   variant="contained"
                   fullWidth
-                  color="success"
-                  sx={{ mt: 3, mb: 2 }}
+                  color="inherit"
+                  sx={{ mt: 3, mb: 2 , color:"black" }}
                 >
-                  Yes
+                  Cancel
                 </Button>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Container>
         </Grid>
       );
     }
-    if (props.label === "fab") {
+    if (modalLabel === "fab") {
       return (
         <Grid container>
           <Container>
@@ -331,6 +331,68 @@ function Index(props) {
             </Grid>
           </Container>
         </Grid>
+      );
+    }
+    if(modalLabel === "avatar"){
+      return (
+        <Grid container>
+        <Container>
+          <Grid
+            item
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: 15,
+            }}
+          >
+            <Avatar
+              alt='avatar'
+              src={avatarPic}
+              sx={{ width: 100, height: 100 }}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              margin="normal"
+              fullWidth
+              variant="outlined"
+              id="userProfile"
+              label="User name"
+              disabled={true}
+              name="userProfile"
+              value="Ahura"
+          
+            />
+          </Grid>
+         
+          <Grid item>
+            <Typography
+              style={{ color: "#000", marginTop: 10 }}
+              component={"div"}
+              variant={"body2"}
+            >
+              Bio
+            </Typography>
+            <TextareaAutosize
+              disabled={true}
+              style={{
+                width: "100%",
+                resize: "none",
+                marginTop: 10,
+                padding: 10,
+                fontSize: 20,
+                fontFamily: "roboto",
+                boxSizing: "border-box",
+                borderRadius: 5,
+                borderWidth: 1,
+                borderColor: "#555",
+                borderStyle: "solid",
+              }}
+            />
+          </Grid>
+         
+        </Container>
+      </Grid>
       );
     }
   };

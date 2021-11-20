@@ -2,6 +2,7 @@ import { MODAL_STATE } from "./Type";
 
 const initialState = {
   state: false,
+  label:""
 };
 
 const ModalReducer = (state = initialState, action) => {
@@ -9,6 +10,7 @@ const ModalReducer = (state = initialState, action) => {
     case MODAL_STATE:
       return {
         state: action.payload,
+        label: action.label
       };
 
     default:

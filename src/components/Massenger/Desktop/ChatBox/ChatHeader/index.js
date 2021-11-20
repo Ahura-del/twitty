@@ -1,8 +1,22 @@
 import { Clear, DeleteForever, MoreHoriz, Person } from "@mui/icons-material";
 import { Avatar, Badge, Grid, Menu, MenuItem, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Pic from "../../../../../assets/img2.png";
+import { modalState } from "../../../../../Redux";
 function Index() {
+
+  //-------redux---------------
+  const dispatch = useDispatch()
+
+  //------------modal----------------
+  const avatarModal = ()=>{
+    dispatch(modalState(true , "avatar"))
+    setAnchorEl(null);
+  }
+
+
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -36,7 +50,7 @@ function Index() {
                   alt="user"
                   sx={{ width:70, height:70 }}
                   style={{ cursor: "pointer" }} 
-                  onClick={()=> alert('hi')}
+                  onClick={avatarModal}
                 />
               </Badge>
             </Grid>
@@ -89,7 +103,7 @@ function Index() {
             }}
          
           >
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={avatarModal}>
             <Person sx={{mr:2}} />
             Profile
             </MenuItem>
