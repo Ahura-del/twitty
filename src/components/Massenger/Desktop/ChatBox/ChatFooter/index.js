@@ -5,7 +5,8 @@ import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
 import InputEmoji from 'react-input-emoji'
 function Index() {
 
-  //------------pick emoji
+  //------------pick emoji--------------------
+
   const [ text, setText ] = useState('')
 const handleOnEnter = (text) => {
     console.log('enter', text)
@@ -34,7 +35,7 @@ const handleOnEnter = (text) => {
           cleanOnEnter
           onEnter={handleOnEnter}
           placeholder="Your message ..."
-          fontSize={20}
+          fontSize={22}
           borderRadius={15}
           maxLength={140}
           />
