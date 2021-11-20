@@ -1,11 +1,23 @@
 
-.list-item{
+.rce-citem{
+    background: transparent;
     transition: all .2s ease;
 }
-.list-item:hover{
+.rce-citem:hover{
+    background: transparent;
     cursor: pointer;
-    transform: scale(1.03);
-    transition: all .2s ease;
+    transform: scale(1.01);
+    transition: all .3s ease;
+}
+.rce-citem-body--top-title {
+    color: #fff;
+    font-size: 18px;
+}
+.rce-citem-body--top-time{
+    color:#fefefe
+}
+.rce-citem-body--bottom-title{
+    color: #aaa;
 }
 
 @media (min-width: 600px) and (max-width: 1300px) {

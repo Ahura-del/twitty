@@ -26,6 +26,7 @@ import {
   Add,
 } from "@mui/icons-material";
 import CustomListItem from "./ContactItem";
+
 import useWidthDimensions from "../../../Hook/useWidthDimensions";
 import { Box } from "@mui/system";
 import AccModal from "./Modal";
@@ -272,10 +273,11 @@ function Index() {
                   {/* <Typography style={{color:"#ccc"}} fontSize={30} textAlign="center" >
                 Empty Chat!
               </Typography> */}
-                  <CustomListItem />
-                  <CustomListItem />
-                  <CustomListItem />
-                  <CustomListItem />
+                  <CustomListItem active={true} />
+                  <CustomListItem active={true} />
+                  <CustomListItem  active={false}/>
+                  <CustomListItem  active={false}/>
+                  
                 </List>
               </Grid>
             </Container>

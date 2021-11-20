@@ -35,7 +35,8 @@ function Index() {
                   src={Pic}
                   alt="user"
                   sx={{ width:70, height:70 }}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer" }} 
+                  onClick={()=> alert('hi')}
                 />
               </Badge>
             </Grid>

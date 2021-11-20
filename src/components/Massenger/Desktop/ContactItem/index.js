@@ -1,19 +1,17 @@
 import {
-  Avatar,
-  Badge,
-  Divider,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Typography,
+ 
+  Divider, Grid, Skeleton, Stack,
+
 } from "@mui/material";
 import React from "react";
 import pic from "../../../../assets/img2.png";
+import 'react-chat-elements/dist/main.css';
+import { ChatItem } from 'react-chat-elements'
 import "./contactList.css";
-function index() {
+function index(props) {
   return (
     <>
-      <ListItem alignItems="center" className="list-item">
+      {/* <ListItem alignItems="center" className="list-item">
         <ListItemAvatar>
           <Avatar alt="Remy Sharp" src={pic} sx={{ width: 56, height: 56 }} />
         </ListItemAvatar>
@@ -64,7 +62,36 @@ function index() {
             </>
           }
         />
-      </ListItem>
+      </ListItem> */}
+
+      {props.active ? (
+        <ChatItem
+         avatar={pic}
+    alt={'Reactjs'}
+    title={'Facebook'}
+    subtitle={'What are you doing?'}
+    date={new Date()}
+    unread={2}
+    avatarFlexible={true}
+    statusText=""
+    statusColor='green'
+     />
+      ):(
+        <Stack spacing={1} >
+     <Grid container alignItems="center" >
+      <Grid item sx={{mr:2}}>
+      <Skeleton variant="circular"  width={40} height={40} sx={{ bgcolor: 'grey.500' }} />
+      </Grid>
+      <Grid item>
+      <Skeleton variant="text"  sx={{ bgcolor: 'grey.500' }} />
+      <Skeleton variant="text"  width={400}  height={40} sx={{ bgcolor: 'grey.500' }} />
+      </Grid>
+     </Grid>
+    </Stack>
+      )}
+
+     
+     
       <Divider
         style={{ background: "gray", marginTop: 15, marginBottom: 15 }}
         className="divider"
