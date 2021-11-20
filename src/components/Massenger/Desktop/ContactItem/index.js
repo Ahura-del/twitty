@@ -1,14 +1,21 @@
-import {
- 
-  Divider, Grid, Skeleton, Stack,
-
-} from "@mui/material";
-import React from "react";
+import { Divider, Grid, Skeleton, Stack } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import pic from "../../../../assets/img2.png";
-import 'react-chat-elements/dist/main.css';
-import { ChatItem } from 'react-chat-elements'
+import "react-chat-elements/dist/main.css";
+import { ChatItem } from "react-chat-elements";
+import useWidthDimensions from "../../../../Hook/useWidthDimensions";
 import "./contactList.css";
-function index(props) {
+function Index(props) {
+  const { width } = useWidthDimensions();
+  const [xs, setXs] = useState({ small: 3, big: 9 });
+  useEffect(() => {
+    if (width <= 1300 && width > 700) {
+      setXs({ small: 1, big: 11 });
+    } else {
+      setXs({ small: 3, big: 9 });
+    }
+  }, [width]);
+
   return (
     <>
       {/* <ListItem alignItems="center" className="list-item">
@@ -66,32 +73,45 @@ function index(props) {
 
       {props.active ? (
         <ChatItem
-         avatar={pic}
-    alt={'Reactjs'}
-    title={'Facebook'}
-    subtitle={'What are you doing?'}
-    date={new Date()}
-    unread={2}
-    avatarFlexible={true}
-    statusText=""
-    statusColor='green'
-     />
-      ):(
-        <Stack spacing={1} >
-     <Grid container alignItems="center" >
-      <Grid item sx={{mr:2}}>
-      <Skeleton variant="circular"  width={40} height={40} sx={{ bgcolor: 'grey.500' }} />
-      </Grid>
-      <Grid item>
-      <Skeleton variant="text"  sx={{ bgcolor: 'grey.500' }} />
-      <Skeleton variant="text"  width={400}  height={40} sx={{ bgcolor: 'grey.500' }} />
-      </Grid>
-     </Grid>
-    </Stack>
+          avatar={pic}
+          alt={"Reactjs"}
+          title={xs.small === 1 ? "" : "Facebook"}
+          subtitle={xs.small === 1 ? "" : "What are you doing?"}
+          date={new Date()}
+          unread={xs.small === 1 ? 0 : 2}
+          avatarFlexible={true}
+          statusText=""
+          statusColor={xs.small === 1 ? null : "green"}
+        />
+      ) : (
+        <Stack spacing={1}>
+          <Grid container alignItems="center">
+            <Grid item sx={xs.small === 1 ? null : { mr: 2 }}>
+              <Skeleton
+                variant="circular"
+                width={40}
+                height={40}
+                sx={{ bgcolor: "grey.500" }}
+              />
+            </Grid>
+            <Grid item>
+              <Skeleton
+                variant="text"
+                className="skeleton-text"
+                sx={{ bgcolor: "grey.500" }}
+              />
+              <Skeleton
+                variant="text"
+                className="skeleton-text"
+                width={400}
+                height={40}
+                sx={{ bgcolor: "grey.500" }}
+              />
+            </Grid>
+          </Grid>
+        </Stack>
       )}
 
-     
-     
       <Divider
         style={{ background: "gray", marginTop: 15, marginBottom: 15 }}
         className="divider"
@@ -100,4 +120,4 @@ function index(props) {
   );
 }
 
-export default index;
+export default Index;

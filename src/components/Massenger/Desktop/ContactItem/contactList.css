@@ -20,9 +20,24 @@
     color: #aaa;
 }
 
-@media (min-width: 600px) and (max-width: 1300px) {
+@media (min-width: 700px) and (max-width: 1300px) {
+    .rce-container-citem{
+        min-width: unset;
+    }
+    .rce-citem{
+        display: block;
+        min-width: unset;
+    }
+ 
+    .rce-citem-body--top-time{
+        display: none;
+    }
+
     .list-text-area{
         display: none;
+    }
+    .skeleton-text{
+        display: none !important;
     }
     .divider{
         display: none;
