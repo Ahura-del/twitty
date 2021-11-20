@@ -1,8 +1,16 @@
 import { MoreHoriz } from "@mui/icons-material";
-import { Avatar, Badge, Grid, Typography } from "@mui/material";
-import React from "react";
+import { Avatar, Badge, Grid, Menu, MenuItem, Typography } from "@mui/material";
+import React, { useState } from "react";
 import Pic from "../../../../../assets/img2.png";
 function Index() {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <Grid>
       <Grid
@@ -62,9 +70,27 @@ function Index() {
               alignItems: "center",
               cursor: "pointer",
             }}
+            onClick={handleClick}
           >
             <MoreHoriz style={{ color: "#fff" }} fontSize="large" />
           </div>
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem onClick={handleClose}>Delete chat</MenuItem>
+            <MenuItem onClick={handleClose}>Clear history</MenuItem>
+          </Menu>
         </Grid>
       </Grid>
     </Grid>

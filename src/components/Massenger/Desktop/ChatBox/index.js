@@ -5,7 +5,7 @@ import ChatContact from './ChatContent'
 import ChatFooter from './ChatFooter'
 function Index() {
   return (
-    <Grid container>
+    <Grid container sx={{overflow:"hidden"}}>
       <Container style={{ paddingTop: 40, paddingBottom: 30 , height:"100vh" }} fixed>
       <Grid container direction="column" sx={{height:"100%"}}>
         <ChatHeader  />

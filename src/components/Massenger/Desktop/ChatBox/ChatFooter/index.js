@@ -1,7 +1,6 @@
 import {  Telegram } from "@mui/icons-material";
 import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import "./ChatFooter.css";
 import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
 import InputEmoji from 'react-input-emoji'
 function Index() {
@@ -25,7 +24,7 @@ const handleOnEnter = (text) => {
     }
   }, [width]);
   return (
-    <Grid item className="chat-footer">
+    <Grid item sx={{width:"100%"}}>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item xs={xs.big}>
          
@@ -37,6 +36,7 @@ const handleOnEnter = (text) => {
           placeholder="Your message ..."
           fontSize={20}
           borderRadius={15}
+          maxLength={140}
           />
           
           
