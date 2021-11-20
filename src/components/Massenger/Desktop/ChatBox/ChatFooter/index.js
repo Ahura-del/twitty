@@ -19,7 +19,7 @@ const handleOnEnter = (text) => {
   const [xs, setXs] = useState({ small: 1, big: 11 });
   useEffect(() => {
     if (width <= 1300 && width > 600) {
-      setXs({ small: 2, big: 10 });
+      setXs({ small: 1, big: 11 });
     } else {
       setXs({ small: 1, big: 11 });
     }

@@ -1,4 +1,4 @@
-import { MoreHoriz } from "@mui/icons-material";
+import { Clear, DeleteForever, MoreHoriz, Person } from "@mui/icons-material";
 import { Avatar, Badge, Grid, Menu, MenuItem, Typography } from "@mui/material";
 import React, { useState } from "react";
 import Pic from "../../../../../assets/img2.png";
@@ -34,7 +34,7 @@ function Index() {
                 <Avatar
                   src={Pic}
                   alt="user"
-                  sx={{ width: 80, height: 80 }}
+                  sx={{ width:70, height:70 }}
                   style={{ cursor: "pointer" }}
                 />
               </Badge>
@@ -86,10 +86,20 @@ function Index() {
               vertical: "top",
               horizontal: "right",
             }}
+         
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>Delete chat</MenuItem>
-            <MenuItem onClick={handleClose}>Clear history</MenuItem>
+            <MenuItem onClick={handleClose}>
+            <Person sx={{mr:2}} />
+            Profile
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+            <DeleteForever sx={{mr:2}} />
+            Delete chat
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+            <Clear sx={{mr:2}} />
+            Clear history
+            </MenuItem>
           </Menu>
         </Grid>
       </Grid>
