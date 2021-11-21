@@ -28,13 +28,13 @@ function Index(props) {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: props.size === "desktop" ? 600 : 320 ,
+    width: props.size === "desktop" ? 600 : '90%' ,
     bgcolor: "#fff",
     border: "none",
     color: "white",
     borderRadius: 5,
     boxShadow: 24,
-    p: 4,
+    p: props.size === "desktop" ? 4 : 2 ,
   };
 
 
@@ -46,7 +46,6 @@ function Index(props) {
 
   //------------search mobile------------
   const [searchMob , setSearchMob] = useState('')
-
 
 
   // fab functionality
@@ -321,6 +320,7 @@ function Index(props) {
               <TextField
                 margin="normal"
                 fullWidth
+                size={props.size === "desktop" ? null : "small"}
                 placeholder="Username"
                 autoFocus
                 onChange={(e) => setFabUser(e.target.value)}
@@ -337,13 +337,7 @@ function Index(props) {
               <Grid container>
                 <List sx={{ width: "100%" }}>
                   <UserItem pic={Pic1} name="Ahura" bio="Hello world! I'm Ahura" />
-                  <UserItem pic={Pic1} name="Ahura" bio="Hello world! I'm Ahura" />
-
-                  <UserItem pic={Pic1} name="Ahura" bio="Hello world! I'm Ahura" />
-
-                  <UserItem pic={Pic1} name="Ahura" bio="Hello world! I'm Ahura" />
-
-                
+                  <UserItem pic={Pic1} name="Ahura" bio="Hello world! I'm Ahura" />             
                 </List>
               </Grid>
             </Grid>
