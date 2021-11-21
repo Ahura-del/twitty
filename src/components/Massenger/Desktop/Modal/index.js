@@ -18,22 +18,27 @@ import avatarPic from '../../../../assets/userAvatar.png'
 import { useDispatch, useSelector } from "react-redux";
 import { modalState } from "../../../../Redux";
 import UserItem from './SearchUserItem'
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 600,
-  bgcolor: "#fff",
-  border: "none",
-  color: "white",
-  borderRadius: 5,
-  boxShadow: 24,
-  p: 4,
-};
 
-function Index() {
-  //redux
+
+function Index(props) {
+  //----------model style------------
+  
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: props.size === "desktop" ? 600 : 320 ,
+    bgcolor: "#fff",
+    border: "none",
+    color: "white",
+    borderRadius: 5,
+    boxShadow: 24,
+    p: 4,
+  };
+
+
+  //------------redux----------------
   const dispatch = useDispatch();
   const modalStateSelect = useSelector((state) => state.modalState.state);
   const modalLabel = useSelector(state => state.modalState.label)
@@ -92,7 +97,7 @@ function Index() {
                 alt="Profile"
                 style={{ cursor: "pointer" }}
                 src={pic.length > 0 ? pic : personPic}
-                sx={{ width: 100, height: 100 }}
+                sx={props.size === "desktop" ? { width: 100, height: 100 } : { width: 60, height: 60 }}
                 onClick={choseImage}
               />
             </Grid>
@@ -100,6 +105,7 @@ function Index() {
               <TextField
                 margin="normal"
                 fullWidth
+                size={props.size === "desktop" ? null : "small"}
                 variant="outlined"
                 id="emailAcc"
                 label="Email"
@@ -112,6 +118,7 @@ function Index() {
             <Grid item>
               <TextField
                 margin="normal"
+                size={props.size === "desktop" ? null : "small"}
                 fullWidth
                 variant="outlined"
                 id="usernameAcc"
@@ -129,7 +136,7 @@ function Index() {
                 Bio
               </Typography>
               <TextareaAutosize
-                minRows={6}
+                minRows={props.size === "desktop" ? 6 : 2}
                 style={{
                   width: "100%",
                   resize: "none",
@@ -166,6 +173,7 @@ function Index() {
             <Grid item>
               <TextField
                 margin="normal"
+                size={props.size === "desktop" ? null : "small"}
                 required
                 fullWidth
                 variant="outlined"
@@ -179,6 +187,7 @@ function Index() {
             <Grid item>
               <TextField
                 margin="normal"
+                size={props.size === "desktop" ? null : "small"}
                 required
                 fullWidth
                 variant="outlined"
@@ -192,6 +201,7 @@ function Index() {
             <Grid item>
               <TextField
                 margin="normal"
+                size={props.size === "desktop" ? null : "small"}
                 required
                 fullWidth
                 variant="outlined"
@@ -232,6 +242,7 @@ function Index() {
             <Grid item>
               <TextField
                 margin="normal"
+                size={props.size === "desktop" ? null : "small"}
                 required
                 fullWidth
                 variant="outlined"

@@ -29,7 +29,7 @@ import CustomListItem from "./ContactItem";
 
 import useWidthDimensions from "../../../Hook/useWidthDimensions";
 import { Box } from "@mui/system";
-import AccModal from "./Modal";
+import  AccModal from "./Modal";
 import { useDispatch} from "react-redux";
 import { modalState } from "../../../Redux";
 function Index() {
@@ -190,7 +190,7 @@ function Index() {
 
   return (
     <>
-      <AccModal />
+      <AccModal size="desktop" />
       <Drawer
         anchor={"left"}
         open={position["left"]}

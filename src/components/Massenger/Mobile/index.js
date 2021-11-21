@@ -1,5 +1,5 @@
 import { DeleteForever, Logout, Notifications, VpnKey } from '@mui/icons-material';
-import {  Avatar, Grid, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, SwipeableDrawer, Switch } from '@mui/material'
+import {  Avatar, Grid, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, SwipeableDrawer, Switch, Typography } from '@mui/material'
 import { Box } from '@mui/system';
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
@@ -7,6 +7,7 @@ import { modalState } from '../../../Redux';
 import pic from '../../../assets/img2.png'
 import Header from './MobileHeader'
 import AccModal from '../Desktop/Modal'
+import './mobile.css'
 function Index() {
 
 //---------redux-----------------
@@ -30,6 +31,7 @@ const toggleDrawer = (anchor, open, modal, modalLabel) => (event) => {
   dispatch(modalState(modal , modalLabel));
 }
     //------------Drawer List------------------
+
 
     const list = (anchor) => (
         <Box
@@ -56,7 +58,12 @@ const toggleDrawer = (anchor, open, modal, modalLabel) => (event) => {
               <ListItemAvatar>
                 <Avatar alt="Remy Sharp" src={pic} sx={{ width: 40, height: 40 }} />
               </ListItemAvatar>
-              <ListItemText primary="Account Profile" className="listItem-text" />
+              <ListItemText primary={
+                  <Typography sx={{fontSize:13}}>
+                      Account Profile
+                  </Typography>
+                  
+              } />
             </ListItem>
     
             <ListItem
@@ -68,7 +75,11 @@ const toggleDrawer = (anchor, open, modal, modalLabel) => (event) => {
               <ListItemIcon>
                 <VpnKey style={{ color: "white" }} />
               </ListItemIcon>
-              <ListItemText primary="Change Password" />
+              <ListItemText primary={
+                  <Typography sx={{fontSize:13}}>
+                      Change Password
+                  </Typography>
+              } />
             </ListItem>
     
             <ListItem
@@ -80,16 +91,25 @@ const toggleDrawer = (anchor, open, modal, modalLabel) => (event) => {
               <ListItemIcon>
                 <DeleteForever style={{ color: "white" }} />
               </ListItemIcon>
-              <ListItemText primary="Delete Account" />
+              <ListItemText primary={
+                  <Typography sx={{fontSize:13}}>
+                     Delete Account
+                  </Typography>
+              } />
             </ListItem>
     
             <ListItem key="Notification" style={{ marginBottom: 30 }}>
               <ListItemIcon>
                 <Notifications style={{ color: "white" }} />
               </ListItemIcon>
-              <ListItemText primary="Notification" />
+              <ListItemText primary={
+                  <Typography sx={{fontSize:13}}>
+                    Notification
+                  </Typography>
+              } />
               <Switch
                 defaultChecked
+                size="small"
                 color="warning"
                 value={notification}
                 onChange={() => setNotification(!notification)}
@@ -106,7 +126,11 @@ const toggleDrawer = (anchor, open, modal, modalLabel) => (event) => {
               <ListItemIcon>
                 <Logout style={{ color: "white" }} />
               </ListItemIcon>
-              <ListItemText primary="Logout" />
+              <ListItemText primary={
+                  <Typography sx={{fontSize:14}}>
+                      Logout
+                  </Typography>
+              } />
             </ListItem>
           </List>
         </Box>
@@ -116,7 +140,7 @@ const toggleDrawer = (anchor, open, modal, modalLabel) => (event) => {
 
     return (
         <>
-       <AccModal />
+       <AccModal size="mobile" />
         <SwipeableDrawer
         anchor={"left"}
         open={position["left"]}
