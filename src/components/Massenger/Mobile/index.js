@@ -52,7 +52,7 @@ function Index() {
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 200 }}
+      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 230 }}
       role="presentation"
       onKeyDown={toggleDrawer(anchor, false)}
       style={{
@@ -192,7 +192,7 @@ function Index() {
           style={{
             right: 30,
             position: "absolute",
-            bottom: 30,
+            bottom: 10,
             background: "#FF6B00",
             zIndex: 10,
           }}
