@@ -4,6 +4,7 @@ import Register from './components/Register'
 import ForgetPassword from './components/ForgetPass'
 import Validation from './components/Validation'
 import Massanger from './components/Massenger'
+import Chat from './components/Massenger/Mobile/MobileChat'
 import {BrowserRouter as Router , Switch , Route} from 'react-router-dom'
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
           <Route path="/fpass" exact component={ForgetPassword} />
           <Route path="/valid" exact component={Validation} />
           <Route path="/massenger" exact component={Massanger} />
-
+          <Route path="/chat"   component={Chat} />
         </Switch>
       </Router>
     </div>

@@ -167,7 +167,7 @@ function Index() {
         direction="column"
         style={{ height: "100vh", overflow: "hidden" }}
       >
-        <Grid item xs={1} sx={{ width: "100%", background: "#2F3135" }}>
+        <Grid item xs={1} sx={{ width: "100%", bgcolor: "#2F3135" }}>
           <Header drawer={toggleDrawer} />
         </Grid>
         <Grid
