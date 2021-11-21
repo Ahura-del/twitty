@@ -7,7 +7,6 @@ import { modalState } from '../../../Redux';
 import pic from '../../../assets/img2.png'
 import Header from './MobileHeader'
 import AccModal from '../Desktop/Modal'
-import './mobile.css'
 function Index() {
 
 //---------redux-----------------
