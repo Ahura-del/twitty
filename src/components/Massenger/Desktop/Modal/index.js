@@ -42,6 +42,13 @@ function Index(props) {
   const dispatch = useDispatch();
   const modalStateSelect = useSelector((state) => state.modalState.state);
   const modalLabel = useSelector(state => state.modalState.label)
+
+
+  //------------search mobile------------
+  const [searchMob , setSearchMob] = useState('')
+
+
+
   // fab functionality
   const [fabUser, setFabUser] = useState("");
 
@@ -405,6 +412,37 @@ function Index(props) {
         </Container>
       </Grid>
       );
+    }
+    if(modalLabel === "mobileSearch"){
+      return(
+        <Grid container sx={{overflow:"hidden"}}>
+        <Container>
+          <Grid item>
+            <TextField
+              margin="normal"
+              fullWidth
+              size="small"
+              placeholder="Search"
+              autoFocus
+              onChange={(e) => setSearchMob(e.target.value)}
+              value={searchMob}
+              variant="outlined"
+              name="search"
+              label="Search"
+              type="text"
+              id="search"
+              autoComplete="off"
+            />
+          </Grid>
+         {searchMob.length > 0 ? (
+            <Grid item>
+            <Grid container sx={{height:200 , overflowY:"auto" }}>
+            </Grid>
+          </Grid>
+          ):null}
+        </Container>
+      </Grid>
+      )
     }
   };
 

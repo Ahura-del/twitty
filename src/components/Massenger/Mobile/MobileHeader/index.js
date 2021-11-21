@@ -1,11 +1,13 @@
 import { Menu, Search } from '@mui/icons-material'
-import { Container, Grid, Typography } from '@mui/material'
+import { Container, Grid, Typography  } from '@mui/material'
 import React from 'react'
-
+import {useDispatch} from 'react-redux'
+import { modalState } from '../../../../Redux'
 
 function Index(props) {
-
+ const dispatch = useDispatch()
     return (
+   
         <Grid container sx={{width:"100%" , height:"100%"}} alignItems="center">
         <Container >
             <Grid container justifyContent="space-between" >
@@ -16,11 +18,12 @@ function Index(props) {
                     <Typography sx={{color:"#fdfdfd"}}>Recent</Typography>
                 </Grid>
                 <Grid item>
-                    <Search sx={{color:"#fdfdfd"}}/>
+                    <Search sx={{color:"#fdfdfd"}} onClick={()=>dispatch(modalState(true , 'mobileSearch'))}/>
                 </Grid>
             </Grid>
         </Container>
         </Grid>
+        
     )
 }
 

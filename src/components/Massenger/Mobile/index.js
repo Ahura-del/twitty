@@ -155,7 +155,7 @@ const toggleDrawer = (anchor, open, modal, modalLabel) => (event) => {
                 <Header drawer={toggleDrawer} />
             </Grid>
             <Grid item xs={10} sx={{overflowY:"auto"}}>
-                <p>contact list</p>
+                <ContentList />
             </Grid>
       
         </Grid>
