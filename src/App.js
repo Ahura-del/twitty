@@ -3,7 +3,7 @@ import Login from './components/Login'
 import Register from './components/Register'
 import ForgetPassword from './components/ForgetPass'
 import Validation from './components/Validation'
-import Desk from './components/Massenger/Desktop'
+import Massanger from './components/Massenger'
 import {BrowserRouter as Router , Switch , Route} from 'react-router-dom'
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
           <Route path="/register" exact component={Register} />
           <Route path="/fpass" exact component={ForgetPassword} />
           <Route path="/valid" exact component={Validation} />
-          <Route path="/desk" exact component={Desk} />
+          <Route path="/massenger" exact component={Massanger} />
 
         </Switch>
       </Router>

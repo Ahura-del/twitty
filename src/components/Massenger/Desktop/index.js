@@ -69,7 +69,7 @@ function Index() {
   const { width } = useWidthDimensions();
   const [xs, setXs] = useState({ small: 3, big: 9 });
   useEffect(() => {
-    if (width <= 1300 && width > 700) {
+    if (width <= 1300 && width >= 700) {
       setXs({ small: 1, big: 11 });
     } else {
       setXs({ small: 3, big: 9 });
