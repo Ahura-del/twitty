@@ -14,7 +14,7 @@ function Index() {
                 <Grid item>
                 <Grid container>
                     <Grid item sx={{mr:2}}>
-                        <Avatar src={pic} alt="user avatar" sx={{width:50 , height:50}} />
+                        <Avatar src={pic} alt="user avatar" sx={{width:50 , height:50}}  />
                     </Grid>
                     <Grid item>
                         <Grid container direction="column" sx={{height:"100%"}} justifyContent="space-between">

@@ -16,7 +16,9 @@ function index() {
             </a>
           </div>
           <Button variant="contained" color="secondary">
-            Install
+          <Link to="/chat">
+            install
+          </Link>
           </Button>
         </div>
       </div>
