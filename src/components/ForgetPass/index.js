@@ -1,10 +1,13 @@
-import { Button, Container, Grid, TextField } from "@mui/material";
+import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import ReactInputVerificationCode from "react-verification-code-input";
 import React from "react";
 import { Box } from "@mui/system";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-function index() {
+function Index() {
+  //-------------history--------------
+  const history = useHistory();
+
   const complete = (e) => {
     if (e === "3256") {
       alert("true");
@@ -47,8 +50,7 @@ function index() {
               type="password"
               autoComplete="off"
               autoFocus
-             onChange={(e)=> console.log(e.target.value)}
-            
+              onChange={(e) => console.log(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -60,9 +62,9 @@ function index() {
               type="password"
               id="re-newPass"
               autoComplete="off"
-              style={{marginBottom:"100px"}}
+              style={{ marginBottom: "100px" }}
             />
-
+            <Typography sx={{ pb: 2 }}>Please check your email</Typography>
             <ReactInputVerificationCode
               fields={4}
               onComplete={(e) => complete(e)}
@@ -71,10 +73,13 @@ function index() {
               fieldWidth={70}
               fieldHeight={70}
             />
-            <Button color="warning" variant="contained" style={{marginTop:"30px"}}>
-                <Link to="/login">
-                    Back
-                </Link>
+            <Button
+              color="warning"
+              variant="contained"
+              style={{ marginTop: "30px" }}
+              onClick={() => history.goBack()}
+            >
+              Back
             </Button>
           </Box>
           {/* </Box> */}
@@ -84,4 +89,4 @@ function index() {
   );
 }
 
-export default index;
+export default Index;

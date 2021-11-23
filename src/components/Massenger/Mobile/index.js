@@ -23,7 +23,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { modalState } from "../../../Redux";
 import pic from "../../../assets/img2.png";
-import ContentList from "./MobleContentList";
+import ContactList from "./MobleContactList";
 import Header from "./MobileHeader";
 import AccModal from "../Desktop/Modal";
 function Index() {
@@ -175,17 +175,17 @@ function Index() {
           xs={11}
           sx={{ overflowY: "auto", background: "#363A3F", width: "100%" }}
         >
-          <ContentList active={true} />
-          <ContentList active={true} />
-          <ContentList active={false} />
-          <ContentList active={true} />
-          <ContentList active={true} />
-          <ContentList active={true} />
-          <ContentList active={true} />
-          <ContentList active={false} />
+          <ContactList active={true} />
+          <ContactList active={true} />
+          <ContactList active={false} />
+          <ContactList active={true} />
+          <ContactList active={true} />
+          <ContactList active={true} />
+          <ContactList active={true} />
+          <ContactList active={false} />
 
-          <ContentList active={true} />
-          <ContentList active={true} />
+          <ContactList active={true} />
+          <ContactList active={true} />
         </Grid>
         <Fab
           className="fab-btn"

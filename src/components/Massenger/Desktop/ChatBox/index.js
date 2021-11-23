@@ -1,18 +1,21 @@
 import React from "react";
-import {  Container, Grid } from "@mui/material";
+import {  Grid } from "@mui/material";
 import ChatHeader from './ChatHeader'
-import ChatContact from './ChatContent'
+import ChatMessage from './ChatMessage'
 import ChatFooter from './ChatFooter'
 function Index() {
   return (
-    <Grid container sx={{overflow:"hidden"}}>
-      <Container style={{ paddingTop: 40, paddingBottom: 30 , height:"100vh" }} fixed>
-      <Grid container direction="column" sx={{height:"100%"}}>
+    <Grid container spacing={1} direction="column" sx={{ height:"100vh" ,width:"100%", overflow:"hidden"}}> 
+      <Grid item xs={1} sx={{height:"100%" , width:"100%" }}>
         <ChatHeader  />
-        <ChatContact />
+      </Grid>
+      <Grid item xs={10} sx={{pt:2 ,height:"100%" , width:"100%" , overflowY:"auto"}}>
+        <ChatMessage />
+      </Grid>
+      <Grid item xs={1} sx={{height:"100%" , width:"100%"}}>
+
         <ChatFooter />
       </Grid>
-      </Container>
     </Grid>
   );
 }

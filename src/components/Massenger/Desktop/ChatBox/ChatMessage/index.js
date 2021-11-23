@@ -1,6 +1,6 @@
-import { Grid } from '@mui/material'
+import { Container, Grid } from '@mui/material'
 import React , {useRef , useEffect} from 'react'
-import ChatMessage from './ChatText'
+import ChatText from './ChatText'
 import './ChatMessage.css'
 
 const list = [
@@ -37,12 +37,12 @@ function Index() {
             }
     })
     return (
-        <Grid item xs={10} style={{paddingTop:30 }} >
-            <Grid container rowSpacing={2} className="chatMessage-container" >
-            {list.map((item , index) => (<ChatMessage dir={item.dir} key={index} />))}
+        <Container >
+            <Grid container rowSpacing={2}  >
+            {list.map((item , index) => (<ChatText dir={item.dir} key={index} />))}
             <div ref={endPage} />
             </Grid>
-        </Grid>
+        </Container>
     )
 }
 

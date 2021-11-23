@@ -1,10 +1,14 @@
 import { ArrowBack, Clear, DeleteForever, MoreVert, Person } from '@mui/icons-material'
 import { Avatar, Container, Grid, Menu, MenuItem, Typography } from '@mui/material'
 import React, { useState } from 'react'
+import {useHistory} from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import {modalState} from '../../../../../Redux'
 import pic from '../../../../../assets/img2.png'
 function Index() {
+
+    //-------history-----------------
+    const history = useHistory()
   //------------modal----------------
   const dispatch = useDispatch()
   const avatarModal = ()=>{
@@ -28,7 +32,7 @@ function Index() {
             <Grid item >
             <Grid container alignItems="center" >
                 <Grid item>
-                <ArrowBack sx={{color:"#fdfdfd" , mr:2}} />
+                <ArrowBack sx={{color:"#fdfdfd" , mr:2}} onClick={()=> history.goBack()} />
                 </Grid>
                 <Grid item>
                 <Grid container>

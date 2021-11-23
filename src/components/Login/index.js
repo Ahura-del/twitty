@@ -67,7 +67,7 @@ function index() {
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <Link to="/fpass">
+                    <Link to="/fpassEmail">
                       <Typography color="error" component={'span'} variant={'body2'}>
                       Forgot password?
                       </Typography>

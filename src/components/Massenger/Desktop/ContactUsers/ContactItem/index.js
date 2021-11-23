@@ -1,9 +1,9 @@
 import { Divider, Grid, Skeleton, Stack } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import pic from "../../../../assets/img2.png";
+import pic from "../../../../../assets/img2.png";
 import "react-chat-elements/dist/main.css";
 import { ChatItem } from "react-chat-elements";
-import useWidthDimensions from "../../../../Hook/useWidthDimensions";
+import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
 import "./contactList.css";
 function Index(props) {
   const { width } = useWidthDimensions();

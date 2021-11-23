@@ -3,7 +3,9 @@ import React from 'react'
 import "react-chat-elements/dist/main.css";
 import { ChatItem } from "react-chat-elements";
 import pic from '../../../../assets/userAvatar.png'
+import { useHistory } from 'react-router-dom';
 function Index(props) {
+  const history = useHistory()
     return (
         <Grid container >
         <Container>
@@ -16,6 +18,7 @@ function Index(props) {
           subtitle="What are you doing?"
           date={new Date()}
           unread={2}
+          onClick={()=>history.push('/chat')}
           avatarFlexible={true}
           statusText=""
           statusColor="green"

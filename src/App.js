@@ -1,6 +1,7 @@
 import Home from './components/Home'
 import Login from './components/Login'
 import Register from './components/Register'
+import EmailForgetPassword from './components/ForgetPass/EnterEmail'
 import ForgetPassword from './components/ForgetPass'
 import Validation from './components/Validation'
 import Massanger from './components/Massenger'
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" exact component={Home} />
           <Route path="/login" exact component={Login} />
           <Route path="/register" exact component={Register} />
+          <Route path="/fpassEmail" exact component={EmailForgetPassword} />
           <Route path="/fpass" exact component={ForgetPassword} />
           <Route path="/valid" exact component={Validation} />
           <Route path="/massenger" exact component={Massanger} />

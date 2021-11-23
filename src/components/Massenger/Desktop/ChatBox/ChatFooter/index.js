@@ -1,5 +1,5 @@
 import {  Telegram } from "@mui/icons-material";
-import { Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
 import InputEmoji from 'react-input-emoji'
@@ -25,6 +25,8 @@ const handleOnEnter = (text) => {
     }
   }, [width]);
   return (
+    <Container>
+
     <Grid item sx={{width:"100%"}}>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item xs={xs.big}>
@@ -42,7 +44,7 @@ const handleOnEnter = (text) => {
           
           
         </Grid>
-        <Grid item xs={xs.small} sx={{ height: "100%" }}>
+        <Grid item xs={xs.small} textAlign="center" sx={{ height: "100%" }}>
         
             <Telegram
               sx={{ fontSize: 35, cursor: "pointer" }}
@@ -53,6 +55,7 @@ const handleOnEnter = (text) => {
         </Grid>
       </Grid>
     </Grid>
+    </Container>
   );
 }
 

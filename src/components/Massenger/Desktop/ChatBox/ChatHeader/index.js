@@ -1,5 +1,5 @@
 import { Clear, DeleteForever, MoreHoriz, Person } from "@mui/icons-material";
-import { Avatar, Badge, Grid, Menu, MenuItem, Typography } from "@mui/material";
+import { Avatar, Badge, Container, Grid, Menu, MenuItem, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Pic from "../../../../../assets/img2.png";
@@ -26,10 +26,13 @@ function Index() {
     setAnchorEl(null);
   };
   return (
-    <Grid>
+    <Container sx={{height:"100%" }}>
+
+    
       <Grid
         container
         direction="row"
+        sx={{height:"100%"}}
         justifyContent="space-between"
         alignItems="center"
       >
@@ -48,7 +51,7 @@ function Index() {
                 <Avatar
                   src={Pic}
                   alt="user"
-                  sx={{ width:70, height:70 }}
+                  sx={{ width:60, height:60 }}
                   style={{ cursor: "pointer" }} 
                   onClick={avatarModal}
                 />
@@ -118,7 +121,8 @@ function Index() {
           </Menu>
         </Grid>
       </Grid>
-    </Grid>
+    
+              </Container>
   );
 }
 

@@ -43,3 +43,7 @@ a {
   color:#fdfdfd !important;
 
 }
+
+*::-webkit-scrollbar{
+  display: none;
+}
