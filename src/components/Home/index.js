@@ -3,7 +3,33 @@ import Layout from "../../assets/chat.png";
 import LinkMui from "@mui/material/Link";
 import { Link } from "react-router-dom";
 import { Button, Container, Grid, Slide, Typography } from "@mui/material";
-function index() {
+import { useEffect, useState } from "react";
+
+function Index() {
+  const [supportsPWA, setSupportsPWA] = useState(false);
+  const [promptInstall, setPromptInstall] = useState(null);
+  useEffect(() => {
+    const handler = e => {
+      e.preventDefault();
+      setSupportsPWA(true);
+      setPromptInstall(e);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+
+    return () => window.removeEventListener("transitionend", handler);
+  }, []);
+
+  const installBtn = evt => {
+    evt.preventDefault();
+    if (!promptInstall) {
+      return;
+    }
+    promptInstall.prompt();
+  };
+  if (!supportsPWA) {
+    return null;
+  }
+
   return (
     <Grid
       container
@@ -41,8 +67,8 @@ function index() {
               </Grid>
             </Grid>
             <Grid item>
-              <Button variant="contained" color="secondary">
-                <Link to="/massenger">Install</Link>
+              <Button variant="contained" color="secondary" onClick={installBtn}  sx={supportsPWA ? {display:"block"} : {display:"none"}} >
+                Install
               </Button>
             </Grid>
           </Grid>
@@ -117,4 +143,4 @@ function index() {
   );
 }
 
-export default index;
+export default Index;
