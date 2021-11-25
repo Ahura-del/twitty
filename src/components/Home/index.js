@@ -1,11 +1,28 @@
 import Logo from "../../assets/logo.svg";
 import Layout from "../../assets/chat.png";
+import useWidthDimensions from '../../Hook/useWidthDimensions'
 import LinkMui from "@mui/material/Link";
 import { Link } from "react-router-dom";
 import { Button, Container, Grid, Slide, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 function Index() {
+
+   //-------------WidthDimensions------------
+
+   const { width } = useWidthDimensions();
+   const [xs, setXs] = useState({ small: 5, big: 7 });
+   useEffect(() => {
+     if (width <= 700) {
+       setXs({ small: 12, big: 0 });
+     } else {
+       setXs({ small: 5, big: 7 });
+     }
+   }, [width]);
+
+
+
+  //-----------PWA Button---------------
   const [supportsPWA, setSupportsPWA] = useState(false);
   const [promptInstall, setPromptInstall] = useState(null);
   useEffect(() => {
@@ -83,7 +100,7 @@ function Index() {
             height="100%"
             justifyContent="space-between"
           >
-            <Grid item xs={5} width="100%">
+            <Grid item xs={xs.small} width="100%">
               <Slide direction="right" in={true} mountOnEnter timeout={1000}>
                 <Grid container direction="column">
                   <Grid item>
@@ -131,7 +148,7 @@ function Index() {
                 </Grid>
               </Slide>
             </Grid>
-            <Grid item xs={7} textAlign="right">
+            <Grid item xs={xs.big} textAlign="right" sx={xs.big === 0 ? {display:"none"} : {display:"block"}}  >
               <Slide direction="left" in={true} mountOnEnter timeout={1000}>
                 <img src={Layout} alt="" width="100%" height="100%" />
               </Slide>
