@@ -60,12 +60,10 @@ function Index(props) {
   return (
     <>
       {xs.small === 3 ? (
-        <Container
-          maxWidth="sm"
-          className="container-list"
-          style={{ overflow: "hidden" }}
-        >
-          <Grid
+        <Grid container direction="column"  sx={{height:"100vh", width:"100%" }}>
+          <Grid item xs={1} width="100%" height="100%" >
+              <Container>
+              <Grid
             container
             spacing={1}
             alignItems="center"
@@ -75,7 +73,7 @@ function Index(props) {
             <Grid item>
               <Menu
                 style={{ color: "white", cursor: "pointer" }}
-                fontSize="large"
+                fontSize="medium"
                 onClick={props.drawerHandle("left", true)}
               />
             </Grid>
@@ -94,7 +92,7 @@ function Index(props) {
             <Grid item className="search-area">
               <Search
                 style={{ color: "white", cursor: "pointer" }}
-                fontSize="large"
+                fontSize="medium"
                 onClick={() => setSearchVisible(!searchVisible)}
               />
             </Grid>
@@ -105,27 +103,41 @@ function Index(props) {
               component="p"
               style={{
                 color: "white",
-                marginTop: 20,
-                marginBottom: 20,
+                marginTop: 10,
+                // marginBottom: 10,
                 fontWeight: "bold",
-                fontSize: 30,
+                fontSize: 22,
               }}
             >
               Recent
             </Typography>
           </Grid>
-          <Grid item>
-            <List className="list-container" sx={{ width: "100%" }}>
+              </Container>
+          </Grid>
+          <Grid item xs={10} sx={{overflowY:"auto"  , width:"100%"}}>
+          <Container>
+         
+          <Grid item sx={{overflowY: "auto"}}>
+            <List className="list-container" sx={{ width: "100%"}}>
               {/* <Typography style={{color:"#ccc"}} fontSize={30} textAlign="center" >
                 Empty Chat!
               </Typography> */}
               <CustomListItem active={true} />
               <CustomListItem active={true} />
+              <CustomListItem active={true} />
+              <CustomListItem active={true} />
               <CustomListItem active={false} />
+              <CustomListItem active={false} />
+              <CustomListItem active={true} />
+              <CustomListItem active={false} />
+              <CustomListItem active={true} />
               <CustomListItem active={false} />
             </List>
           </Grid>
         </Container>
+          </Grid>
+        </Grid>
+       
       ) : (
         <>
           <Grid
@@ -140,15 +152,16 @@ function Index(props) {
                 style={{
                   color: "white",
                   cursor: "pointer",
-                  marginBottom: 20,
+                  marginBottom: 15,
                 }}
-                fontSize="large"
+                fontSize="medium"
                 onClick={props.drawerHandle("left", true)}
               />
             </Grid>
 
             <Grid item>
               <List style={{ background: "transparent" }}>
+
                 <CustomListItem active={false} />
               </List>
             </Grid>

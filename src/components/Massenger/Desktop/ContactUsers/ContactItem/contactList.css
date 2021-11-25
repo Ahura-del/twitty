@@ -1,6 +1,10 @@
-
+.rce-container-citem{
+    display: inline-block !important;
+    width: 100% !important;
+}
 .rce-citem{
     background: transparent;
+    width: 100%;
     transition: all .3s ease-in-out;
 }
 .rce-citem:hover{

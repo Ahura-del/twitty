@@ -10,7 +10,7 @@ import {
   Switch,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import "./desktop.css";
+// import "./desktop.css";
 import pic from "../../../assets/img2.png";
 import ChatBox from "./ChatBox";
 import ChatList from "./ContactUsers";
@@ -155,14 +155,14 @@ function Index() {
       <Grid
         container
         spacing={0}
-        style={{ height: "100vh" }}
+        style={{ height: "100vh" , overflow:"hidden" }}
         justifyContent="center"
       >
         <Grid
           item
           xs={xs.small}
           style={{
-            background: "#301C27",
+            background: "#222",
             paddingTop: 30,
             position: "relative",
           }}
@@ -172,7 +172,7 @@ function Index() {
           />
         </Grid>
 
-        <Grid item xs={xs.big} style={{ background: "#392E34" }}>
+        <Grid item xs={xs.big} style={{ background: "#1c1c1c" }}>
           <ChatBox />
         </Grid>
       </Grid>
