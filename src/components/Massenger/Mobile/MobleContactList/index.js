@@ -19,6 +19,7 @@ function Index(props) {
           date={new Date()}
           unread={2}
           onClick={()=>history.push('/chat')}
+          onContextMenu={()=>alert('hi')}
           avatarFlexible={true}
           statusText=""
           statusColor="green"
