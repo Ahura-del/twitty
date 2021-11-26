@@ -2,17 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-// import * as serviceWorker from '../public/serviceworker'
+import ReactPWAInstallProvider from "react-pwa-install";
+// import * as serviceWorker from './serviceWorker'
 import {Provider} from 'react-redux'
 import Store from './Redux/Store'
 ReactDOM.render(
-  
+  <ReactPWAInstallProvider enableLogging>
   <Provider store={Store}>
     <App />
   </Provider>
+   </ReactPWAInstallProvider>
 ,
   document.getElementById('root')
 );
 
+// serviceWorker.register()
 // serviceWorker.register()
 

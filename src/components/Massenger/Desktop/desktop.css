@@ -1,9 +1,4 @@
-/* .list-container {
-  background: transparent;
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 750px;
-} */
+
 .list-container::-webkit-scrollbar {
     display: none;
    

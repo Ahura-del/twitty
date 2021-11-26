@@ -28,7 +28,7 @@ function Index(props) {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: props.size === "desktop" ? 600 : '90%' ,
+    width: props.size === "desktop" ? 500 : '90%' ,
     bgcolor: "#fff",
     border: "none",
     color: "white",

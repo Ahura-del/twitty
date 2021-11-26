@@ -1,50 +1,36 @@
-import Logo from "../../assets/logo.svg";
+import Logo from "../../assets/icon_x72.png";
 import Layout from "../../assets/chat.png";
-import useWidthDimensions from '../../Hook/useWidthDimensions'
+import useWidthDimensions from "../../Hook/useWidthDimensions";
+import { useReactPWAInstall } from "react-pwa-install";
 import LinkMui from "@mui/material/Link";
 import { Link } from "react-router-dom";
 import { Button, Container, Grid, Slide, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 function Index() {
+  //-------------WidthDimensions------------
 
-   //-------------WidthDimensions------------
-
-   const { width } = useWidthDimensions();
-   const [xs, setXs] = useState({ small: 5, big: 7 });
-   useEffect(() => {
-     if (width <= 700) {
-       setXs({ small: 12, big: 0 });
-     } else {
-       setXs({ small: 5, big: 7 });
-     }
-   }, [width]);
-
-
+  const { width } = useWidthDimensions();
+  const [xs, setXs] = useState({ small: 5, big: 7 });
+  useEffect(() => {
+    if (width <= 700) {
+      setXs({ small: 12, big: 0 });
+    } else {
+      setXs({ small: 5, big: 7 });
+    }
+  }, [width]);
 
   //-----------PWA Button---------------
-  const [supportsPWA, setSupportsPWA] = useState(false);
-  const [promptInstall, setPromptInstall] = useState(null);
-  useEffect(() => {
-    const handler = e => {
-      e.preventDefault();
-      setSupportsPWA(true);
-      setPromptInstall(e);
-    };
-    window.addEventListener("beforeinstallprompt", handler);
-
-    return () => window.removeEventListener("transitionend", handler);
-  }, []);
-
-  const installBtn = evt => {
-    evt.preventDefault();
-    if (!promptInstall) {
-      return;
-    }
-    promptInstall.prompt();
-  };
-  if (!supportsPWA) {
-    return null;
+  const { pwaInstall, supported, isInstalled } = useReactPWAInstall();
+  const installBtn = () =>{
+    pwaInstall({
+      title:"Install Twitty App",
+      logo: Logo,
+    
+      description: "Twitty is simple App that you can isatall every where . Please click install button"
+    })
+    .then(()=> alert('App installed successfully'))
+    .catch(()=>alert('User opted out from installing'))
   }
 
   return (
@@ -84,9 +70,14 @@ function Index() {
               </Grid>
             </Grid>
             <Grid item>
-              <Button variant="contained" color="secondary" onClick={installBtn}  sx={supportsPWA ? {display:"block"} : {display:"none"}} >
+            {supported() && !isInstalled() && (<Button
+                variant="contained"
+                color="secondary"
+                onClick={installBtn}
+              >
                 Install
-              </Button>
+              </Button>)}
+            
             </Grid>
           </Grid>
         </Container>
@@ -148,7 +139,12 @@ function Index() {
                 </Grid>
               </Slide>
             </Grid>
-            <Grid item xs={xs.big} textAlign="right" sx={xs.big === 0 ? {display:"none"} : {display:"block"}}  >
+            <Grid
+              item
+              xs={xs.big}
+              textAlign="right"
+              sx={xs.big === 0 ? { display: "none" } : { display: "block" }}
+            >
               <Slide direction="left" in={true} mountOnEnter timeout={1000}>
                 <img src={Layout} alt="" width="100%" height="100%" />
               </Slide>

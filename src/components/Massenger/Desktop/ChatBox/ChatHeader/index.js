@@ -26,7 +26,7 @@ function Index() {
     setAnchorEl(null);
   };
   return (
-    <Container sx={{height:"100%" }}>
+    <Container sx={{height:"100%" }}  maxWidth="lg" >
 
     
       <Grid
@@ -51,7 +51,7 @@ function Index() {
                 <Avatar
                   src={Pic}
                   alt="user"
-                  sx={{ width:60, height:60 }}
+                  sx={{ width:50, height:50 }}
                   style={{ cursor: "pointer" }} 
                   onClick={avatarModal}
                 />
@@ -65,12 +65,12 @@ function Index() {
                 justifyContent="space-around"
               >
                 <Grid item>
-                  <Typography style={{ color: "white" }} fontSize="24px">
+                  <Typography style={{ color: "white" , fontSize:18 }} >
                     Ahura
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Typography style={{ color: "gray" }}>Online</Typography>
+                  <Typography style={{ color: "gray", fontSize:14 }}>Online</Typography>
                 </Grid>
               </Grid>
             </Grid>
@@ -79,8 +79,8 @@ function Index() {
         <Grid item>
           <div
             style={{
-              width: 40,
-              height: 40,
+              width: 30,
+              height: 30,
               borderRadius: 100,
               background: "#000",
               display: "flex",
@@ -90,7 +90,7 @@ function Index() {
             }}
             onClick={handleClick}
           >
-            <MoreHoriz style={{ color: "#fff" }} fontSize="large" />
+            <MoreHoriz style={{ color: "#fff" }} fontSize="medium" />
           </div>
           <Menu
             anchorEl={anchorEl}

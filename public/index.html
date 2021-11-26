@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" href="./favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1 , viewport-fit=cover , user-scalable=no"  />
     <meta name="theme-color" content="#000000" />
     <meta name="apple-mobile-web-app-capable" content="yse" />
     <meta name="description" content="Twitty app" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="HandheldFriendly" content="true" />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
 
     <link
       href="img/iphone5_splash.png"
@@ -70,9 +70,9 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="manifest" href="./manifest.json" />
 
-    <title>React App</title>
+    <title>Twitty</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -81,15 +81,13 @@
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker
-            .register("serviceworker.js")
+            .register("./serviceworker.js")
             .then((reg) => {
               console.log("service worker registertion success", reg.scope);
             })
             .catch((err) => console.log(err));
         });
-      } else {
-        console.log("service worker is not supported by browser");
-      }
+      } 
     </script>
   </body>
 </html>

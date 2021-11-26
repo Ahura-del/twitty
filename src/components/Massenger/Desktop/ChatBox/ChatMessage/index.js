@@ -37,7 +37,7 @@ function Index() {
             }
     })
     return (
-        <Container >
+        <Container maxWidth="md" >
             <Grid container rowSpacing={2}  >
             {list.map((item , index) => (<ChatText dir={item.dir} key={index} />))}
             <div ref={endPage} />

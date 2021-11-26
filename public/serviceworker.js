@@ -3,7 +3,7 @@ let urlsToCache = [
     '/',
     '/static',
     '/asset-manifest.json',
-    '/index.html',
+    'index.html',
     '/favicon.ico'
 ];
 
@@ -14,6 +14,7 @@ self.addEventListener('install' , (e)=>{
     e.waitUntil(
         caches.open(CACHE_NAME)
         .then(cache =>{
+            console.log('open cache')
             return cache.addAll(urlsToCache)
         })
     )

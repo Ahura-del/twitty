@@ -1,12 +1,6 @@
 {
   "short_name": "Twitty",
   "name": "Twitty",
-  "theme_color": "#000000",
-  "background_color": "#000000",
-  "display": "standalone",
-  "orientation" :"any",
-  "scope": "/",
-  "start_url": ".",
   "icons": [
     {
       "src": "img/icon_x48.png",
@@ -31,7 +25,8 @@
     {
       "src": "img/icon_x192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "maskable"
     },
     {
       "src": "img/icon_x384.png",
@@ -42,8 +37,15 @@
       "src": "img/icon_x512.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose":"maskable any"
+      "purpose": "maskable"
     }
-  ] 
+  ],
+  "id":"/",
+  "start_url": "/",
+  "scope":"/",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "display": "standalone",
+  "orientation" :"any"
  
 }

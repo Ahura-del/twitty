@@ -8,9 +8,10 @@ import {
   ListItemIcon,
   ListItemText,
   Switch,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-// import "./desktop.css";
+import "./desktop.css";
 import pic from "../../../assets/img2.png";
 import ChatBox from "./ChatBox";
 import ChatList from "./ContactUsers";
@@ -64,7 +65,7 @@ function Index() {
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 330 }}
+      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 280 }}
       role="presentation"
       onKeyDown={toggleDrawer(anchor, false)}
       style={{
@@ -80,44 +81,60 @@ function Index() {
         <ListItem
           button
           key="Profile"
-          style={{ marginBottom: 30, marginTop: 30 }}
+          style={{ marginBottom: 20, marginTop: 20 }}
           onClick={toggleDrawer(anchor, false, true, "profile")}
         >
           <ListItemAvatar>
             <Avatar alt="Remy Sharp" src={pic} sx={{ width: 40, height: 40 }} />
           </ListItemAvatar>
-          <ListItemText primary="Account Profile" />
+          <ListItemText
+            primary={
+              <Typography sx={{ fontSize: 14 }}>Account Profile</Typography>
+            }
+          />
         </ListItem>
 
         <ListItem
           button
           key="ChangePassword"
-          style={{ marginBottom: 30 }}
+          style={{ marginBottom: 20 }}
           onClick={toggleDrawer(anchor, false, true, "restPass")}
         >
           <ListItemIcon>
             <VpnKey style={{ color: "white" }} />
           </ListItemIcon>
-          <ListItemText primary="Change Password" />
+          <ListItemText
+            primary={
+              <Typography sx={{ fontSize: 14 }}>Change Password</Typography>
+            }
+          />
         </ListItem>
 
         <ListItem
           button
           key="DeleteAccount"
-          style={{ marginBottom: 30 }}
+          style={{ marginBottom: 20 }}
           onClick={toggleDrawer(anchor, false, true, "delAcc")}
         >
           <ListItemIcon>
             <DeleteForever style={{ color: "white" }} />
           </ListItemIcon>
-          <ListItemText primary="Delete Account" />
+          <ListItemText
+            primary={
+              <Typography sx={{ fontSize: 14 }}>Delete Account</Typography>
+            }
+          />
         </ListItem>
 
-        <ListItem key="Notification" style={{ marginBottom: 30 }}>
+        <ListItem key="Notification" style={{ marginBottom: 20 }}>
           <ListItemIcon>
             <Notifications style={{ color: "white" }} />
           </ListItemIcon>
-          <ListItemText primary="Notification" />
+          <ListItemText
+            primary={
+              <Typography sx={{ fontSize: 14 }}>Notification</Typography>
+            }
+          />
           <Switch
             defaultChecked
             color="warning"
@@ -130,13 +147,15 @@ function Index() {
         <ListItem
           button
           key="Logout"
-          style={{ marginBottom: 30 }}
+          style={{ marginBottom: 20 }}
           onClick={toggleDrawer(anchor, false, true, "logout")}
         >
           <ListItemIcon>
             <Logout style={{ color: "white" }} />
           </ListItemIcon>
-          <ListItemText primary="Logout" />
+          <ListItemText
+            primary={<Typography sx={{ fontSize: 14 }}>Logout</Typography>}
+          />
         </ListItem>
       </List>
     </Box>
@@ -155,7 +174,7 @@ function Index() {
       <Grid
         container
         spacing={0}
-        style={{ height: "100vh" , overflow:"hidden" }}
+        style={{ height: "100vh", overflow: "hidden" }}
         justifyContent="center"
       >
         <Grid
@@ -163,7 +182,7 @@ function Index() {
           xs={xs.small}
           style={{
             background: "#222",
-            paddingTop: 30,
+            paddingTop: 10,
             position: "relative",
           }}
         >
@@ -172,7 +191,7 @@ function Index() {
           />
         </Grid>
 
-        <Grid item xs={xs.big} style={{ background: "#1c1c1c" }}>
+        <Grid item xs={xs.big} style={{ background: "#1c1c1c",paddingTop: 10 }}>
           <ChatBox />
         </Grid>
       </Grid>
