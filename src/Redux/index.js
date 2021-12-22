@@ -1,1 +1,0 @@
-export {modalState} from './ModalState/Action';
