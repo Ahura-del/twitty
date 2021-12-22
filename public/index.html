@@ -2,14 +2,22 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+<<<<<<< HEAD
     <link rel="icon" href="/favicon.ico" />
+=======
+    <link rel="icon" href="./favicon.ico" />
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
     <meta name="viewport" content="width=device-width, initial-scale=1 , viewport-fit=cover , user-scalable=no"  />
     <meta name="theme-color" content="#000000" />
     <meta name="apple-mobile-web-app-capable" content="yse" />
     <meta name="description" content="Twitty app" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="HandheldFriendly" content="true" />
+<<<<<<< HEAD
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+=======
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
 
     <link
       href="img/iphone5_splash.png"
@@ -70,12 +78,31 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
+<<<<<<< HEAD
     <link rel="manifest" href="/manifest.json" />
+=======
+    <link rel="manifest" href="./manifest.json" />
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
 
     <title>Twitty</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+<<<<<<< HEAD
+=======
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./serviceworker.js")
+            .then((reg) => {
+              console.log("service worker registertion success", reg.scope);
+            })
+            .catch((err) => console.log(err));
+        });
+      } 
+    </script>
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
   </body>
 </html>

@@ -42,10 +42,18 @@
   ],
   "id":"/",
   "start_url": "/",
+<<<<<<< HEAD
 
   "theme_color": "#000000",
   "background_color": "#000000",
   "display": "standalone",
   "orientation" :"portrait-primary"
+=======
+  "scope":"/",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "display": "standalone",
+  "orientation" :"any"
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
  
 }

@@ -3,7 +3,11 @@ import { Avatar, Badge, Container, Grid, Menu, MenuItem, Typography } from "@mui
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Pic from "../../../../../assets/img2.png";
+<<<<<<< HEAD
 import { modalState } from "../../../../../Redux/modalSlice";
+=======
+import { modalState } from "../../../../../Redux";
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
 function Index() {
 
   //-------redux---------------
@@ -11,7 +15,11 @@ function Index() {
 
   //------------modal----------------
   const avatarModal = ()=>{
+<<<<<<< HEAD
     dispatch(modalState({state:true ,label:"avatar"}))
+=======
+    dispatch(modalState(true , "avatar"))
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
     setAnchorEl(null);
   }
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React , { useState } from "react";
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import {Link, useHistory} from 'react-router-dom'
@@ -61,6 +62,16 @@ function Index() {
     }
 
 
+=======
+import { Button, Container, Grid, TextField, Typography } from "@mui/material";
+import {Link} from 'react-router-dom'
+import { Box } from "@mui/system";
+import React from "react";
+import Logo from '../../assets/logo.svg'
+function index() {
+  const handleSubmit = () => {
+    console.log("hi");
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
   };
   return (
     
@@ -69,18 +80,26 @@ function Index() {
         direction="row"
         justifyContent="center"
         alignItems="center"
+<<<<<<< HEAD
         style={{height:"100vh" , backgroundImage:"linear-gradient(to right, #000000, #1c000f, #260021, #270039, #090757)"}}
+=======
+        style={{height:"100vh"}}
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
       >
         <Grid item>
           <Container component="main" maxWidth="xs">
             <Box
               sx={{
+<<<<<<< HEAD
                 // height:400,
                 width:350,
+=======
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
                 marginTop: 8,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+<<<<<<< HEAD
                 bgcolor:"white",
                 p:3,
                 borderRadius:5
@@ -90,6 +109,12 @@ function Index() {
               <Typography variant="h4" sx={{pb:2}}>
                 Login
               </Typography>
+=======
+              }}
+            >
+            
+              <img src={Logo} alt="logo" height="20%" width="20%" />
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
               <Box
                 component="form"
                 onSubmit={handleSubmit}
@@ -98,6 +123,7 @@ function Index() {
               >
                 <TextField
                   margin="normal"
+<<<<<<< HEAD
                   size="small"
                   required
                   fullWidth
@@ -111,22 +137,39 @@ function Index() {
                   onChange={e => setEmail(e.target.value)}
                   error={loginError.email?.color === "error" ? true : false}
                   helperText={loginError.email?.color === "error" ? loginError.email.text : null}
+=======
+                  required
+                  fullWidth
+                  variant="standard" 
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
                 />
                 <TextField
                   margin="normal"
                   required
                   fullWidth
+<<<<<<< HEAD
                   size="small"
                   variant="outlined" 
+=======
+                  variant="standard" 
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
                   name="password"
                   label="Password"
                   type="password"
                   id="password"
                   autoComplete="off"
+<<<<<<< HEAD
                   value={pass}
                   onChange={e => setPass(e.target.value)}
                   error={loginError.pass?.color === "error" ? true : false}
                   helperText={loginError.pass?.color === "error" ? loginError.pass.text : null}
+=======
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
                 />
           
                 <Button
@@ -134,6 +177,7 @@ function Index() {
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
+<<<<<<< HEAD
                   color="warning"
                 >
                   LogIn
@@ -150,6 +194,23 @@ function Index() {
                     <Link to='/register'>
                      <Typography color="#888" component={'p'} variant={'subtitle2'}>
                      Don't have an account? <span style={{color:"blueviolet"}}>Sign up</span> 
+=======
+                >
+                  Sign In
+                </Button>
+                <Grid container>
+                  <Grid item xs>
+                    <Link to="/fpassEmail">
+                      <Typography color="error" component={'span'} variant={'body2'}>
+                      Forgot password?
+                      </Typography>
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link to='/register'>
+                     <Typography color="primary" component={'span'} variant={'body2'}>
+                      Register
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
                      </Typography>
                     </Link>
                   </Grid>
@@ -163,4 +224,8 @@ function Index() {
   );
 }
 
+<<<<<<< HEAD
 export default Index;
+=======
+export default index;
+>>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
