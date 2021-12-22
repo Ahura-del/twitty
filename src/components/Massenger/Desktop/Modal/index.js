@@ -11,7 +11,6 @@ import {
  
 } from "@mui/material";
 import { Box } from "@mui/system";
-<<<<<<< HEAD
 import React, {  useState } from "react";
 import personPic from "../../../../assets/person.png";
 import Pic1 from "../../../../assets/img2.png";
@@ -24,20 +23,6 @@ import axios from 'axios'
 
 function Index(props) {
   //----------model style------------
-=======
-import React, { useState } from "react";
-import personPic from "../../../../assets/person.png";
-import Pic1 from "../../../../assets/img2.png";
-import avatarPic from '../../../../assets/userAvatar.png'
-import { useDispatch, useSelector } from "react-redux";
-import { modalState } from "../../../../Redux";
-import UserItem from './SearchUserItem'
-
-
-function Index(props) {
-  //----------model style------------
-  
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
   const style = {
     position: "absolute",
     top: "50%",
@@ -54,7 +39,6 @@ function Index(props) {
 
 
   //------------redux----------------
-<<<<<<< HEAD
   const history = useHistory()
   const dispatch = useDispatch();
   const modalStateSelect = useSelector((state) => state.modalState.state);
@@ -71,11 +55,6 @@ function Index(props) {
   React.useEffect(() => {
     if (modalStateSelect) setOpen(true);
   }, [modalStateSelect]);
-=======
-  const dispatch = useDispatch();
-  const modalStateSelect = useSelector((state) => state.modalState.state);
-  const modalLabel = useSelector(state => state.modalState.label)
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
 
 
   //------------search mobile------------
@@ -85,7 +64,6 @@ function Index(props) {
   // fab functionality
   const [fabUser, setFabUser] = useState("");
 
-<<<<<<< HEAD
 
   //profile account
   const [profileError , setProfileError] = useState({color:'' , text:''})
@@ -93,12 +71,6 @@ function Index(props) {
   const [accBio , setAccBio] = useState(`${user.bio}`)
   //choose image
   const [pic, setPic] = useState(`${user.pic}`);
-=======
-  //profile account save btn
-
-  //choose image
-  const [pic, setPic] = useState("");
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
   const choseImage = () => {
     document.querySelector("#newPic").click();
   };
@@ -110,7 +82,6 @@ function Index(props) {
       setPic(e.target.result);
     };
   };
-<<<<<<< HEAD
   //profile account save btn
   const updateProfile = async (e)=>{
     e.preventDefault()
@@ -246,17 +217,6 @@ function Index(props) {
   }
 
 
-=======
-  //close and open modal function
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-    dispatch(modalState(false));
-  };
-  React.useEffect(() => {
-    if (modalStateSelect) setOpen(true);
-  }, [modalStateSelect]);
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
 
   //modal types
 
@@ -299,13 +259,8 @@ function Index(props) {
                 label="Email"
                 disabled={true}
                 name="emailAcc"
-<<<<<<< HEAD
                 value={user.email}
                 
-=======
-                value="Ahuradel@gmail.com"
-                autoFocus
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
               />
             </Grid>
             <Grid item>
@@ -317,13 +272,10 @@ function Index(props) {
                 id="usernameAcc"
                 label="User name"
                 name="usernameAcc"
-<<<<<<< HEAD
                 value={accName}
                 onChange={e => setAccName(e.target.value)}
                 color={profileError.color === 'error' ? "error" : null}
                 helperText={profileError.text !== "" ? profileError.text : null}
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
                 autoFocus
               />
             </Grid>
@@ -336,11 +288,8 @@ function Index(props) {
                 Bio
               </Typography>
               <TextareaAutosize
-<<<<<<< HEAD
               onChange={e => setAccBio(e.target.value)}
               value={accBio}
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
                 minRows={props.size === "desktop" ? 6 : 2}
                 style={{
                   width: "100%",
@@ -363,10 +312,7 @@ function Index(props) {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-<<<<<<< HEAD
                 onClick={updateProfile}
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
               >
                 Save
               </Button>
@@ -378,11 +324,7 @@ function Index(props) {
     if (modalLabel === "restPass") {
       return (
         <Grid container>
-<<<<<<< HEAD
           <Container  >
-=======
-          <Container>
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
             <Grid item>
               <TextField
                 margin="normal"
@@ -395,13 +337,10 @@ function Index(props) {
                 type="password"
                 id="oldpassword"
                 autoComplete="off"
-<<<<<<< HEAD
                 value={oldPass}
                 onChange={e => setOldPass(e.target.value)}
                 error={passwordError.old?.color === 'error' ? true : false}
                 helperText={passwordError.old?.color === "error" ? passwordError.old.text : null}
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
               />
             </Grid>
             <Grid item>
@@ -416,13 +355,10 @@ function Index(props) {
                 type="password"
                 id="newpassword"
                 autoComplete="off"
-<<<<<<< HEAD
                 value={newPass}
                 onChange={e => setNewPass(e.target.value)}
                 error={passwordError.new?.color === 'error' ? true : false}
                 helperText={passwordError.new?.color === "error" ? passwordError.new.text : null}
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
               />
             </Grid>
             <Grid item>
@@ -437,13 +373,10 @@ function Index(props) {
                 type="password"
                 id="reapetNewPassword"
                 autoComplete="off"
-<<<<<<< HEAD
                 value={reNewPass}
                 onChange={e => setReNewPass(e.target.value)}
                 error={passwordError.reNew?.color === 'error' ? true : false}
                 helperText={passwordError.reNew?.color === "error" ? passwordError.reNew.text : null}
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
               />
             </Grid>
             <Grid item>
@@ -452,10 +385,7 @@ function Index(props) {
                 fullWidth
                 color="warning"
                 sx={{ mt: 3, mb: 2 }}
-<<<<<<< HEAD
                 onClick={changePassword}
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
               >
                 Save
               </Button>
@@ -489,13 +419,10 @@ function Index(props) {
                 type="password"
                 id="delpassword"
                 autoComplete="off"
-<<<<<<< HEAD
                 value={delPass}
                 onChange={e => setDelPass(e.target.value)}
                 error={delAccError?.color === 'error' ? true :false}
                 helperText={delAccError?.color === "error" ? delAccError.text : null}
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
               />
             </Grid>
             <Grid item>
@@ -504,10 +431,7 @@ function Index(props) {
                 color="error"
                 sx={{ mt: 3, mb: 2 }}
                 fullWidth
-<<<<<<< HEAD
                 onClick={deleteAccount}
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
               >
                 Delete Account
               </Button>
@@ -536,10 +460,7 @@ function Index(props) {
                   fullWidth
                   color="error"
                   sx={{ mt: 3, mb: 2 }}
-<<<<<<< HEAD
                   onClick={logoutBtn}
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
                 >
                   Log out
                 </Button>

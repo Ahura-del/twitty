@@ -4,11 +4,7 @@ import React, { useEffect, useState } from "react";
 import CustomListItem from "./ContactItem";
 import useWidthDimensions from "../../../../Hook/useWidthDimensions";
 import { useDispatch } from "react-redux";
-<<<<<<< HEAD
 import { modalState } from "../../../../Redux/modalSlice";
-=======
-import { modalState } from "../../../../Redux";
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
 function Index(props) {
   //-----------redux---------------
 
@@ -33,11 +29,7 @@ function Index(props) {
   };
 
   const fabModal = () => {
-<<<<<<< HEAD
     dispatch(modalState({state:true , label:"fab"}));
-=======
-    dispatch(modalState(true, "fab"));
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
   };
 
   //-------------WidthDimensions------------
@@ -58,18 +50,12 @@ function Index(props) {
     show: {
       visibility: "visible",
       width: "100%",
-<<<<<<< HEAD
       fontSize:16
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
     },
     hide: {
       visibility: "hidden",
       width: 0,
-<<<<<<< HEAD
       fontSize:16
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
     },
   };
 

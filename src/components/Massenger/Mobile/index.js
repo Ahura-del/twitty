@@ -21,11 +21,7 @@ import {
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-<<<<<<< HEAD
 import { modalState } from "../../../Redux/modalSlice";
-=======
-import { modalState } from "../../../Redux";
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
 import pic from "../../../assets/img2.png";
 import ContactList from "./MobleContactList";
 import Header from "./MobileHeader";
@@ -50,11 +46,7 @@ function Index() {
       return;
     }
     setPosition({ ...position, [anchor]: open });
-<<<<<<< HEAD
     dispatch(modalState({state:modal, label:modalLabel}));
-=======
-    dispatch(modalState(modal, modalLabel));
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
   };
   //------------Drawer List------------------
 
@@ -204,11 +196,7 @@ function Index() {
             background: "#FF6B00",
             zIndex: 10,
           }}
-<<<<<<< HEAD
           onClick={() => dispatch(modalState({state:true , label:"fab"}))}
-=======
-          onClick={() => dispatch(modalState(true, "fab"))}
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
         >
           <Add style={{ color: "white" }} fontSize="large" />
         </Fab>

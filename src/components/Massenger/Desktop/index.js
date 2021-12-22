@@ -12,11 +12,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "./desktop.css";
-<<<<<<< HEAD
 import pic from "../../../assets/userAvatar.png";
-=======
-import pic from "../../../assets/img2.png";
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
 import ChatBox from "./ChatBox";
 import ChatList from "./ContactUsers";
 import {
@@ -28,22 +24,13 @@ import {
 import useWidthDimensions from "../../../Hook/useWidthDimensions";
 import { Box } from "@mui/system";
 import AccModal from "./Modal";
-<<<<<<< HEAD
 import { useDispatch , useSelector } from "react-redux";
 import {modalState} from '../../../Redux/modalSlice'
-=======
-import { useDispatch } from "react-redux";
-import { modalState } from "../../../Redux";
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
 function Index() {
   //-----------redux---------------
 
   const dispatch = useDispatch();
-<<<<<<< HEAD
   const user =  useSelector(state => state.userState.user)
-=======
-
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
   //--------check notification-------------
   const [notification, setNotification] = useState(false);
 
@@ -71,11 +58,7 @@ function Index() {
       return;
     }
     setPosition({ ...position, [anchor]: open });
-<<<<<<< HEAD
     dispatch(modalState({state:modal , label:modalLabel}));
-=======
-    dispatch(modalState(modal, modalLabel));
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
   };
 
   //----------------list drawer-------------
@@ -102,11 +85,7 @@ function Index() {
           onClick={toggleDrawer(anchor, false, true, "profile")}
         >
           <ListItemAvatar>
-<<<<<<< HEAD
             <Avatar alt="account" src={user.pic ? user.pic : pic} sx={{ width: 40, height: 40 }} />
-=======
-            <Avatar alt="Remy Sharp" src={pic} sx={{ width: 40, height: 40 }} />
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
           </ListItemAvatar>
           <ListItemText
             primary={

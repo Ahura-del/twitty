@@ -3,11 +3,7 @@ import { Avatar, Container, Grid, Menu, MenuItem, Typography } from '@mui/materi
 import React, { useState } from 'react'
 import {useHistory} from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-<<<<<<< HEAD
 import {modalState} from '../../../../../Redux/modalSlice'
-=======
-import {modalState} from '../../../../../Redux'
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
 import pic from '../../../../../assets/img2.png'
 function Index() {
 
@@ -16,11 +12,7 @@ function Index() {
   //------------modal----------------
   const dispatch = useDispatch()
   const avatarModal = ()=>{
-<<<<<<< HEAD
     dispatch(modalState({state:true , label:"avatar"}))
-=======
-    dispatch(modalState(true , "avatar"))
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
     setAnchorEl(null);
   }
 

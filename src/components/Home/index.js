@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 import { useEffect, useState } from "react";
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
 import Logo from "../../assets/icon_x72.png";
 import Layout from "../../assets/chat.png";
 import useWidthDimensions from "../../Hook/useWidthDimensions";
@@ -9,14 +6,8 @@ import { useReactPWAInstall } from "react-pwa-install";
 import LinkMui from "@mui/material/Link";
 import { Link } from "react-router-dom";
 import { Button, Container, Grid, Slide, Typography } from "@mui/material";
-<<<<<<< HEAD
 function Index() {
 
-=======
-import { useEffect, useState } from "react";
-
-function Index() {
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
   //-------------WidthDimensions------------
 
   const { width } = useWidthDimensions();
@@ -35,10 +26,6 @@ function Index() {
     pwaInstall({
       title:"Install Twitty App",
       logo: Logo,
-<<<<<<< HEAD
-=======
-    
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
       description: "Twitty is simple App that you can isatall every where . Please click install button"
     })
     .then(()=> alert('App installed successfully'))
@@ -49,10 +36,7 @@ function Index() {
     <Grid
       container
       direction="column"
-<<<<<<< HEAD
       
-=======
->>>>>>> 6e2390bb7d1e2b70867e7767bda3586d8740f61c
       sx={{ width: "100vw", height: "100vh", overflow: "hidden" }}
     >
       <Grid
