@@ -1,0 +1,49 @@
+.rce-container-citem{
+    display: inline-block !important;
+    width: 100% !important;
+}
+.rce-citem{
+    background: transparent;
+    width: 100%;
+    transition: all .3s ease-in-out;
+}
+.rce-citem:hover{
+    background: transparent;
+    cursor: pointer;
+    transform: scale(1.03);
+    transition: all .3s ease-in-out;
+}
+.rce-citem-body--top-title {
+    color: #fff;
+    font-size: 18px;
+}
+.rce-citem-body--top-time{
+    color:#fefefe
+}
+.rce-citem-body--bottom-title{
+    color: #aaa;
+}
+
+@media (min-width: 700px) and (max-width: 1300px) {
+    .rce-container-citem{
+        min-width: unset;
+    }
+    .rce-citem{
+        display: block;
+        min-width: unset;
+    }
+ 
+    .rce-citem-body--top-time{
+        display: none;
+    }
+
+    .list-text-area{
+        display: none;
+    }
+    .skeleton-text{
+        display: none !important;
+    }
+    .divider{
+        display: none;
+    }
+ }
