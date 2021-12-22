@@ -1,14 +1,34 @@
 import { Clear, DeleteForever, MoreHoriz, Person } from "@mui/icons-material";
 import { Avatar, Badge, Container, Grid, Menu, MenuItem, Typography } from "@mui/material";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import Pic from "../../../../../assets/img2.png";
+import Pic from "../../../../../assets/userAvatar.png";
 import { modalState } from "../../../../../Redux/modalSlice";
-function Index() {
+function Index({userId}) {
 
   //-------redux---------------
   const dispatch = useDispatch()
+  const token = localStorage.getItem('token')
 
+  //---------get userdata------------
+  const [userData , setUserData] = useState([])
+  useEffect(()=>{
+    const getUserData = async ()=>{
+      try {
+        const res = await axios.get(`/user/allUsers/${userId}` , {
+          headers: { "authorization": `Bearer ${token}` },
+        })
+        if(res.status === 200){
+          setUserData(res.data)
+        }
+      } catch (error) {
+        
+      }
+     
+    }
+    getUserData()
+  },[userId , token])
   //------------modal----------------
   const avatarModal = ()=>{
     dispatch(modalState({state:true ,label:"avatar"}))
@@ -49,7 +69,7 @@ function Index() {
                 }}
               >
                 <Avatar
-                  src={Pic}
+                  src={userData?.pic ? userData.pic : Pic}
                   alt="user"
                   sx={{ width:50, height:50 }}
                   style={{ cursor: "pointer" }} 
@@ -66,7 +86,7 @@ function Index() {
               >
                 <Grid item>
                   <Typography style={{ color: "white" , fontSize:18 }} >
-                    Ahura
+                    {userData.name}
                   </Typography>
                 </Grid>
                 <Grid item>

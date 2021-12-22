@@ -26,11 +26,15 @@ import { Box } from "@mui/system";
 import AccModal from "./Modal";
 import { useDispatch , useSelector } from "react-redux";
 import {modalState} from '../../../Redux/modalSlice'
+// import axios from "axios";
 function Index() {
   //-----------redux---------------
 
   const dispatch = useDispatch();
   const user =  useSelector(state => state.userState.user)
+  const conversation =  useSelector(state => state.conversationState.conversation)
+//   const token = localStorage.getItem('token')
+
   //--------check notification-------------
   const [notification, setNotification] = useState(false);
 
@@ -188,6 +192,7 @@ function Index() {
         >
           <ChatList
             drawerHandle={(anchor, open) => toggleDrawer(anchor, open)}
+            chatList={conversation}
           />
         </Grid>
 

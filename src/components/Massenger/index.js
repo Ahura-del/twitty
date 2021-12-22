@@ -5,14 +5,19 @@ import Desktop from './Desktop'
 import Mobile from './Mobile'
 import useMediaQuery from "../../Hook/useMediaQuery";
 import { CircularProgress } from "@mui/material";
+import {getConversation} from "../../Redux/conversationSlice";
 function Index() {
   const dispatch = useDispatch()
   const [user , setUser] = useState([])
+
   useEffect(()=>{
       const id =  localStorage.getItem('userId')
       const token =  localStorage.getItem('token')
+      dispatch(getConversation({id , token}))
       dispatch(getUser({id , token}))
   },[dispatch])
+
+
   const accountUser =  useSelector(state => state.userState.user)
   const desktop = useMediaQuery("(min-width: 700px)");
   const [page, setPage] = useState("main");

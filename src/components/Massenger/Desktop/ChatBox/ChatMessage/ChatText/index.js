@@ -1,18 +1,54 @@
-import { Grid, Typography } from '@mui/material'
-import React from 'react'
+import { Grid, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { format } from "timeago.js";
 function Index(props) {
-   
-    return (
-        <Grid item xs={12} >
-        <Grid container justifyContent={props.dir === "recive" ? "flex-start" : "flex-end"} >
-            <div className="chat-message" style={props.dir === "recive" ? {  background:"#FF6B00"} : {background:"#3F2120"}}>
-                <Typography style={{color:"white" , fontSize:16}}>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Id mollitia possimus aut. Ipsa tempora iusto eveniet odio laborum minus ratione!
-                </Typography>
-            </div>
-        </Grid>
-        </Grid>
-    )
+  const [dir, setDir] = useState("");
+  const id = localStorage.getItem("userId");
+  useEffect(() => {
+    props.sender === id ? setDir("send") : setDir("recive");
+  }, [props , id]);
+  return (
+    <Grid item xs={12}>
+      <Grid
+        container
+        justifyContent={dir === "recive" ? "flex-start" : "flex-end"}
+      >
+        <div
+          className="chat-message"
+          style={
+            dir === "recive"
+              ? { background: "#e86d1b" }
+              : { background: "#111" }
+          }
+        >
+          <Typography style={{ color: "white", fontSize: 16 }}>
+            {props.text}
+          </Typography>
+          <span
+            style={
+              dir === "recive"
+                ? {
+                    display: "inline-block",
+                    width: "100%",
+                    color: "#333",
+                    fontSize: 13,
+                    textAlign: "left",
+                  }
+                : {
+                    display: "inline-block",
+                    width: "100%",
+                    color: "#ddd",
+                    fontSize: 13,
+                    textAlign: "right",
+                  }
+            }
+          >
+            {format(props.time)}
+          </span>
+        </div>
+      </Grid>
+    </Grid>
+  );
 }
 
-export default Index
+export default Index;

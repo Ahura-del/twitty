@@ -12,8 +12,8 @@ import { useState } from 'react'
 function App() {
   const [state , setState] = useState(false)
  useEffect(()=>{
-   const userState = async()=>{
-     const state = await localStorage.getItem('token')
+   const userState = ()=>{
+     const state =  localStorage.getItem('token')
      if(state === null){
        setState(false)
      }else{

@@ -10,7 +10,6 @@ function Index(props) {
 
   const dispatch = useDispatch();
   //---------fab style and setting-----------
-
   const fabStyle = {
     large: {
       right: 50,
@@ -29,8 +28,26 @@ function Index(props) {
   };
 
   const fabModal = () => {
-    dispatch(modalState({state:true , label:"fab"}));
+    dispatch(modalState({ state: true, label: "fab" }));
   };
+
+  //-------------getData --------------------
+  const [loading, setLoading] = useState(false);
+  const [chatListState, setChatListState] = useState("");
+  const [chatList, setChatList] = useState([]);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(true);
+    }, 3000);
+    if (props.chatList === undefined) {
+      // setLoading(true)
+      setChatListState("empty");
+    } else {
+      // setLoading(true)
+      setChatListState("");
+      setChatList(props.chatList);
+    }
+  }, [props]);
 
   //-------------WidthDimensions------------
 
@@ -50,96 +67,102 @@ function Index(props) {
     show: {
       visibility: "visible",
       width: "100%",
-      fontSize:16
+      fontSize: 16,
     },
     hide: {
       visibility: "hidden",
       width: 0,
-      fontSize:16
+      fontSize: 16,
     },
   };
 
   return (
     <>
       {xs.small === 3 ? (
-        <Grid container direction="column"  sx={{height:"100vh", width:"100%" }}>
-          <Grid item xs={1} width="100%" height="100%" >
-              <Container>
+        <Grid
+          container
+          direction="column"
+          sx={{ height: "100vh", width: "100%" }}
+        >
+          <Grid item xs={1} width="100%" height="100%">
+            <Container>
               <Grid
-            container
-            spacing={1}
-            alignItems="center"
-            justifyContent="space-between"
-            className="trigger-area"
-          >
-            <Grid item>
-              <Menu
-                style={{ color: "white", cursor: "pointer" }}
-                fontSize="medium"
-                onClick={props.drawerHandle("left", true)}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <input
-                type="text"
-                name="searchInput"
-                autoComplete="off"
-                id="searchInput"
-                style={
-                  searchVisible ? searchInputStyle.show : searchInputStyle.hide
-                }
-                placeholder="Search..."
-              />
-            </Grid>
-            <Grid item className="search-area">
-              <Search
-                style={{ color: "white", cursor: "pointer" }}
-                fontSize="medium"
-                onClick={() => setSearchVisible(!searchVisible)}
-              />
-            </Grid>
+                container
+                spacing={1}
+                alignItems="center"
+                justifyContent="space-between"
+                className="trigger-area"
+              >
+                <Grid item>
+                  <Menu
+                    style={{ color: "white", cursor: "pointer" }}
+                    fontSize="medium"
+                    onClick={props.drawerHandle("left", true)}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <input
+                    type="text"
+                    name="searchInput"
+                    autoComplete="off"
+                    id="searchInput"
+                    style={
+                      searchVisible
+                        ? searchInputStyle.show
+                        : searchInputStyle.hide
+                    }
+                    placeholder="Search..."
+                  />
+                </Grid>
+                <Grid item className="search-area">
+                  <Search
+                    style={{ color: "white", cursor: "pointer" }}
+                    fontSize="medium"
+                    onClick={() => setSearchVisible(!searchVisible)}
+                  />
+                </Grid>
+              </Grid>
+              <Grid item>
+                <Typography
+                  className="recent-text"
+                  component="p"
+                  style={{
+                    color: "white",
+                    marginTop: 10,
+                    // marginBottom: 10,
+                    fontWeight: "bold",
+                    fontSize: 22,
+                  }}
+                >
+                  Recent
+                </Typography>
+              </Grid>
+            </Container>
           </Grid>
-          <Grid item>
-            <Typography
-              className="recent-text"
-              component="p"
-              style={{
-                color: "white",
-                marginTop: 10,
-                // marginBottom: 10,
-                fontWeight: "bold",
-                fontSize: 22,
-              }}
-            >
-              Recent
-            </Typography>
-          </Grid>
-              </Container>
-          </Grid>
-          <Grid item xs={10} sx={{overflowY:"auto"  , width:"100%"}}>
-          <Container>
-         
-          <Grid item sx={{overflowY: "auto"}}>
-            <List className="list-container" sx={{ width: "100%"}}>
-              {/* <Typography style={{color:"#ccc"}} fontSize={30} textAlign="center" >
-                Empty Chat!
-              </Typography> */}
-              <CustomListItem active={true} />
-              <CustomListItem active={true} />
-              <CustomListItem active={true} />
-              <CustomListItem active={true} />
-              <CustomListItem active={false} />
-              <CustomListItem active={false} />
-              <CustomListItem active={true} />
-              <CustomListItem active={false} />
-              <CustomListItem active={true} />
-              <CustomListItem active={false} />
-            </List>
-          </Grid>
-        </Container>
+          <Grid item xs={10} sx={{ overflowY: "auto", width: "100%" }}>
+            <Container>
+              <Grid item sx={{ overflowY: "auto" }}>
+                <List className="list-container" sx={{ width: "100%" }}>
+                  {chatListState === "empty" ? (
+                    <Typography
+                      style={{ color: "#ccc", marginTop: 20 }}
+                      fontSize={28}
+                      textAlign="center"
+                    >
+                      Empty Chat!
+                    </Typography>
+                  ) : (
+                    <>
+                      {chatList.map((c, idx) => (
+                        <CustomListItem key={idx} data={c} active={loading} />
+                      ))}
+                    </>
+                  )}
+                </List>
+              </Grid>
+            </Container>
           </Grid>
         </Grid>
-       
       ) : (
         <>
           <Grid
@@ -163,7 +186,6 @@ function Index(props) {
 
             <Grid item>
               <List style={{ background: "transparent" }}>
-
                 <CustomListItem active={false} />
               </List>
             </Grid>

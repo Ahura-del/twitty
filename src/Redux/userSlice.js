@@ -3,7 +3,7 @@ import axios from 'axios'
 export const getUser = createAsyncThunk(
     'user/getUser',
     async (authData) =>{
-        const {data} = await axios.get(`/user/${authData.id}` , {headers:{'authorization': `Bearer ${authData.token}`}})
+        const {data} = await axios.get(`/user/${authData?.id}` , {headers:{'authorization': `Bearer ${authData?.token}`}})
         return data
     }
 )
@@ -26,5 +26,4 @@ const userSlice = createSlice({
         }
     }
 })
-// export const {userState} = userSlice.actions
 export default userSlice.reducer

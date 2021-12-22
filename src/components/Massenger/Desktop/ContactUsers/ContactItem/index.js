@@ -1,13 +1,38 @@
 import { Divider, Grid, Skeleton, Stack } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import pic from "../../../../../assets/img2.png";
+import pic from "../../../../../assets/userAvatar.png";
 import "react-chat-elements/dist/main.css";
 import { ChatItem } from "react-chat-elements";
+import {format} from 'timeago.js'
 import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
 import "./contactList.css";
+import { useSelector , useDispatch } from "react-redux";
+import {getMessages} from '../../../../../Redux/messagesSlice'
+import axios from "axios";
 function Index(props) {
+
+  const dispatch = useDispatch()
+
   const { width } = useWidthDimensions();
   const [xs, setXs] = useState({ small: 3, big: 9 });
+  const currentUser = useSelector(state => state.userState.user)
+  const token = localStorage.getItem('token')
+  // console.log(props.data.members)
+
+  const [usersData , setUsersData] = useState({})
+  useEffect(()=>{
+    const users = props.data.members.find(user => user !== currentUser._id)
+    const getUserData = async ()=>{
+      try {
+        const res = await axios.get(`/user/allUsers/${users}` , {headers:{'authorization': `Bearer ${token}`}})
+        setUsersData(res.data)
+      } catch (error) {
+        console.log(error.response)
+      }
+    }
+    getUserData()
+    } , [currentUser , props , token])
+
   useEffect(() => {
     if (width <= 1300 && width > 700) {
       setXs({ small: 1, big: 11 });
@@ -20,15 +45,16 @@ function Index(props) {
     <>
       {props.active ? (
         <ChatItem
-          avatar={pic}
-          alt={"Reactjs"}
-          title={xs.small === 1 ? "" : "Facebook"}
+          avatar={usersData.pic === "" ? pic : usersData.pic}
+          alt={"conversation users"}
+          title={xs.small === 1 ? "" : usersData.name}
           subtitle={xs.small === 1 ? "" : "What are you doing?"}
-          date={new Date()}
+          dateString={format(props.data.createdAt)}
           unread={xs.small === 1 ? 0 : 2}
           avatarFlexible={true}
           statusText=""
           statusColor={xs.small === 1 ? null : "green"}
+          onClick={()=> dispatch(getMessages({id:props.data._id , token , user:usersData._id}))}
         />
       ) : (
         <Stack spacing={1}>

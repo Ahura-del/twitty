@@ -212,8 +212,8 @@ function Index(props) {
   //logout btn
   const logoutBtn = ()=>{
     localStorage.clear()
-    window.location.reload()
     history.push('/')
+    window.location.reload()
   }
 
 
