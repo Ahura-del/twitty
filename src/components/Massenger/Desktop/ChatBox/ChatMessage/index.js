@@ -1,10 +1,23 @@
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, Typography } from "@mui/material";
 import React, { useRef, useEffect } from "react";
 import ChatText from "./ChatText";
 import "./ChatMessage.css";
 
 function Index({ messages }) {
+  // const [message , setMessage] = useState([])
+  // useEffect(()=>{
+  //   let msg = []
+  //   messages.forEach(m=>{
+  //     console.log(m.data)
+  //     msg.push(m.data)
+  //   })
+  //   setMessage(msg)
+  // },[messages])
+  // console.log(messages)
+
   const endPage = useRef();
+  
+
   useEffect(() => {
     if (endPage.current) {
       endPage.current.scrollIntoView({
@@ -16,8 +29,11 @@ function Index({ messages }) {
   });
   return (
     <Container maxWidth="md">
+     {messages?.length < 1 ? (<Grid container style={{width:"100%"  , display:"flex" , textAlign:"center" , justifyContent:"center"}} >
+       <Typography sx={{color:"gray" , textAlign:"center"}} variant="h3" >No message!</Typography>
+     </Grid>) : (
       <Grid container rowSpacing={2}>
-        {messages.map((item, index) => (
+        {messages.data?.map((item, index) => (
           <ChatText
             text={item.text}
             sender={item.sender}
@@ -27,6 +43,7 @@ function Index({ messages }) {
         ))}
         <div ref={endPage} />
       </Grid>
+     )}
     </Container>
   );
 }

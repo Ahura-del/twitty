@@ -4,16 +4,34 @@ export const getConversation = createAsyncThunk(
     'conversation/getConversation',
     async (authData) =>{
         const {data} = await axios.get(`/conversation/${authData?.id}` , {headers:{'authorization': `Bearer ${authData?.token}`}})
-        return data
+        return {data}
     }
 )
+// export const postConversation = createAsyncThunk(
+//     'conversation/postConversation',
+//     async (authData) =>{
+//         const postData ={
+//             "senderId":authData.senderId, 
+//             "reciverId":authData.reciverId
+//         }
+//         const {data} = await axios.post('/conversation' , postData,{headers:{'authorization': `Bearer ${authData?.token}`}})
+//         return data
+//     }
+// )
 const conversationSlice = createSlice({
     name:"conversation",
     initialState : {
         conversation:[],
+        state:false,
         status:null
     },
+    reducers:{
+        updateState:(state)=>{
+            state.state = !state.state
+        }
+    },
     extraReducers:{
+        
         [getConversation.pending] : (state ) =>{
             state.status = 'loading'
         },
@@ -26,4 +44,5 @@ const conversationSlice = createSlice({
         }
     }
 })
+export const {updateState} = conversationSlice.actions
 export default conversationSlice.reducer

@@ -3,12 +3,12 @@ import { Container, Grid } from "@mui/material";
 import React, {  useState } from "react";
 // import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
 import InputEmoji from "react-input-emoji";
-function Index() {
+function Index({sendHandler}) {
   //------------pick emoji--------------------
 
   const [text, setText] = useState("");
-  const handleOnEnter = (text) => {
-    console.log("enter", text);
+  const handleOnEnter = (e) => {
+    sendHandler(e)
     setText("");
   };
 

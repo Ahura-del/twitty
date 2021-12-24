@@ -1,14 +1,16 @@
-import { configureStore } from "@reduxjs/toolkit";
-import modalReducer from "./modalSlice";
-import userReducer from "./userSlice";
-import conversationReducer from "./conversationSlice";
-import messagesSlice from './messagesSlice'
-const Store = configureStore({
-  reducer: {
-    modalState: modalReducer,
-    userState: userReducer,
-    conversationState: conversationReducer,
-    messagesState: messagesSlice
-  },
-});
-export default Store;
+import {createStore , combineReducers , applyMiddleware} from 'redux'
+import thunk from 'redux-thunk'
+import conversationReducer from './Conversation/Reducer'
+import messagesReducer from './Messages/Reducer'
+import modalReducer from './Modal/Reducer'
+import userReducer from './User/Reducer'
+
+const rootReducer = combineReducers({
+  modalState:modalReducer,
+  userState:userReducer,
+  conversationState:conversationReducer,
+  messagesState:messagesReducer
+})
+
+const Store = createStore(rootReducer , applyMiddleware(thunk))
+export default Store

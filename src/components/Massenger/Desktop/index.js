@@ -25,15 +25,15 @@ import useWidthDimensions from "../../../Hook/useWidthDimensions";
 import { Box } from "@mui/system";
 import AccModal from "./Modal";
 import { useDispatch , useSelector } from "react-redux";
-import {modalState} from '../../../Redux/modalSlice'
+import { modalHandler } from "../../../Redux";
 // import axios from "axios";
 function Index() {
   //-----------redux---------------
 
   const dispatch = useDispatch();
-  const user =  useSelector(state => state.userState.user)
+  const user =  useSelector(state=> state.userState.user)
   const conversation =  useSelector(state => state.conversationState.conversation)
-//   const token = localStorage.getItem('token')
+  // const changeState = useSelector(state => state.conversationState.state)
 
   //--------check notification-------------
   const [notification, setNotification] = useState(false);
@@ -62,7 +62,7 @@ function Index() {
       return;
     }
     setPosition({ ...position, [anchor]: open });
-    dispatch(modalState({state:modal , label:modalLabel}));
+    dispatch(modalHandler({state:modal , label:modalLabel}));
   };
 
   //----------------list drawer-------------
@@ -193,6 +193,7 @@ function Index() {
           <ChatList
             drawerHandle={(anchor, open) => toggleDrawer(anchor, open)}
             chatList={conversation}
+            // changeState={changeState}
           />
         </Grid>
 

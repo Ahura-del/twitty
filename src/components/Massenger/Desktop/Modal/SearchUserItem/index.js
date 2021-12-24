@@ -2,9 +2,11 @@ import { Avatar, Divider, ListItem, ListItemAvatar, ListItemText, Typography } f
 import React from 'react'
 
 function Index(props) {
-    return (
+ 
+
+  return (
         <>
-        <ListItem alignItems="center" className="list-item">
+        <ListItem alignItems="center" onClick={()=>props.selectUser({id:props.id})} style={{cursor:"pointer"}} className="list-item">
                     <ListItemAvatar>
                       <Avatar
                         alt="search item"
@@ -13,7 +15,7 @@ function Index(props) {
                       />
                     </ListItemAvatar>
                     <ListItemText
-                      className="list-text-area"
+                      className="list-text-area1"
                       style={{ color: "black", marginLeft: 20 }}
                       primary={props.name}
                       secondary={

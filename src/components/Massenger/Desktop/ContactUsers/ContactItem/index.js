@@ -7,21 +7,20 @@ import {format} from 'timeago.js'
 import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
 import "./contactList.css";
 import { useSelector , useDispatch } from "react-redux";
-import {getMessages} from '../../../../../Redux/messagesSlice'
+import {getMessages} from '../../../../../Redux'
 import axios from "axios";
 function Index(props) {
 
   const dispatch = useDispatch()
-
   const { width } = useWidthDimensions();
   const [xs, setXs] = useState({ small: 3, big: 9 });
   const currentUser = useSelector(state => state.userState.user)
   const token = localStorage.getItem('token')
-  // console.log(props.data.members)
-
+  
   const [usersData , setUsersData] = useState({})
+
   useEffect(()=>{
-    const users = props.data.members.find(user => user !== currentUser._id)
+    const users = props.data?.members?.find(user => user !== currentUser._id)
     const getUserData = async ()=>{
       try {
         const res = await axios.get(`/user/allUsers/${users}` , {headers:{'authorization': `Bearer ${token}`}})
@@ -31,7 +30,7 @@ function Index(props) {
       }
     }
     getUserData()
-    } , [currentUser , props , token])
+    } , [currentUser , props , token ])
 
   useEffect(() => {
     if (width <= 1300 && width > 700) {
@@ -54,14 +53,14 @@ function Index(props) {
           avatarFlexible={true}
           statusText=""
           statusColor={xs.small === 1 ? null : "green"}
-          onClick={()=> dispatch(getMessages({id:props.data._id , token , user:usersData._id}))}
+          onClick={()=> dispatch(getMessages({token ,conversationId:props.data._id}))}
         />
       ) : (
         <Stack spacing={1}>
           <Grid container alignItems="center" justifyContent="space-between">
             <Grid item>
               <Grid container alignItems="center">
-                <Grid item sx={xs.small === 1 ? { mr: 0 } : { mr: 2 }}>
+                <Grid item sx={xs.small === 1 ? { mr: 0 , mb:3 } : { mr: 2 , mb:0}}>
                   <Skeleton
                     variant="circular"
                     width={40}

@@ -3,8 +3,8 @@ import { Container, Fab, Grid, List, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CustomListItem from "./ContactItem";
 import useWidthDimensions from "../../../../Hook/useWidthDimensions";
-import { useDispatch } from "react-redux";
-import { modalState } from "../../../../Redux/modalSlice";
+import { useDispatch} from "react-redux";
+import { modalHandler } from "../../../../Redux";
 function Index(props) {
   //-----------redux---------------
 
@@ -28,18 +28,19 @@ function Index(props) {
   };
 
   const fabModal = () => {
-    dispatch(modalState({ state: true, label: "fab" }));
+    dispatch(modalHandler({ state: true, label: "fab" }));
   };
 
   //-------------getData --------------------
   const [loading, setLoading] = useState(false);
   const [chatListState, setChatListState] = useState("");
   const [chatList, setChatList] = useState([]);
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(true);
     }, 3000);
-    if (props.chatList === undefined) {
+    if (props.chatList.length === 0) {
       // setLoading(true)
       setChatListState("empty");
     } else {
@@ -47,7 +48,7 @@ function Index(props) {
       setChatListState("");
       setChatList(props.chatList);
     }
-  }, [props]);
+  }, [props.changeState , props.chatList]);
 
   //-------------WidthDimensions------------
 
@@ -153,7 +154,7 @@ function Index(props) {
                     </Typography>
                   ) : (
                     <>
-                      {chatList.map((c, idx) => (
+                      {chatList?.map((c, idx) => (
                         <CustomListItem key={idx} data={c} active={loading} />
                       ))}
                     </>
@@ -186,7 +187,15 @@ function Index(props) {
 
             <Grid item>
               <List style={{ background: "transparent" }}>
-                <CustomListItem active={false} />
+
+                {chatListState === "" ? (
+                  <>
+                      {chatList.map((c, idx) => (
+                        <CustomListItem key={idx} data={c} active={loading} />
+                      ))}
+                    </>
+                ) : null}
+              
               </List>
             </Grid>
           </Grid>

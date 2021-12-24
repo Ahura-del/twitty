@@ -13,13 +13,13 @@ import {
 import { Box } from "@mui/system";
 import React, {  useState } from "react";
 import personPic from "../../../../assets/person.png";
-import Pic1 from "../../../../assets/img2.png";
 import avatarPic from '../../../../assets/userAvatar.png'
 import {useHistory} from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
-import { modalState } from "../../../../Redux/modalSlice";
+import { modalHandler } from "../../../../Redux";
 import UserItem from './SearchUserItem'
 import axios from 'axios'
+// import {  reciverId } from "../../../../Redux/messagesSlice";
 
 function Index(props) {
   //----------model style------------
@@ -41,30 +41,28 @@ function Index(props) {
   //------------redux----------------
   const history = useHistory()
   const dispatch = useDispatch();
-  const modalStateSelect = useSelector((state) => state.modalState.state);
-  const modalLabel = useSelector(state => state.modalState.label)
+  const {state , label} = useSelector((state) => state.modalState);
+  // const label = useSelector(state => state.modalState.label)
   const user =  useSelector(state => state.userState.user)
   const token = localStorage.getItem('token')
-
+  const userId = localStorage.getItem('userId')
   //close and open modal function
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
     setOpen(false);
-    dispatch(modalState(false));
+    dispatch(modalHandler(false));
   };
   React.useEffect(() => {
-    if (modalStateSelect) setOpen(true);
-  }, [modalStateSelect]);
+    if (state) setOpen(true);
+  }, [state]);
 
 
   //------------search mobile------------
   const [searchMob , setSearchMob] = useState('')
 
 
-  // fab functionality
-  const [fabUser, setFabUser] = useState("");
-
-
+  
+  
   //profile account
   const [profileError , setProfileError] = useState({color:'' , text:''})
   const [accName , setAccName] = useState(`${user.name}`)
@@ -98,7 +96,7 @@ function Index(props) {
       const sendData = await axios.put(`/user/${user._id}` , data , {headers:{'authorization': `Bearer ${token}`}})
       if(sendData.status === 200){
         setOpen(false);
-        dispatch(modalState(false));
+        dispatch(modalHandler(false));
         window.location.reload()
       }
       
@@ -107,7 +105,7 @@ function Index(props) {
     }
   }
   
-
+  
   //change password
   const [passwordError , setPasswordError] = useState({old:{color:"" , text:""} , new:{color:"" , text:""} , reNew:{color:"",text:""}})
   const [oldPass , setOldPass] = useState('')
@@ -149,7 +147,7 @@ function Index(props) {
       },3000)
       return
     }
-
+    
     try {
       const data = {
         oldPass,
@@ -161,7 +159,7 @@ function Index(props) {
         setNewPass('')
         setReNewPass('')
         setOpen(false);
-       dispatch(modalState(false));
+       dispatch(modalHandler(false));
        alert('update password')
       }
     } catch (error) {
@@ -170,13 +168,13 @@ function Index(props) {
         setTimeout(()=>{
           setPasswordError({old:{color:"" , text:""}})
         },3000)
-       return
+        return
       }
     }
   }
   
 
-
+  
   //delete account
   const [delAccError , setDelAccError] = useState({color:"" , text:""})
   const [delPass , setDelPass] = useState('')
@@ -203,25 +201,56 @@ function Index(props) {
         setTimeout(()=>{
           setDelAccError({color:"" , text:""})
         },3000)
-       return
+        return
       }
     }
   }
-
-
+  
+  
   //logout btn
   const logoutBtn = ()=>{
     localStorage.clear()
     history.push('/')
     window.location.reload()
   }
+  
+  // fab functionality
+  const [fabUser, setFabUser] = useState("");
+  const [fabSearchUser , setFabSearchUser] = useState([])
 
+  const fabHandler =async (e)=>{
+    setFabUser(e.target.value)
+  
+if(e.target.value !== ""){
 
+  try {
+    const res = await axios.get(`/user/searchUser/${e.target.value}` ,  {headers:{'authorization': `Bearer ${token}`}})
+    if(res.status === 200){
+      res.data.forEach(user =>{
+        if(user._id !== userId ){
+          setFabSearchUser(res.data)
+        }
+      })
+    }
+    
+  } catch (error) {
+    console.log(error.response)
+  }
+}
+}
 
+const selectUserItem = (e)=>{
+
+    // dispatch(reciverId({user:e.id}))
+    setOpen(false);
+    dispatch(modalHandler(false))
+
+}
+  
   //modal types
-
+  
   const modalType = () => {
-    if (modalLabel === "profile") {
+    if (label === "profile") {
       return (
         <Grid container>
           <Container>
@@ -321,7 +350,7 @@ function Index(props) {
         </Grid>
       );
     }
-    if (modalLabel === "restPass") {
+    if (label === "restPass") {
       return (
         <Grid container>
           <Container  >
@@ -394,7 +423,7 @@ function Index(props) {
         </Grid>
       );
     }
-    if (modalLabel === "delAcc") {
+    if (label === "delAcc") {
       return (
         <Grid container>
           <Container>
@@ -440,7 +469,7 @@ function Index(props) {
         </Grid>
       );
     }
-    if (modalLabel === "logout") {
+    if (label === "logout") {
       return (
         <Grid container>
           <Container>
@@ -480,7 +509,7 @@ function Index(props) {
         </Grid>
       );
     }
-    if (modalLabel === "fab") {
+    if (label === "fab") {
       return (
         <Grid container>
           <Container>
@@ -491,7 +520,7 @@ function Index(props) {
                 size={props.size === "desktop" ? null : "small"}
                 placeholder="Username"
                 autoFocus
-                onChange={(e) => setFabUser(e.target.value)}
+                onChange={(e) => fabHandler(e)}
                 value={fabUser}
                 variant="outlined"
                 name="searchUser"
@@ -504,8 +533,17 @@ function Index(props) {
             <Grid item>
               <Grid container>
                 <List sx={{ width: "100%" }}>
-                  <UserItem pic={Pic1} name="Ahura" bio="Hello world! I'm Ahura" />
-                  <UserItem pic={Pic1} name="Ahura" bio="Hello world! I'm Ahura" />             
+                  {fabSearchUser?.map(user =>
+                  (
+                  <UserItem 
+                  pic={user?.pic === "" ? avatarPic : user.pic} 
+                  key={user._id}
+                  name={user?.name} 
+                  id={user._id}
+                  selectUser={selectUserItem}
+                  bio={user?.bio} />
+                  )
+                  )}
                 </List>
               </Grid>
             </Grid>
@@ -513,7 +551,7 @@ function Index(props) {
         </Grid>
       );
     }
-    if(modalLabel === "avatar"){
+    if(label === "avatar"){
       return (
         <Grid container>
         <Container>
@@ -575,7 +613,7 @@ function Index(props) {
       </Grid>
       );
     }
-    if(modalLabel === "mobileSearch"){
+    if(label === "mobileSearch"){
       return(
         <Grid container sx={{overflow:"hidden"}}>
         <Container>
