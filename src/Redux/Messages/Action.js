@@ -17,7 +17,7 @@ export const getMessages = ({conversationId , token})=>{
     }
 }
 
-export const sendReciverUser = (userId)=>{
+export const sendReciverUser = ({userId})=>{
     return{
         type:RECIVERUSERID,
         payload:userId

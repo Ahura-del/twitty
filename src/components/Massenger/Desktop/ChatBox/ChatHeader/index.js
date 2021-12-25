@@ -4,7 +4,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Pic from "../../../../../assets/userAvatar.png";
-import { modalState } from "../../../../../Redux/modalSlice";
+import { modalHandler } from "../../../../../Redux";
 function Index({userId}) {
 
   //-------redux---------------
@@ -31,7 +31,7 @@ function Index({userId}) {
   },[userId , token])
   //------------modal----------------
   const avatarModal = ()=>{
-    dispatch(modalState({state:true ,label:"avatar"}))
+    dispatch(modalHandler({state:true ,label:"avatar", reciveUserId:userData._id}))
     setAnchorEl(null);
   }
 

@@ -2,7 +2,8 @@ import {MODAL} from './Type'
 
 const initialState = {
     state:false,
-    label:""
+    label:"",
+    reciveUserId:''
 }
 
 
@@ -11,7 +12,8 @@ const modalReducer = (state = initialState , action) =>{
         case MODAL:
             return{
                 state:action.state,
-                label:action.label
+                label:action.label,
+                reciveUserId:action.reciveUserId
             }
             default:return state
     }

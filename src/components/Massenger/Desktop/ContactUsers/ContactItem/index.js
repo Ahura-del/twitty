@@ -7,7 +7,7 @@ import {format} from 'timeago.js'
 import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
 import "./contactList.css";
 import { useSelector , useDispatch } from "react-redux";
-import {getMessages} from '../../../../../Redux'
+import {getMessages, sendReciverUser} from '../../../../../Redux'
 import axios from "axios";
 function Index(props) {
 
@@ -40,6 +40,7 @@ function Index(props) {
     }
   }, [width]);
 
+
   return (
     <>
       {props.active ? (
@@ -53,7 +54,10 @@ function Index(props) {
           avatarFlexible={true}
           statusText=""
           statusColor={xs.small === 1 ? null : "green"}
-          onClick={()=> dispatch(getMessages({token ,conversationId:props.data._id}))}
+          onClick={()=> {
+            dispatch(getMessages({conversationId:props.data._id,token}))
+            dispatch(sendReciverUser({userId:usersData._id}))
+          }}
         />
       ) : (
         <Stack spacing={1}>

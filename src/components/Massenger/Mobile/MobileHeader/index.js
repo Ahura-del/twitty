@@ -2,7 +2,7 @@ import { Menu, Search } from '@mui/icons-material'
 import { Container, Grid, Typography  } from '@mui/material'
 import React from 'react'
 import {useDispatch} from 'react-redux'
-import { modalState } from '../../../../Redux/modalSlice'
+import { modalHandler } from '../../../../Redux/'
 
 function Index(props) {
  const dispatch = useDispatch()
@@ -18,7 +18,7 @@ function Index(props) {
                     <Typography sx={{color:"#fdfdfd"}}>Recent</Typography>
                 </Grid>
                 <Grid item>
-                    <Search sx={{color:"#fdfdfd"}} onClick={()=>dispatch(modalState({state:true , label:'mobileSearch'}))}/>
+                    <Search sx={{color:"#fdfdfd"}} onClick={()=>dispatch(modalHandler({state:true , label:'mobileSearch'}))}/>
                 </Grid>
             </Grid>
         </Container>

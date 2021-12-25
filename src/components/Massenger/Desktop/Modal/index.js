@@ -11,12 +11,12 @@ import {
  
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, {  useState } from "react";
+import React, {  useEffect, useState } from "react";
 import personPic from "../../../../assets/person.png";
 import avatarPic from '../../../../assets/userAvatar.png'
 import {useHistory} from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
-import { modalHandler } from "../../../../Redux";
+import { modalHandler, sendReciverUser } from "../../../../Redux";
 import UserItem from './SearchUserItem'
 import axios from 'axios'
 // import {  reciverId } from "../../../../Redux/messagesSlice";
@@ -41,11 +41,12 @@ function Index(props) {
   //------------redux----------------
   const history = useHistory()
   const dispatch = useDispatch();
-  const {state , label} = useSelector((state) => state.modalState);
-  // const label = useSelector(state => state.modalState.label)
+  const {state , label , reciveUserId} = useSelector((state) => state.modalState);
   const user =  useSelector(state => state.userState.user)
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('userId')
+
+
   //close and open modal function
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
@@ -241,12 +242,35 @@ if(e.target.value !== ""){
 
 const selectUserItem = (e)=>{
 
-    // dispatch(reciverId({user:e.id}))
+    dispatch(sendReciverUser({userId:e.id}))
     setOpen(false);
     dispatch(modalHandler(false))
 
 }
+
+
+//avatar user data
+const [userFriend , setUserFriend] = useState([])
+  useEffect(()=>{
+    if(reciveUserId){
+      const getUser = async()=>{
+        try {
+          const res = await axios.get(`/user/allUsers/${reciveUserId}`,  {headers:{'authorization': `Bearer ${token}`}})
+          console.log(res)
+          if(res.status === 200){
+            setUserFriend(res.data)
+          }
+        } catch (error) {
+          console.log(error.response)
+        }
+      }
+      getUser()
+    }
+
+  } , [reciveUserId , token])  
+
   
+
   //modal types
   
   const modalType = () => {
@@ -565,7 +589,7 @@ const selectUserItem = (e)=>{
           >
             <Avatar
               alt='avatar'
-              src={avatarPic}
+              src={userFriend.pic === "" ? avatarPic : userFriend.pic}
               sx={{ width: 100, height: 100 }}
             />
           </Grid>
@@ -578,7 +602,7 @@ const selectUserItem = (e)=>{
               label="User name"
               disabled={true}
               name="userProfile"
-              value="Ahura"
+              value={userFriend.name}
           
             />
           </Grid>
@@ -592,6 +616,7 @@ const selectUserItem = (e)=>{
               Bio
             </Typography>
             <TextareaAutosize
+              value={userFriend.bio}
               disabled={true}
               style={{
                 width: "100%",

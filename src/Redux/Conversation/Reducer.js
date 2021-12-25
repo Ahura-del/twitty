@@ -1,7 +1,8 @@
 import {GETCONVERSATION} from './Type'
 
 const initialState = {
-    conversation:[]
+    conversation:[],
+    update:false
 }
 
 
@@ -10,7 +11,8 @@ const conversationReducer = (state = initialState , action) =>{
         case GETCONVERSATION : 
             return{
                 ...state,
-                conversation:action.payload
+                conversation:action.payload,
+                update:!state.update
             }
 
             default:return state

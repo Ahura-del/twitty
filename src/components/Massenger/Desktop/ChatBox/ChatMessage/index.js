@@ -4,17 +4,6 @@ import ChatText from "./ChatText";
 import "./ChatMessage.css";
 
 function Index({ messages }) {
-  // const [message , setMessage] = useState([])
-  // useEffect(()=>{
-  //   let msg = []
-  //   messages.forEach(m=>{
-  //     console.log(m.data)
-  //     msg.push(m.data)
-  //   })
-  //   setMessage(msg)
-  // },[messages])
-  // console.log(messages)
-
   const endPage = useRef();
   
 
@@ -33,7 +22,7 @@ function Index({ messages }) {
        <Typography sx={{color:"gray" , textAlign:"center"}} variant="h3" >No message!</Typography>
      </Grid>) : (
       <Grid container rowSpacing={2}>
-        {messages.data?.map((item, index) => (
+        {messages?.map((item, index) => (
           <ChatText
             text={item.text}
             sender={item.sender}

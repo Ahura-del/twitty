@@ -5,7 +5,7 @@ import ChatMessage from "./ChatMessage";
 import ChatFooter from "./ChatFooter";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import {getConversation} from "../../../../Redux";
+import {getConversation, getMessages} from "../../../../Redux";
 // import io  from "socket.io-client";
 
 // const socket = io.connect('http://localhost:5000')
@@ -26,7 +26,11 @@ function Index() {
   useEffect(() => {
     dispatch(getConversation({ myUserId:sender, token }));
   }, [update , dispatch , token ,sender]);
-
+  useEffect(() => {
+    if(conversationId){
+      dispatch(getMessages({ conversationId, token }));
+    }
+  }, [update , dispatch , token ,conversationId]);
   // useEffect(() => {
   //   socket.emit("addUser", sender);
   // }, [sender]);
@@ -47,7 +51,6 @@ function Index() {
       setCurrentChat(messages);
     }
   }, [messages,update, reciverUserId]);
-  // console.log(conversation)
 
 
   const sendMessage = async (e) => {
@@ -56,17 +59,15 @@ function Index() {
       senderId: sender,
       reciverId: reciverUserId,
     };
-    if (conversation.data.length === 0) {
+    if (conversation.length === 0) {
       try {
         const res = await axios.post("/conversation", postData, {
           headers: { "authorization": `Bearer ${token}` },
         });
         if (res.status === 200) {
-          console.log(1,res);
           setUpdate(!update);
           const msgData = {
             conversationId: res.data._id,
-
             sender,
             text: e,
           };
@@ -76,7 +77,6 @@ function Index() {
           if (resMsg.status === 200) {
             console.log(resMsg);
           }
-          //  dispatch(postMessages({conversationId:res.data?._id , sender , text:e , token}))
         }
       } catch (error) {
         console.log(error.response);
@@ -93,7 +93,6 @@ function Index() {
         });
         if (resMsg.status === 200) {
           setUpdate(!update);
-          console.log( 2,resMsg);
         }
       } catch (error) {
         console.log(error.response);

@@ -33,7 +33,7 @@ function Index() {
   const dispatch = useDispatch();
   const user =  useSelector(state=> state.userState.user)
   const conversation =  useSelector(state => state.conversationState.conversation)
-  // const changeState = useSelector(state => state.conversationState.state)
+  const changeState = useSelector(state => state.conversationState.update)
 
   //--------check notification-------------
   const [notification, setNotification] = useState(false);
@@ -193,7 +193,7 @@ function Index() {
           <ChatList
             drawerHandle={(anchor, open) => toggleDrawer(anchor, open)}
             chatList={conversation}
-            // changeState={changeState}
+            changeState={changeState}
           />
         </Grid>
 
