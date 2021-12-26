@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {GETMESSAGES , RECIVERUSERID} from './Type'
+import {GETMESSAGES , RECIVERUSERID , CONVERSATIONID} from './Type'
 
 
 export const getMessages = ({conversationId , token})=>{
@@ -16,7 +16,12 @@ export const getMessages = ({conversationId , token})=>{
           })
     }
 }
-
+export const updateConversationId = (convId)=>{
+    return{
+        type:CONVERSATIONID,
+        payload:convId
+    }
+}
 export const sendReciverUser = ({userId})=>{
     return{
         type:RECIVERUSERID,

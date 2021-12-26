@@ -5,7 +5,7 @@ import ChatMessage from "./ChatMessage";
 import ChatFooter from "./ChatFooter";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import {getConversation, getMessages} from "../../../../Redux";
+import {getConversation, getMessages, sendReciverUser, updateConversationId, updateState} from "../../../../Redux";
 // import io  from "socket.io-client";
 
 // const socket = io.connect('http://localhost:5000')
@@ -14,26 +14,25 @@ function Index() {
   const dispatch = useDispatch();
 
   const [update, setUpdate] = useState(false);
-
   const { messages, reciverUserId , conversationId} = useSelector((state) => state.messagesState);
   const conversation = useSelector((state) => state.conversationState.conversation);
+  const updatestate = useSelector(state => state.modalState.update)
 
   const sender = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
   const [currentChat, setCurrentChat] = useState(null);
+  const [currentChatState , setCurrentChatState] = useState('')
   // const [arrivalMessage, setArivalMessage] = useState(null);
 
   useEffect(() => {
     dispatch(getConversation({ myUserId:sender, token }));
-  }, [update , dispatch , token ,sender]);
-  useEffect(() => {
-    if(conversationId){
-      dispatch(getMessages({ conversationId, token }));
-    }
-  }, [update , dispatch , token ,conversationId]);
+  }, [update,updatestate , dispatch , token ,sender]);
+  
+ 
   // useEffect(() => {
   //   socket.emit("addUser", sender);
   // }, [sender]);
+ 
 
   // useEffect(() => {
   //   socket.on("getUsers", (e) => {
@@ -44,15 +43,9 @@ function Index() {
   //   })
   // }, []);
 
-  useEffect(() => {
-    if (reciverUserId === "") {
-      setCurrentChat(null);
-    } else {
-      setCurrentChat(messages);
-    }
-  }, [messages,update, reciverUserId]);
 
 
+// console.log(currentChat , messages)
   const sendMessage = async (e) => {
 
     const postData = {
@@ -66,6 +59,8 @@ function Index() {
         });
         if (res.status === 200) {
           setUpdate(!update);
+          dispatch(updateConversationId(res.data._id))
+          // dispatch(updateState())
           const msgData = {
             conversationId: res.data._id,
             sender,
@@ -75,7 +70,10 @@ function Index() {
             headers: { "authorization": `Bearer ${token}` },
           });
           if (resMsg.status === 200) {
+            setUpdate(!update);
+            setCurrentChatState('get')
             console.log(resMsg);
+
           }
         }
       } catch (error) {
@@ -92,14 +90,50 @@ function Index() {
           headers: { "authorization": `Bearer ${token}` },
         });
         if (resMsg.status === 200) {
-          setUpdate(!update);
-        }
+          setUpdate(!update); 
+          setCurrentChatState('get')
+             }
       } catch (error) {
         console.log(error.response);
       }
     }
   };
 
+  const delChatHandler =async ()=>{
+    if(reciverUserId){
+      try {
+        const res = await axios.delete(`/conversation/${reciverUserId}` ,{headers:{'authorization': `Bearer ${token}`}} )
+        if(res.status === 200){
+          // setCurrentChat(null)
+          // setCurrentChatState('fail')
+          dispatch(sendReciverUser({userId:''}))
+          dispatch(updateState())
+        }
+      } catch (error) {
+        console.log(error.response)
+
+      }
+    }
+  }
+
+  useEffect(() => {
+    if(conversationId && currentChatState){
+      dispatch(getMessages({ conversationId, token }));
+    }
+  }, [update,updatestate, currentChatState, dispatch,token ,conversationId]);
+
+  useEffect(() => {
+    if (reciverUserId === "") {
+      setCurrentChat(null);
+      setCurrentChatState('fail')
+    } else {
+      setCurrentChatState('get')
+      setCurrentChat(messages);
+    }
+  
+  }, [messages,update,updatestate ,reciverUserId]);
+
+  
   // useEffect(() => {
   //   socket.on("getMessage", (data) => {
   //     console.log(data)
@@ -116,17 +150,18 @@ function Index() {
   //     currentChat?.members.includes(arrivalMessage.sender) &&
   //     setCurrentChat((preve) => [...preve, arrivalMessage]);
   // }, [arrivalMessage, currentChat]);
-  // console.log(arrivalMessage)
+
   return (
     <Grid
       container
       direction="column"
       sx={{ height: "100vh", width: "100%", overflow: "hidden" }}
     >
-      {currentChat ? (
+      {currentChatState === 'get'  ? (
+
         <>
           <Grid item xs={1} sx={{ height: "100%", width: "100%" }}>
-            <ChatHeader userId={reciverUserId} />
+            <ChatHeader userId={reciverUserId} conversationId={conversationId} delChat={delChatHandler} />
           </Grid>
           <Grid
             item
@@ -139,7 +174,9 @@ function Index() {
             <ChatFooter sendHandler={sendMessage} />
           </Grid>
         </>
+
       ) : (
+       
         <Grid
           item
           style={{ display: "flex", height: "100%", width: "100%" }}
@@ -151,6 +188,7 @@ function Index() {
             Open a conversation to start a chat.
           </Typography>
         </Grid>
+
       )}
     </Grid>
   );

@@ -1,9 +1,10 @@
-import {MODAL} from './Type'
+import {MODAL , UPDATESTATE} from './Type'
 
 const initialState = {
     state:false,
     label:"",
-    reciveUserId:''
+    reciveUserId:'',
+    update:false
 }
 
 
@@ -14,7 +15,11 @@ const modalReducer = (state = initialState , action) =>{
                 state:action.state,
                 label:action.label,
                 reciveUserId:action.reciveUserId
-            }
+            };
+            case UPDATESTATE:
+                return{
+                    update:!state.update
+                }
             default:return state
     }
 }

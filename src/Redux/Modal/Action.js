@@ -1,4 +1,4 @@
-import {MODAL} from './Type'
+import {MODAL , UPDATESTATE} from './Type'
 
 export const modalHandler = ({state , label , reciveUserId})=>{
     return{
@@ -6,5 +6,11 @@ export const modalHandler = ({state , label , reciveUserId})=>{
         state,
         label,
         reciveUserId
+    }
+}
+
+export const updateState = ()=>{
+    return{
+        type:UPDATESTATE
     }
 }

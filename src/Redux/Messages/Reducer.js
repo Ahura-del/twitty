@@ -1,4 +1,4 @@
-import {GETMESSAGES , RECIVERUSERID} from './Type'
+import {GETMESSAGES , RECIVERUSERID,CONVERSATIONID} from './Type'
 
 const initialState = {
     messages:[],
@@ -19,6 +19,11 @@ const messagesReducer = (state = initialState , action)=>{
                     ...state,
                     reciverUserId:action.payload
                 };
+                case CONVERSATIONID:
+                    return{
+                        ...state,
+                        conversationId:action.payload
+                    }
                 default:return state
     }
 }

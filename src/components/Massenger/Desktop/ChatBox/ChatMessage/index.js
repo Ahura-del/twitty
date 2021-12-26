@@ -5,7 +5,6 @@ import "./ChatMessage.css";
 
 function Index({ messages }) {
   const endPage = useRef();
-  
 
   useEffect(() => {
     if (endPage.current) {

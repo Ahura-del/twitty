@@ -4,13 +4,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Pic from "../../../../../assets/userAvatar.png";
-import { modalHandler } from "../../../../../Redux";
-function Index({userId}) {
+import { modalHandler, updateState } from "../../../../../Redux";
+function Index({userId , conversationId , delChat}) {
 
   //-------redux---------------
   const dispatch = useDispatch()
   const token = localStorage.getItem('token')
-
   //---------get userdata------------
   const [userData , setUserData] = useState([])
   useEffect(()=>{
@@ -29,6 +28,7 @@ function Index({userId}) {
     }
     getUserData()
   },[userId , token])
+
   //------------modal----------------
   const avatarModal = ()=>{
     dispatch(modalHandler({state:true ,label:"avatar", reciveUserId:userData._id}))
@@ -42,9 +42,35 @@ function Index({userId}) {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  //delete chat
+  const deleteChat = ()=>{
+    delChat()
+    setAnchorEl(null);
+  }
+
+
+//clear history
+const historyHandle =async ()=>{
+  if(conversationId){
+    try {
+      const res = await axios.delete(`/messages/${conversationId}`,{headers:{'authorization': `Bearer ${token}`}})
+      if(res.status === 200){
+        dispatch(updateState())
+        setAnchorEl(null);
+      }
+    } catch (error) {
+      console.log(error.response)
+    }
+  }
+}
+
+
   return (
     <Container sx={{height:"100%" }}  maxWidth="lg" >
 
@@ -130,11 +156,11 @@ function Index({userId}) {
             <Person sx={{mr:2}} />
             Profile
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={deleteChat}>
             <DeleteForever sx={{mr:2}} />
             Delete chat
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={historyHandle}>
             <Clear sx={{mr:2}} />
             Clear history
             </MenuItem>
