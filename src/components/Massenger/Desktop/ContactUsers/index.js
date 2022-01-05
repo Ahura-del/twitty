@@ -41,14 +41,12 @@ function Index(props) {
       setLoading(true);
     }, 3000);
     if (props.chatList.length === 0) {
-      // setLoading(true)
       setChatListState("empty");
     } else {
-      // setLoading(true)
       setChatListState("");
       setChatList(props.chatList);
     }
-  }, [props.changeState , props.chatList]);
+  }, [props.chatList]);
 
   //-------------WidthDimensions------------
 

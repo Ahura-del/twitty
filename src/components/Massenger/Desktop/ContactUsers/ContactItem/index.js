@@ -7,7 +7,7 @@ import {format} from 'timeago.js'
 import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
 import "./contactList.css";
 import { useSelector , useDispatch } from "react-redux";
-import {getMessages, sendReciverUser} from '../../../../../Redux'
+import { sendReciverUser, updateConversationId} from '../../../../../Redux'
 import axios from "axios";
 function Index(props) {
 
@@ -67,7 +67,7 @@ const subtitleHandler = ()=>{
           statusText=""
           statusColor={xs.small === 1 ? null : "green"}
           onClick={()=> {
-            dispatch(getMessages({conversationId:props.data._id,token}))
+            dispatch(updateConversationId({conversationId:props.data._id}))
             dispatch(sendReciverUser({userId:usersData._id}))
           }}
         />

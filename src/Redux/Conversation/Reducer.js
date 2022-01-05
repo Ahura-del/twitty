@@ -2,7 +2,7 @@ import {GETCONVERSATION} from './Type'
 
 const initialState = {
     conversation:[],
-    update:false
+    // update:false
 }
 
 
@@ -12,7 +12,7 @@ const conversationReducer = (state = initialState , action) =>{
             return{
                 ...state,
                 conversation:action.payload,
-                update:!state.update
+                // update:!state.update
             }
 
             default:return state

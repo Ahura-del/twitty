@@ -25,7 +25,7 @@ import useWidthDimensions from "../../../Hook/useWidthDimensions";
 import { Box } from "@mui/system";
 import AccModal from "./Modal";
 import { useDispatch , useSelector } from "react-redux";
-import { getUser, modalHandler } from "../../../Redux";
+import { getConversation, getUser, modalHandler } from "../../../Redux";
 function Index() {
   //-----------redux---------------
 
@@ -35,10 +35,13 @@ function Index() {
   const user =  useSelector(state=> state.userState.user)
   const update = useSelector(state=>state.modalState.update)
   const conversation =  useSelector(state => state.conversationState.conversation)
-  const changeState = useSelector(state => state.conversationState.update)
 
 
   //---------get data -----------------
+  useEffect(()=>{
+   dispatch(getConversation({myUserId:userId , token}))
+  },[update  , dispatch , userId , token])
+
   useEffect(()=>{
     dispatch(getUser({id:userId , token}))
   },[update , dispatch , token , userId])
@@ -201,7 +204,6 @@ function Index() {
           <ChatList
             drawerHandle={(anchor, open) => toggleDrawer(anchor, open)}
             chatList={conversation}
-            changeState={changeState}
           />
         </Grid>
 

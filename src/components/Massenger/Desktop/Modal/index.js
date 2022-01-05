@@ -16,7 +16,7 @@ import personPic from "../../../../assets/person.png";
 import avatarPic from '../../../../assets/userAvatar.png'
 import {useHistory} from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
-import { modalHandler, sendReciverUser, updateState } from "../../../../Redux";
+import { modalHandler, sendReciverUser, updateConversationId, updateState } from "../../../../Redux";
 import UserItem from './SearchUserItem'
 import axios from 'axios'
 // import {  reciverId } from "../../../../Redux/messagesSlice";
@@ -43,6 +43,7 @@ function Index(props) {
   const dispatch = useDispatch();
   const {state , label , reciveUserId} = useSelector((state) => state.modalState);
   const user =  useSelector(state => state.userState.user)
+  const conversation = useSelector((state) => state.conversationState.conversation);
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('userId')
 
@@ -241,9 +242,24 @@ if(e.target.value !== ""){
 }
 
 const selectUserItem = (e)=>{
-    dispatch(sendReciverUser({userId:e.id}))
-    setOpen(false);
-    dispatch(modalHandler(false))
+  conversation?.forEach(c =>{
+   const res = c.members.find(users => users === e.id)
+   if(res === undefined){
+      dispatch(sendReciverUser({userId:e.id}))
+      dispatch(updateConversationId({conversationId:""}))
+      setOpen(false);
+      dispatch(modalHandler(false))
+      // console.log(res)
+
+    }else{
+      dispatch(updateConversationId({conversationId:c._id}))
+      dispatch(sendReciverUser({userId:res}))
+      setOpen(false);
+      dispatch(modalHandler(false))
+      // console.log(c)
+
+    }
+  })
 
 }
 
