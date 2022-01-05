@@ -14,18 +14,19 @@ function Index({userId , conversationId , delChat}) {
   const [userData , setUserData] = useState([])
   useEffect(()=>{
     const getUserData = async ()=>{
-      try {
-        const res = await axios.get(`/user/allUsers/${userId}` , {
+        if(userId){
+        try {
+          const res = await axios.get(`/user/allUsers/${userId}` , {
           headers: { "authorization": `Bearer ${token}` },
         })
         if(res.status === 200){
           setUserData(res.data)
         }
       } catch (error) {
-        
+        console.log(error.response)
       }
-     
     }
+  }
     getUserData()
   },[userId , token])
 

@@ -22,14 +22,16 @@ function Index(props) {
   useEffect(()=>{
     const users = props.data?.members?.find(user => user !== currentUser._id)
     const getUserData = async ()=>{
-      try {
-        const res = await axios.get(`/user/allUsers/${users}` , {headers:{'authorization': `Bearer ${token}`}})
-        setUsersData(res.data)
-      } catch (error) {
-        console.log(error.response)
-      }
+        if(users){
+        try {
+          const res = await axios.get(`/user/allUsers/${users}` , {headers:{'authorization': `Bearer ${token}`}})
+          setUsersData(res.data)
+        } catch (error) {
+          console.log(error.response)
+        }
+      } 
     }
-    getUserData()
+      getUserData()
     } , [currentUser , props , token ])
 
   useEffect(() => {
@@ -40,7 +42,17 @@ function Index(props) {
     }
   }, [width]);
 
-
+const subtitleHandler = ()=>{
+  if(xs.small === 1){
+    return ""
+  }else{
+    if(usersData.bio === ""){
+      return "Hi , I'm ready to chat!"
+    }else{
+      return usersData.bio
+    }
+  }
+}
   return (
     <>
       {props.active ? (
@@ -48,7 +60,7 @@ function Index(props) {
           avatar={usersData.pic === "" ? pic : usersData.pic}
           alt={"conversation users"}
           title={xs.small === 1 ? "" : usersData.name}
-          subtitle={xs.small === 1 ? "" : "What are you doing?"}
+          subtitle={subtitleHandler()}
           dateString={format(props.data.createdAt)}
           unread={xs.small === 1 ? 0 : 2}
           avatarFlexible={true}

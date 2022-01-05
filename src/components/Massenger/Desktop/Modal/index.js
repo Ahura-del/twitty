@@ -16,7 +16,7 @@ import personPic from "../../../../assets/person.png";
 import avatarPic from '../../../../assets/userAvatar.png'
 import {useHistory} from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
-import { modalHandler, sendReciverUser } from "../../../../Redux";
+import { modalHandler, sendReciverUser, updateState } from "../../../../Redux";
 import UserItem from './SearchUserItem'
 import axios from 'axios'
 // import {  reciverId } from "../../../../Redux/messagesSlice";
@@ -98,7 +98,7 @@ function Index(props) {
       if(sendData.status === 200){
         setOpen(false);
         dispatch(modalHandler(false));
-        window.location.reload()
+        dispatch(updateState())
       }
       
     } catch (error) {
@@ -241,7 +241,6 @@ if(e.target.value !== ""){
 }
 
 const selectUserItem = (e)=>{
-
     dispatch(sendReciverUser({userId:e.id}))
     setOpen(false);
     dispatch(modalHandler(false))
@@ -251,14 +250,18 @@ const selectUserItem = (e)=>{
 
 //avatar user data
 const [userFriend , setUserFriend] = useState([])
+const [userFriendName , setUserFriendName] = useState('')
+const [userFriendBio , setUserFriendBio] = useState('')
+
   useEffect(()=>{
     if(reciveUserId){
       const getUser = async()=>{
         try {
           const res = await axios.get(`/user/allUsers/${reciveUserId}`,  {headers:{'authorization': `Bearer ${token}`}})
-          console.log(res)
           if(res.status === 200){
             setUserFriend(res.data)
+            setUserFriendName(res.data.name)
+            setUserFriendBio(res.data.bio)
           }
         } catch (error) {
           console.log(error.response)
@@ -602,7 +605,7 @@ const [userFriend , setUserFriend] = useState([])
               label="User name"
               disabled={true}
               name="userProfile"
-              value={userFriend.name}
+              value={userFriendName}
           
             />
           </Grid>
@@ -616,7 +619,7 @@ const [userFriend , setUserFriend] = useState([])
               Bio
             </Typography>
             <TextareaAutosize
-              value={userFriend.bio}
+              value={userFriendBio}
               disabled={true}
               style={{
                 width: "100%",

@@ -3,8 +3,11 @@ import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import {Link, useHistory} from 'react-router-dom'
 import { Box } from "@mui/system";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { updateState } from "../../Redux";
 function Index() {
   const history = useHistory()
+  const dispatch = useDispatch()
   const [loginError , setLoginError] = useState({email:{color:"" , text:""} , pass:{color:"" , text:""}})
   const [email , setEmail] = useState('')
   const [pass , setPass] = useState('')
@@ -39,7 +42,8 @@ function Index() {
       if(login.status === 200){
         localStorage.setItem('userId' , login.data.id)
          localStorage.setItem('token' , login.data.token)
-         history.push('/massenger')
+         dispatch(updateState())
+           history.push("/")
       }
       
     } catch (error) {

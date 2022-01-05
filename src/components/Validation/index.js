@@ -3,9 +3,12 @@ import { Button, Box, Container, Grid, Typography } from "@mui/material";
 import ReactInputVerificationCode from "react-verification-code-input";
 import { useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
+import { updateState } from "../../Redux";
+import { useDispatch } from "react-redux";
 
 function Index() {
   const history = useHistory();
+  const dispatch = useDispatch()
   const location = useLocation();
   const [codeText, setCodeText] = useState("");
   const complete = async (e) => {
@@ -20,7 +23,8 @@ function Index() {
         if (res.status === 200) {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("userId", location.state.id);
-          history.push("/massenger");
+          dispatch(updateState())
+          history.push("/");
         }
       } catch (error) {
         console.log(error.response.data.message);

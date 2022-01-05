@@ -27,8 +27,15 @@ function Index() {
   useEffect(() => {
     dispatch(getConversation({ myUserId:sender, token }));
   }, [update,updatestate , dispatch , token ,sender]);
-  
- 
+  // useEffect(()=>{
+  //   conversation.forEach(c=>{
+  //     console.log(c)
+  //   })
+  //  },[conversation])
+
+
+
+
   // useEffect(() => {
   //   socket.emit("addUser", sender);
   // }, [sender]);
@@ -40,27 +47,21 @@ function Index() {
   //   });
   //   socket.on('getMessage' , data =>{
   //     console.log(data)
-  //   })
+    //   }) 
   // }, []);
+// console.log(reciverUserId)
 
-
-
-// console.log(currentChat , messages)
-  const sendMessage = async (e) => {
-
-    const postData = {
-      senderId: sender,
-      reciverId: reciverUserId,
-    };
-    if (conversation.length === 0) {
+  const sendMessage =async (e) => {
+    if(conversation.length === 0){
       try {
-        const res = await axios.post("/conversation", postData, {
+        const convData = {
+          "senderId":sender,
+          "reciverId":reciverUserId
+        }
+        const res = await axios.post('/conversation',convData ,{
           headers: { "authorization": `Bearer ${token}` },
         });
-        if (res.status === 200) {
-          setUpdate(!update);
-          dispatch(updateConversationId(res.data._id))
-          // dispatch(updateState())
+        if(res.status === 200){
           const msgData = {
             conversationId: res.data._id,
             sender,
@@ -72,31 +73,200 @@ function Index() {
           if (resMsg.status === 200) {
             setUpdate(!update);
             setCurrentChatState('get')
-            console.log(resMsg);
-
+            dispatch(updateState())
           }
         }
-      } catch (error) {
-        console.log(error.response);
+
+      }catch(err){
+        console.log(err.response)
       }
-    } else {
-      try {
-        const msgData = {
-          conversationId,
-          sender,
-          text: e,
-        };
-        const resMsg = await axios.post("/messages", msgData, {
-          headers: { "authorization": `Bearer ${token}` },
-        });
-        if (resMsg.status === 200) {
-          setUpdate(!update); 
-          setCurrentChatState('get')
-             }
-      } catch (error) {
-        console.log(error.response);
-      }
+    }else{
+      conversation?.forEach(c =>{
+        const userFilter = c.members.filter(user => user !== sender)
+        userFilter.forEach(async(user)=>{
+          if(user === reciverUserId ){
+            try {
+              const msgData = {
+                conversationId:c._id,
+                sender,
+                text: e,
+              };
+              const resMsg = await axios.post("/messages", msgData, {
+                headers: { "authorization": `Bearer ${token}` },
+              });
+              console.log(resMsg)
+              if (resMsg.status === 200) {
+                setUpdate(!update); 
+                dispatch(updateState())
+                setCurrentChatState('get')
+                   }
+            } catch (error) {
+              console.log(error.response);
+            }
+            }
+
+            else{
+              
+              try {
+              const convData = {
+                "senderId":sender,
+                "reciverId":reciverUserId
+                }
+                  const res = await axios.post('/conversation',convData ,{headers: { "authorization": `Bearer ${token}`}});
+                if(res.status === 200){
+                  const msgData = {
+                    conversationId: res.data._id,
+                    sender,
+                    text: e,
+                  };
+                  const resMsg = await axios.post("/messages", msgData, {
+                    headers: { "authorization": `Bearer ${token}` },
+                  });
+                  if (resMsg.status === 200) {
+                    setUpdate(!update);
+                    setCurrentChatState('get')
+                    dispatch(updateState())
+                  }
+                }
+    
+              }catch(err){
+                console.log(err.response)
+              }
+                 
+
+            }   
+
+        })
+
+        
+    })
     }
+        
+     
+   
+
+
+    //check conversation
+    // conversation.forEach( async (c)=>{
+    //   const userFilter = await c.members.filter(user => user !== sender)
+    //   userFilter.forEach(async (user) =>{
+        // if(user === reciverUserId ){
+        // try {
+        //   const msgData = {
+        //     conversationId:c._id,
+        //     sender,
+        //     text: e,
+        //   };
+        //   const resMsg = await axios.post("/messages", msgData, {
+        //     headers: { "authorization": `Bearer ${token}` },
+        //   });
+        //   console.log(resMsg)
+        //   if (resMsg.status === 200) {
+        //     setUpdate(!update); 
+        //     dispatch(updateState())
+        //     setCurrentChatState('get')
+        //        }
+        // } catch (error) {
+        //   console.log(error.response);
+        // }
+        // }
+        // else{
+        //   try {
+        //     const convData = {
+        //       "senderId":sender,
+        //       "reciverId":reciverUserId
+        //     }
+        //     const res = await axios.post('/conversation',convData ,{
+        //       headers: { "authorization": `Bearer ${token}` },
+        //     });
+        //     console.log(res)
+        //     if(res.status === 200){
+        //       const msgData = {
+        //         conversationId: res.data._id,
+        //         sender,
+        //         text: e,
+        //       };
+        //       const resMsg = await axios.post("/messages", msgData, {
+        //         headers: { "authorization": `Bearer ${token}` },
+        //       });
+        //       if (resMsg.status === 200) {
+        //         setUpdate(!update);
+        //         setCurrentChatState('get')
+        //         dispatch(updateState())
+        //       }
+        //     }
+
+        //   }catch(err){
+        //     console.log(err.response)
+        //   }
+             
+        // }    
+        
+    //   })
+     
+    // })
+
+
+    // try {
+    //   const res = await axios.get(`/conversation/${reciverUserId}`, {
+    //     headers: { "authorization": `Bearer ${token}` },
+    //   });
+    //   if(res.status === 200){
+    //     if(res.data.length === 0){
+    //       const postData = {
+    //         senderId: sender,
+    //         reciverId: reciverUserId,
+    //       };
+    //       try {
+    //         const res = await axios.post("/conversation", postData, {
+    //           headers: { "authorization": `Bearer ${token}` },
+    //         });
+    //         if (res.status === 200) {
+    //           dispatch(updateConversationId(res.data._id))
+    //           // dispatch(updateState())
+    //           const msgData = {
+    //             conversationId: res.data._id,
+    //             sender,
+    //             text: e,
+    //           };
+    //           const resMsg = await axios.post("/messages", msgData, {
+    //             headers: { "authorization": `Bearer ${token}` },
+    //           });
+    //           if (resMsg.status === 200) {
+    //             setUpdate(!update);
+    //             setCurrentChatState('get')
+    //             dispatch(updateState())
+    //           }
+    //         }
+    //       } catch (error) {
+    //         console.log(error.response);
+    //       }
+    //     }else{
+          // try {
+          //   console.log(res)
+          //   const msgData = {
+          //     conversationId:res.data[0]._id,
+          //     sender,
+          //     text: e,
+          //   };
+          //   const resMsg = await axios.post("/messages", msgData, {
+          //     headers: { "authorization": `Bearer ${token}` },
+          //   });
+          //   console.log(resMsg)
+          //   if (resMsg.status === 200) {
+          //     setUpdate(!update); 
+          //     dispatch(updateState())
+          //     setCurrentChatState('get')
+          //        }
+          // } catch (error) {
+          //   console.log(error.response);
+          // }
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.log(error.response)
+    // }
+
   };
 
   const delChatHandler =async ()=>{
@@ -104,8 +274,6 @@ function Index() {
       try {
         const res = await axios.delete(`/conversation/${reciverUserId}` ,{headers:{'authorization': `Bearer ${token}`}} )
         if(res.status === 200){
-          // setCurrentChat(null)
-          // setCurrentChatState('fail')
           dispatch(sendReciverUser({userId:''}))
           dispatch(updateState())
         }
@@ -115,12 +283,29 @@ function Index() {
       }
     }
   }
-
   useEffect(() => {
-    if(conversationId && currentChatState){
-      dispatch(getMessages({ conversationId, token }));
+    const res = async()=>{
+      if(reciverUserId){
+
+        try {
+          const res = await axios.get(`/conversation/${reciverUserId}`, {
+            headers: { "authorization": `Bearer ${token}` },
+          });
+          if(res.status === 200){
+            if(res.data.length ===0){
+              dispatch(getMessages({ conversationId:reciverUserId, token }));
+
+            }else{
+              dispatch(getMessages({ conversationId:res.data[0]._id, token }));
+            }
+          }
+        } catch (error) {
+          console.log(error.response)
+        }
+     }
     }
-  }, [update,updatestate, currentChatState, dispatch,token ,conversationId]);
+    res()
+  }, [update,updatestate, dispatch,token ,reciverUserId]);
 
   useEffect(() => {
     if (reciverUserId === "") {
@@ -132,7 +317,6 @@ function Index() {
     }
   
   }, [messages,update,updatestate ,reciverUserId]);
-
   
   // useEffect(() => {
   //   socket.on("getMessage", (data) => {

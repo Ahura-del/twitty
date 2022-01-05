@@ -4,8 +4,11 @@ import React, { useState } from "react";
 import { Box } from "@mui/system";
 import { useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
+import { updateState } from "../../Redux";
+import { useDispatch } from "react-redux";
 
 function Index() {
+  const dispatch = useDispatch()
   //-------------history--------------
   const history = useHistory();
   const location = useLocation();
@@ -65,7 +68,8 @@ function Index() {
       if (resetPass.status === 200) {
         localStorage.setItem("userId", resetPass.data.id);
         localStorage.setItem("token", resetPass.data.token);
-        history.push("/massenger");
+        dispatch(updateState())
+        history.push("/");
       }
     } else {
       setFpassError({ code: { color: "red", text: "Code is wrong" } });

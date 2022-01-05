@@ -25,15 +25,23 @@ import useWidthDimensions from "../../../Hook/useWidthDimensions";
 import { Box } from "@mui/system";
 import AccModal from "./Modal";
 import { useDispatch , useSelector } from "react-redux";
-import { modalHandler } from "../../../Redux";
-// import axios from "axios";
+import { getUser, modalHandler } from "../../../Redux";
 function Index() {
   //-----------redux---------------
 
   const dispatch = useDispatch();
+  const userId = localStorage.getItem('userId')
+  const token = localStorage.getItem('token')
   const user =  useSelector(state=> state.userState.user)
+  const update = useSelector(state=>state.modalState.update)
   const conversation =  useSelector(state => state.conversationState.conversation)
   const changeState = useSelector(state => state.conversationState.update)
+
+
+  //---------get data -----------------
+  useEffect(()=>{
+    dispatch(getUser({id:userId , token}))
+  },[update , dispatch , token , userId])
 
   //--------check notification-------------
   const [notification, setNotification] = useState(false);

@@ -16,12 +16,12 @@ const messagesReducer = (state = initialState , action)=>{
             };
             case RECIVERUSERID :
                 return{
-                    ...state,
+                    
                     reciverUserId:action.payload
                 };
                 case CONVERSATIONID:
                     return{
-                        ...state,
+                        
                         conversationId:action.payload
                     }
                 default:return state
