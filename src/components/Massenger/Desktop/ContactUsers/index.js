@@ -5,6 +5,7 @@ import CustomListItem from "./ContactItem";
 import useWidthDimensions from "../../../../Hook/useWidthDimensions";
 import { useDispatch} from "react-redux";
 import { modalHandler } from "../../../../Redux";
+
 function Index(props) {
   //-----------redux---------------
 
@@ -36,6 +37,7 @@ function Index(props) {
   const [chatListState, setChatListState] = useState("");
   const [chatList, setChatList] = useState([]);
 
+  
   useEffect(() => {
     setTimeout(() => {
       setLoading(true);

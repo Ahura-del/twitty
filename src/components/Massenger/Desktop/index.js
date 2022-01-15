@@ -26,6 +26,7 @@ import { Box } from "@mui/system";
 import AccModal from "./Modal";
 import { useDispatch , useSelector } from "react-redux";
 import { getConversation, getUser, modalHandler } from "../../../Redux";
+
 function Index() {
   //-----------redux---------------
 
@@ -36,10 +37,9 @@ function Index() {
   const update = useSelector(state=>state.modalState.update)
   const conversation =  useSelector(state => state.conversationState.conversation)
 
-
   //---------get data -----------------
   useEffect(()=>{
-   dispatch(getConversation({myUserId:userId , token}))
+      dispatch(getConversation({myUserId:userId , token}))
   },[update  , dispatch , userId , token])
 
   useEffect(()=>{

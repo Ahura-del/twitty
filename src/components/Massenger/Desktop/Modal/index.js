@@ -242,24 +242,34 @@ if(e.target.value !== ""){
 }
 
 const selectUserItem = (e)=>{
-  conversation?.forEach(c =>{
-   const res = c.members.find(users => users === e.id)
-   if(res === undefined){
-      dispatch(sendReciverUser({userId:e.id}))
-      dispatch(updateConversationId({conversationId:""}))
-      setOpen(false);
-      dispatch(modalHandler(false))
-      // console.log(res)
+  console.log(e)
+  console.log(conversation);
+  if(conversation.length > 0){
 
+    conversation?.forEach(c =>{
+      const res = c.members.find(users => users === e.id)
+
+   if(res === undefined){
+     dispatch(sendReciverUser({userId:e.id}))
+     dispatch(updateConversationId({conversationId:""}))
+     setOpen(false);
+      dispatch(modalHandler(false))
+      
     }else{
       dispatch(updateConversationId({conversationId:c._id}))
       dispatch(sendReciverUser({userId:res}))
       setOpen(false);
       dispatch(modalHandler(false))
-      // console.log(c)
-
+      console.log(c)
+      
     }
   })
+}else{
+  dispatch(sendReciverUser({userId:e.id}))
+     dispatch(updateConversationId({conversationId:""}))
+     setOpen(false);
+      dispatch(modalHandler(false))
+}
 
 }
 
@@ -275,6 +285,7 @@ const [userFriendBio , setUserFriendBio] = useState('')
         try {
           const res = await axios.get(`/user/allUsers/${reciveUserId}`,  {headers:{'authorization': `Bearer ${token}`}})
           if(res.status === 200){
+            console.log(res);
             setUserFriend(res.data)
             setUserFriendName(res.data.name)
             setUserFriendBio(res.data.bio)
@@ -583,7 +594,7 @@ const [userFriendBio , setUserFriendBio] = useState('')
                   key={user._id}
                   name={user?.name} 
                   id={user._id}
-                  selectUser={selectUserItem}
+                  selectUser={(e)=>selectUserItem(e)}
                   bio={user?.bio} />
                   )
                   )}

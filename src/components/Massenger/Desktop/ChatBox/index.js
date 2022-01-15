@@ -6,21 +6,31 @@ import ChatFooter from "./ChatFooter";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import {sendReciverUser, updateConversationId, updateState} from "../../../../Redux";
-// import io  from "socket.io-client";
+import io  from "socket.io-client";
+import { useRef } from "react";
 
-// const socket = io.connect('http://localhost:5000')
 
 function Index() {
   const dispatch = useDispatch();
-
-  const [update, setUpdate] = useState(false);
+  const socketRef = useRef()
   const [messages , setMessages] = useState([])
   const { reciverUserId , conversationId} = useSelector((state) => state.messagesState);
   const stateUpdate = useSelector(state => state.modalState.update)
   const sender = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
-  const [currentChat, setCurrentChat] = useState(null);
-  const [currentChatState , setCurrentChatState] = useState('')
+  // const [currentChat, setCurrentChat] = useState(null);
+  // const [currentChatState , setCurrentChatState] = useState('')
+  // const [delChatBtn , setDelChatBtn] = useState(false)
+
+  useEffect(()=>{
+    socketRef.current = io.connect('/')
+    socketRef.current.emit('addUser' , sender);
+    socketRef.current.on('getMessage' , (msg)=>{
+      setMessages(oldMsg=>[...oldMsg ,msg ])
+    })
+  
+  },[sender,dispatch])
+
 
   useEffect(()=>{
     if(conversationId.length > 0){
@@ -40,7 +50,7 @@ function Index() {
     }else{
       setMessages([])
     }
-  },[token,conversationId,update,stateUpdate])
+  },[token,conversationId,stateUpdate])
 
   const sendMessage =async (e) => {
     if(conversationId.length === 0){
@@ -53,6 +63,7 @@ function Index() {
           headers: { "authorization": `Bearer ${token}` },
         });
         if(res.status === 200){
+          console.log('hi')
           const msgData = {
             conversationId: res.data._id,
             sender,
@@ -62,10 +73,14 @@ function Index() {
             headers: { "authorization": `Bearer ${token}` },
           });
           if (resMsg.status === 200) {
+            socketRef.current.emit('sendMessage' , {
+              senderId:sender,
+              reciverId:reciverUserId,
+              text:e
+            })
+            // console.log(resMsg.data)
             dispatch(updateConversationId({conversationId:res.data._id}))
-            setUpdate(!update);
-            setCurrentChatState('get')
-            dispatch(updateState())
+            setMessages(oldMsg =>[...oldMsg , resMsg.data])
           }
         }
 
@@ -83,9 +98,18 @@ function Index() {
           headers: { "authorization": `Bearer ${token}` },
         });
         if(res.status===200){
-          setUpdate(!update);
-          setCurrentChatState('get')
-          dispatch(updateState())
+          // setUpdate(!update);
+          // setCurrentChatState('get')
+          // console.log(res.data)
+          // dispatch(updateState())
+          socketRef.current.emit('sendMessage' , {
+            sender,
+            reciverId:reciverUserId,
+            text:e,
+            createdAt:res.data.createdAt,
+            conversationId
+          })
+          setMessages(oldMsg =>[...oldMsg , res.data])
         }
       } catch (error) {
         console.log(error.response)
@@ -93,50 +117,60 @@ function Index() {
     }
   };
 
-  const delChatHandler =async ()=>{
-    if(reciverUserId){
+
+  
+  
+  const delChatHandler =async (id)=>{
+    if(id){
       try {
-        const res = await axios.delete(`/conversation/${reciverUserId}` ,{headers:{'authorization': `Bearer ${token}`}} )
+        const res = await axios.delete(`/conversation/${id}` ,{headers:{'authorization': `Bearer ${token}`}} )
         if(res.status === 200){
           dispatch(sendReciverUser({userId:''}))
+          socketRef.current.emit('sendState' , {
+            reciverId : id,
+            state:'delete'
+          })
           dispatch(updateState())
+          
         }
       } catch (error) {
         console.log(error.response)
-
+        
       }
     }
   }
- 
 
-  useEffect(() => {
-    if (reciverUserId === "") {
-      setCurrentChat(null);
-      setCurrentChatState('fail')
-    } else {
-      setCurrentChatState('get')
-      setCurrentChat(messages);
-    }
   
-  }, [messages,update,stateUpdate ,reciverUserId]);
-  
+  // useEffect(() => {
+  //   if (reciverUserId === "") {
+  //     setCurrentChat(null);
+  //     setCurrentChatState('fail')
+  //   } else {
+  //     setCurrentChatState('get')
+  //     setCurrentChat(messages);
+  //   }
+    
+  // }, [messages,stateUpdate ,reciverUserId]);
+  // console.log(messages)
+  // console.log(reciverUserId)
+
   return (
     <Grid
       container
       direction="column"
       sx={{ height: "100vh", width: "100%", overflow: "hidden" }}
     >
-      {currentChatState === 'get'  ? (
+      {reciverUserId !== ""  ? (
         <>
           <Grid item xs={1} sx={{ height: "100%", width: "100%" }}>
-            <ChatHeader userId={reciverUserId} conversationId={conversationId} delChat={delChatHandler} />
+            <ChatHeader userId={reciverUserId}  conversationId={conversationId} delChat={(userId) =>delChatHandler(userId)} />
           </Grid>
           <Grid
             item
             xs={9}
             sx={{ pt: 2, height: "100%", width: "100%", overflowY: "auto" }}
           >
-            <ChatMessage messages={currentChat} />
+            <ChatMessage messages={messages} />
           </Grid>
           <Grid item xs={2} sx={{ height: "100%", width: "100%" }}>
             <ChatFooter sendHandler={sendMessage} />

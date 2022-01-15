@@ -3,36 +3,36 @@ import React, { useState, useEffect } from "react";
 import pic from "../../../../../assets/userAvatar.png";
 import "react-chat-elements/dist/main.css";
 import { ChatItem } from "react-chat-elements";
-import {format} from 'timeago.js'
+import { format } from "timeago.js";
 import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
 import "./contactList.css";
-import { useSelector , useDispatch } from "react-redux";
-import { sendReciverUser, updateConversationId} from '../../../../../Redux'
+import { useSelector, useDispatch } from "react-redux";
+import {  sendReciverUser, updateConversationId } from "../../../../../Redux";
 import axios from "axios";
-function Index(props) {
 
-  const dispatch = useDispatch()
+function Index(props) {
+  const dispatch = useDispatch();
   const { width } = useWidthDimensions();
   const [xs, setXs] = useState({ small: 3, big: 9 });
-  const currentUser = useSelector(state => state.userState.user)
-  const token = localStorage.getItem('token')
-  
-  const [usersData , setUsersData] = useState({})
-
-  useEffect(()=>{
-    const users = props.data?.members?.find(user => user !== currentUser._id)
-    const getUserData = async ()=>{
-        if(users){
+  const currentUser = useSelector((state) => state.userState.user);
+  const token = localStorage.getItem("token");
+  const [usersData, setUsersData] = useState({});
+  useEffect(() => {
+    const users = props.data?.members?.find((user) => user !== currentUser._id);
+    const getUserData = async () => {
+      if (users) {
         try {
-          const res = await axios.get(`/user/allUsers/${users}` , {headers:{'authorization': `Bearer ${token}`}})
-          setUsersData(res.data)
+          const res = await axios.get(`/user/allUsers/${users}`, {
+            headers: { authorization: `Bearer ${token}` },
+          });
+          setUsersData(res.data);
         } catch (error) {
-          console.log(error.response)
+          console.log(error.response);
         }
-      } 
-    }
-      getUserData()
-    } , [currentUser , props , token ])
+      }
+    };
+    getUserData();
+  }, [currentUser, props, token]);
 
   useEffect(() => {
     if (width <= 1300 && width > 700) {
@@ -42,17 +42,18 @@ function Index(props) {
     }
   }, [width]);
 
-const subtitleHandler = ()=>{
-  if(xs.small === 1){
-    return ""
-  }else{
-    if(usersData.bio === ""){
-      return "Hi , I'm ready to chat!"
-    }else{
-      return usersData.bio
+  const subtitleHandler = () => {
+    if (xs.small === 1) {
+      return "";
+    } else {
+      if (usersData.bio === "") {
+        return "Hi , I'm ready to chat!";
+      } else {
+        return usersData.bio;
+      }
     }
-  }
-}
+  };
+
   return (
     <>
       {props.active ? (
@@ -65,10 +66,9 @@ const subtitleHandler = ()=>{
           unread={xs.small === 1 ? 0 : 2}
           avatarFlexible={true}
           statusText=""
-          statusColor={xs.small === 1 ? null : "green"}
-          onClick={()=> {
-            dispatch(updateConversationId({conversationId:props.data._id}))
-            dispatch(sendReciverUser({userId:usersData._id}))
+          onClick={() => {
+            dispatch(updateConversationId({ conversationId: props.data._id }));
+            dispatch(sendReciverUser({ userId: usersData._id }));
           }}
         />
       ) : (
@@ -76,7 +76,10 @@ const subtitleHandler = ()=>{
           <Grid container alignItems="center" justifyContent="space-between">
             <Grid item>
               <Grid container alignItems="center">
-                <Grid item sx={xs.small === 1 ? { mr: 0 , mb:3 } : { mr: 2 , mb:0}}>
+                <Grid
+                  item
+                  sx={xs.small === 1 ? { mr: 0, mb: 3 } : { mr: 2, mb: 0 }}
+                >
                   <Skeleton
                     variant="circular"
                     width={40}

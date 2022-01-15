@@ -1,42 +1,52 @@
 import { Clear, DeleteForever, MoreHoriz, Person } from "@mui/icons-material";
-import { Avatar, Badge, Container, Grid, Menu, MenuItem, Typography } from "@mui/material";
+import {
+  Avatar,
+  Container,
+  Grid,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Pic from "../../../../../assets/userAvatar.png";
 import { modalHandler, updateState } from "../../../../../Redux";
-function Index({userId , conversationId , delChat}) {
 
+function Index({ userId, conversationId, delChat }) {
   //-------redux---------------
-  const dispatch = useDispatch()
-  const token = localStorage.getItem('token')
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+ 
   //---------get userdata------------
-  const [userData , setUserData] = useState([])
-  useEffect(()=>{
-    const getUserData = async ()=>{
-        if(userId){
+  const [userData, setUserData] = useState([]);
+  useEffect(() => {
+    const getUserData = async () => {
+      if (userId) {
         try {
-          const res = await axios.get(`/user/allUsers/${userId}` , {
-          headers: { "authorization": `Bearer ${token}` },
-        })
-        if(res.status === 200){
-          setUserData(res.data)
+          const res = await axios.get(`/user/allUsers/${userId}`, {
+            headers: { authorization: `Bearer ${token}` },
+          });
+          if (res.status === 200) {
+            setUserData(res.data);
+          }
+        } catch (error) {
+          console.log(error.response);
         }
-      } catch (error) {
-        console.log(error.response)
       }
-    }
-  }
-    getUserData()
-  },[userId , token])
+    };
+    getUserData();
+  }, [userId, token]);
 
   //------------modal----------------
-  const avatarModal = ()=>{
-    dispatch(modalHandler({state:true ,label:"avatar", reciveUserId:userData._id}))
+  const avatarModal = () => {
+    dispatch(
+      modalHandler({ state: true, label: "avatar", reciveUserId: userData._id })
+    );
     setAnchorEl(null);
-  }
+  };
 
-//-----------menu----------------
+  //-----------menu----------------
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -44,65 +54,63 @@ function Index({userId , conversationId , delChat}) {
     setAnchorEl(event.currentTarget);
   };
 
-
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   //delete chat
-  const deleteChat = ()=>{
-    delChat()
+  const deleteChat = () => {
+    delChat(userId);
     setAnchorEl(null);
-  }
+  };
 
-
-//clear history
-const historyHandle =async ()=>{
-  if(conversationId){
-    try {
-      const res = await axios.delete(`/messages/${conversationId}`,{headers:{'authorization': `Bearer ${token}`}})
-      if(res.status === 200){
-        dispatch(updateState())
-        setAnchorEl(null);
+  //clear history
+  const historyHandle = async () => {
+    if (conversationId) {
+      try {
+        const res = await axios.delete(`/messages/${conversationId}`, {
+          headers: { authorization: `Bearer ${token}` },
+        });
+        if (res.status === 200) {
+          dispatch(updateState());
+          setAnchorEl(null);
+        }
+      } catch (error) {
+        console.log(error.response);
       }
-    } catch (error) {
-      console.log(error.response)
     }
-  }
-}
-
+  };
 
   return (
-    <Container sx={{height:"100%" }}  maxWidth="lg" >
-
-    
+    <Container sx={{ height: "100%" }} maxWidth="lg">
       <Grid
         container
         direction="row"
-        sx={{height:"100%"}}
+        sx={{ height: "100%" }}
         justifyContent="space-between"
         alignItems="center"
       >
         <Grid item>
           <Grid container>
             <Grid item>
-              <Badge
-                color="success"
+              {/* <Badge
+                color={online ? "success" : "error"}
+                // color="success"
                 badgeContent=" "
                 overlap="circular"
                 anchorOrigin={{
                   vertical: "bottom",
                   horizontal: "right",
                 }}
-              >
+              > */}
                 <Avatar
                   src={userData?.pic ? userData.pic : Pic}
                   alt="user"
-                  sx={{ width:50, height:50 }}
-                  style={{ cursor: "pointer" }} 
+                  sx={{ width: 50, height: 50 }}
+                  style={{ cursor: "pointer" }}
                   onClick={avatarModal}
                 />
-              </Badge>
+              {/* </Badge> */}
             </Grid>
             <Grid item style={{ marginLeft: 20 }}>
               <Grid
@@ -112,12 +120,15 @@ const historyHandle =async ()=>{
                 justifyContent="space-around"
               >
                 <Grid item>
-                  <Typography style={{ color: "white" , fontSize:18 }} >
+                  <Typography style={{ color: "white", fontSize: 18 }}>
                     {userData.name}
                   </Typography>
                 </Grid>
                 <Grid item>
-                  <Typography style={{ color: "gray", fontSize:14 }}>Online</Typography>
+                  <Typography style={{ color: "gray", fontSize: 14 }}>
+                    {/* {online ? "Online" : "Offline"} */}
+                    Avalibel
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>
@@ -151,25 +162,23 @@ const historyHandle =async ()=>{
               vertical: "top",
               horizontal: "right",
             }}
-         
           >
             <MenuItem onClick={avatarModal}>
-            <Person sx={{mr:2}} />
-            Profile
+              <Person sx={{ mr: 2 }} />
+              Profile
             </MenuItem>
             <MenuItem onClick={deleteChat}>
-            <DeleteForever sx={{mr:2}} />
-            Delete chat
+              <DeleteForever sx={{ mr: 2 }} />
+              Delete chat
             </MenuItem>
             <MenuItem onClick={historyHandle}>
-            <Clear sx={{mr:2}} />
-            Clear history
+              <Clear sx={{ mr: 2 }} />
+              Clear history
             </MenuItem>
           </Menu>
         </Grid>
       </Grid>
-    
-              </Container>
+    </Container>
   );
 }
 
