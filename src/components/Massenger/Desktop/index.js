@@ -27,24 +27,30 @@ import AccModal from "./Modal";
 import { useDispatch , useSelector } from "react-redux";
 import { getConversation, getUser, modalHandler } from "../../../Redux";
 
-function Index() {
+
+function Index({message , conv , rmvMsg,readMsg}) {
   //-----------redux---------------
 
   const dispatch = useDispatch();
   const userId = localStorage.getItem('userId')
   const token = localStorage.getItem('token')
   const user =  useSelector(state=> state.userState.user)
-  const update = useSelector(state=>state.modalState.update)
+  // const update = useSelector(state=>state.modalState.update)
   const conversation =  useSelector(state => state.conversationState.conversation)
-
+// console.log(conversation , update)
   //---------get data -----------------
+// console.log(conversation)
+
+
+
+
   useEffect(()=>{
       dispatch(getConversation({myUserId:userId , token}))
-  },[update  , dispatch , userId , token])
+  },[conv,dispatch , userId , token])
 
   useEffect(()=>{
     dispatch(getUser({id:userId , token}))
-  },[update , dispatch , token , userId])
+  },[ dispatch , token , userId])
 
   //--------check notification-------------
   const [notification, setNotification] = useState(false);
@@ -204,11 +210,12 @@ function Index() {
           <ChatList
             drawerHandle={(anchor, open) => toggleDrawer(anchor, open)}
             chatList={conversation}
+            read={readMsg}
           />
         </Grid>
 
         <Grid item xs={xs.big} style={{ background: "#1c1c1c",paddingTop: 10 }}>
-          <ChatBox />
+          <ChatBox message={message} conv={conv} status={rmvMsg} />
         </Grid>
       </Grid>
     </>

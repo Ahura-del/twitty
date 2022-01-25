@@ -1,5 +1,5 @@
 import { Telegram } from "@mui/icons-material";
-import {  Container, Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import React, {  useState } from "react";
 import InputEmoji from "react-input-emoji";
 function Index({sendHandler}) {
@@ -21,8 +21,7 @@ function Index({sendHandler}) {
           justifyContent="space-between"
           alignItems="center"
         >
-  
-     
+   
           <Grid item xs={11}>
             <InputEmoji
               value={text}
@@ -50,8 +49,7 @@ function Index({sendHandler}) {
               </Grid>
             </Grid>
           </Grid>
-      
-       
+   
         </Grid>
           
 

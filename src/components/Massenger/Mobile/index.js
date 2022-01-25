@@ -19,16 +19,42 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { modalHandler } from "../../../Redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getConversation, modalHandler } from "../../../Redux";
 import pic from "../../../assets/img2.png";
 import ContactList from "./MobleContactList";
 import Header from "./MobileHeader";
 import AccModal from "../Desktop/Modal";
-function Index() {
+function Index({conv}) {
+
+  const userId = localStorage.getItem('userId')
+  const token = localStorage.getItem('token')
   //---------redux-----------------
   const dispatch = useDispatch();
+  const conversation =  useSelector(state => state.conversationState.conversation)
+
+
+  //---------------conversation --------------
+  useEffect(()=>{
+    dispatch(getConversation({myUserId:userId , token}))
+},[conv,dispatch , userId , token])
+
+const [loading, setLoading] = useState(false);
+  const [chatListState, setChatListState] = useState("");
+
+useEffect(() => {
+  setTimeout(() => {
+    setLoading(true);
+  }, 3000);
+  if (conversation.length === 0) {
+    setChatListState("empty");
+  } else {
+    setChatListState("");
+  }
+}, []);
+
+
   //--------notification------------
   const [notification, setNotification] = useState(false);
 
@@ -175,17 +201,22 @@ function Index() {
           xs={11}
           sx={{ overflowY: "auto", background: "#363A3F", width: "100%" }}
         >
-          <ContactList active={true} />
-          <ContactList active={true} />
-          <ContactList active={false} />
-          <ContactList active={true} />
-          <ContactList active={true} />
-          <ContactList active={true} />
-          <ContactList active={true} />
-          <ContactList active={false} />
-
-          <ContactList active={true} />
-          <ContactList active={true} />
+        {chatListState === 'empty' ? (
+          <Typography
+                      style={{ color: "#ccc", marginTop: 20 }}
+                      fontSize={28}
+                      textAlign="center"
+                    >
+                      Empty Chat!
+                    </Typography>
+        ):(
+          <>
+          {conversation.map(c=>(
+          <ContactList key={c._id} data={c} active={loading} />
+          ))}
+          </>
+        )}
+          
         </Grid>
         <Fab
           className="fab-btn"

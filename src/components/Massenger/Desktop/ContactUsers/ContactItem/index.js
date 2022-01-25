@@ -8,27 +8,46 @@ import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
 import "./contactList.css";
 import { useSelector, useDispatch } from "react-redux";
 import {  sendReciverUser, updateConversationId } from "../../../../../Redux";
+import socket from '../../../../socket';
 import axios from "axios";
 
 function Index(props) {
   const dispatch = useDispatch();
+  // const socketRef = useRef()
   const { width } = useWidthDimensions();
   const [xs, setXs] = useState({ small: 3, big: 9 });
+  // const [read , setRead] = useState(false)
+  const [onlineUser , setOnlineUser] = useState(false)
   const currentUser = useSelector((state) => state.userState.user);
   const token = localStorage.getItem("token");
   const [usersData, setUsersData] = useState({});
+
+  useEffect(()=>{
+    const users = props.data?.members?.find((user) => user !== currentUser._id);
+    socket.on('getUsers' , u=>{
+      u.forEach(user =>{
+       if(user.userId === users){
+          setOnlineUser(true)
+        }
+      })
+    })
+  },[currentUser,props])
+
   useEffect(() => {
     const users = props.data?.members?.find((user) => user !== currentUser._id);
     const getUserData = async () => {
       if (users) {
+       
         try {
           const res = await axios.get(`/user/allUsers/${users}`, {
             headers: { authorization: `Bearer ${token}` },
           });
           setUsersData(res.data);
+          // console.log(res.data)
         } catch (error) {
           console.log(error.response);
         }
+
       }
     };
     getUserData();
@@ -42,6 +61,8 @@ function Index(props) {
     }
   }, [width]);
 
+  
+
   const subtitleHandler = () => {
     if (xs.small === 1) {
       return "";
@@ -53,9 +74,21 @@ function Index(props) {
       }
     }
   };
-
+  const onlineHandler = ()=>{
+    if(xs.small ===1){
+      return null
+    }else{
+      if(onlineUser){
+        return 'green'
+      }else{
+        return 'red'
+      }
+    }
+  }
+// console.log(props.online)
   return (
     <>
+    
       {props.active ? (
         <ChatItem
           avatar={usersData.pic === "" ? pic : usersData.pic}
@@ -63,12 +96,14 @@ function Index(props) {
           title={xs.small === 1 ? "" : usersData.name}
           subtitle={subtitleHandler()}
           dateString={format(props.data.createdAt)}
-          unread={xs.small === 1 ? 0 : 2}
+          unread={xs.small ===1 ? 0 : 1}
           avatarFlexible={true}
+          statusColor={onlineHandler()}
           statusText=""
           onClick={() => {
             dispatch(updateConversationId({ conversationId: props.data._id }));
             dispatch(sendReciverUser({ userId: usersData._id }));
+
           }}
         />
       ) : (
@@ -120,6 +155,7 @@ function Index(props) {
         style={{ background: "gray", marginTop: 15, marginBottom: 15 }}
         className="divider"
       />
+     
     </>
   );
 }

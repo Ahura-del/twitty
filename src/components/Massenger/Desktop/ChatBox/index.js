@@ -1,38 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState  } from "react";
 import { Grid, Typography } from "@mui/material";
 import ChatHeader from "./ChatHeader";
 import ChatMessage from "./ChatMessage";
 import ChatFooter from "./ChatFooter";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import socket from '../../../socket';
 import {sendReciverUser, updateConversationId, updateState} from "../../../../Redux";
-import io  from "socket.io-client";
-import { useRef } from "react";
 
 
-function Index() {
+function Index({message , conv ,status}) {
   const dispatch = useDispatch();
-  const socketRef = useRef()
   const [messages , setMessages] = useState([])
   const { reciverUserId , conversationId} = useSelector((state) => state.messagesState);
-  const stateUpdate = useSelector(state => state.modalState.update)
+  // const stateUpdate = useSelector(state => state.modalState.update)
   const sender = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
-  // const [currentChat, setCurrentChat] = useState(null);
-  // const [currentChatState , setCurrentChatState] = useState('')
-  // const [delChatBtn , setDelChatBtn] = useState(false)
 
-  useEffect(()=>{
-    socketRef.current = io.connect('/')
-    socketRef.current.emit('addUser' , sender);
-    socketRef.current.on('getMessage' , (msg)=>{
-      setMessages(oldMsg=>[...oldMsg ,msg ])
-    })
-  
-  },[sender,dispatch])
+  // console.log(messages)
+  // console.log(message)
 
-
-  useEffect(()=>{
+useEffect(()=>{
     if(conversationId.length > 0){
       const fetchMsg = async ()=>{
         try {
@@ -40,7 +28,8 @@ function Index() {
             headers: { "authorization": `Bearer ${token}` }
           })
           if(res.status === 200){
-            setMessages(res.data)
+            
+            setMessages(res?.data)
           }
         } catch (error) {
           console.log(error.response)
@@ -50,7 +39,14 @@ function Index() {
     }else{
       setMessages([])
     }
-  },[token,conversationId,stateUpdate])
+ 
+  },[status,token,conversationId])
+  
+useEffect(()=>{
+  // if(message){
+    setMessages(oldMsg => [...oldMsg , message])
+  // }
+},[message])
 
   const sendMessage =async (e) => {
     if(conversationId.length === 0){
@@ -63,7 +59,6 @@ function Index() {
           headers: { "authorization": `Bearer ${token}` },
         });
         if(res.status === 200){
-          console.log('hi')
           const msgData = {
             conversationId: res.data._id,
             sender,
@@ -73,14 +68,22 @@ function Index() {
             headers: { "authorization": `Bearer ${token}` },
           });
           if (resMsg.status === 200) {
-            socketRef.current.emit('sendMessage' , {
+            socket.emit('addConversation' , {
               senderId:sender,
               reciverId:reciverUserId,
-              text:e
+            conversationId:res.data._id
             })
-            // console.log(resMsg.data)
+            socket.emit('sendMessage' , {
+              senderId:sender,
+              reciverId:reciverUserId,
+              text:e,
+              createdAt:resMsg.data.createdAt,
+            conversationId:res.data._id
+            })
+       
             dispatch(updateConversationId({conversationId:res.data._id}))
-            setMessages(oldMsg =>[...oldMsg , resMsg.data])
+            dispatch(updateState())
+            setMessages([...resMsg.data])
           }
         }
 
@@ -98,18 +101,17 @@ function Index() {
           headers: { "authorization": `Bearer ${token}` },
         });
         if(res.status===200){
-          // setUpdate(!update);
-          // setCurrentChatState('get')
-          // console.log(res.data)
-          // dispatch(updateState())
-          socketRef.current.emit('sendMessage' , {
+          socket.emit('sendMessage' , {
             sender,
             reciverId:reciverUserId,
             text:e,
             createdAt:res.data.createdAt,
-            conversationId
+            conversationId,
           })
-          setMessages(oldMsg =>[...oldMsg , res.data])
+         
+            setMessages(oldMsg =>[...oldMsg , res.data])
+        
+          dispatch(updateState())
         }
       } catch (error) {
         console.log(error.response)
@@ -118,52 +120,61 @@ function Index() {
   };
 
 
-  
+// console.log(messages)  
   
   const delChatHandler =async (id)=>{
     if(id){
       try {
         const res = await axios.delete(`/conversation/${id}` ,{headers:{'authorization': `Bearer ${token}`}} )
+
         if(res.status === 200){
-          dispatch(sendReciverUser({userId:''}))
-          socketRef.current.emit('sendState' , {
-            reciverId : id,
-            state:'delete'
-          })
-          dispatch(updateState())
-          
-        }
+          socket.emit('removeConversation' , {conversationId})    
+        }        
       } catch (error) {
         console.log(error.response)
+        if(error.response.status === 500){
+          dispatch(sendReciverUser({userId:""}))
+
+        }
         
       }
     }
   }
 
+  const clearHistory = async (convId , userId)=>{
+    try {
+      const res = await axios.delete(`/messages/${convId}`, {
+        headers: { authorization: `Bearer ${token}` },
+      });
+      if (res.status === 200) {
+        dispatch(updateState())
+       socket.emit('removeMessage' , {
+         reciverId:userId,
+         status:true
+       })
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
   
-  // useEffect(() => {
-  //   if (reciverUserId === "") {
-  //     setCurrentChat(null);
-  //     setCurrentChatState('fail')
-  //   } else {
-  //     setCurrentChatState('get')
-  //     setCurrentChat(messages);
-  //   }
-    
-  // }, [messages,stateUpdate ,reciverUserId]);
-  // console.log(messages)
-  // console.log(reciverUserId)
+  useEffect(() => {
+    if (conv.length === 0) {
+     dispatch(sendReciverUser({userId:""}))
+    } 
+  }, [dispatch,conv]);
 
+// console.log(messages)
   return (
     <Grid
       container
       direction="column"
       sx={{ height: "100vh", width: "100%", overflow: "hidden" }}
     >
-      {reciverUserId !== ""  ? (
+      {reciverUserId !== "" ? (
         <>
           <Grid item xs={1} sx={{ height: "100%", width: "100%" }}>
-            <ChatHeader userId={reciverUserId}  conversationId={conversationId} delChat={(userId) =>delChatHandler(userId)} />
+            <ChatHeader userId={reciverUserId}  conversationId={conversationId} delChat={(userId) =>delChatHandler(userId)} clearHistory={(convId , userId)=>clearHistory(convId , userId)} />
           </Grid>
           <Grid
             item

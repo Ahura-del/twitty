@@ -5,7 +5,6 @@ import CustomListItem from "./ContactItem";
 import useWidthDimensions from "../../../../Hook/useWidthDimensions";
 import { useDispatch} from "react-redux";
 import { modalHandler } from "../../../../Redux";
-
 function Index(props) {
   //-----------redux---------------
 
@@ -28,6 +27,7 @@ function Index(props) {
     },
   };
 
+
   const fabModal = () => {
     dispatch(modalHandler({ state: true, label: "fab" }));
   };
@@ -36,6 +36,7 @@ function Index(props) {
   const [loading, setLoading] = useState(false);
   const [chatListState, setChatListState] = useState("");
   const [chatList, setChatList] = useState([]);
+ 
 
   
   useEffect(() => {
@@ -49,6 +50,28 @@ function Index(props) {
       setChatList(props.chatList);
     }
   }, [props.chatList]);
+
+
+  //----------online user --------------
+
+  // useEffect(()=>{
+  //   socket.on('getUsers' , users =>{
+  //     users.forEach(onlineUser =>{
+
+  //       chatList.forEach(user=>{
+  //         const allUsers = user?.members?.find((u) => u !== currentUser._id);
+  //         // onlineUser.userId === allUsers ? setOnlineUser(true) : setOnlineUser(false)
+  //         if(onlineUser.userId === allUsers){
+  //           console.log(onlineUser.userId)
+  //           setOnlineUser(true) 
+  //         }
+  //       })
+        
+  //     })
+  //   })
+  // },[chatList,currentUser])
+
+
 
   //-------------WidthDimensions------------
 
@@ -155,7 +178,7 @@ function Index(props) {
                   ) : (
                     <>
                       {chatList?.map((c, idx) => (
-                        <CustomListItem key={idx} data={c} active={loading} />
+                        <CustomListItem key={idx} data={c} active={loading}  />
                       ))}
                     </>
                   )}
@@ -191,7 +214,7 @@ function Index(props) {
                 {chatListState === "" ? (
                   <>
                       {chatList.map((c, idx) => (
-                        <CustomListItem key={idx} data={c} active={loading} />
+                        <CustomListItem key={idx} data={c} active={loading}  />
                       ))}
                     </>
                 ) : null}

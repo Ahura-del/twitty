@@ -1,19 +1,46 @@
 import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector } from 'react-redux'
 import { getConversation, getUser} from '../../Redux'
+import socket from '../socket';
 import Desktop from './Desktop'
 import Mobile from './Mobile'
 import Loading from '../Loading'
 import useMediaQuery from "../../Hook/useMediaQuery";
-// import axios from "axios";
 
 function Index() {
   const dispatch = useDispatch()
   const [user , setUser] = useState([])
+  const [msg , setMsg] = useState([])
+  const [status , setStatus] = useState(false)
+  const [readMsg , setReadMsg] = useState(false)
+  const [conversation , setConversation] = useState([])
   const id =  localStorage.getItem('userId')
   const token =  localStorage.getItem('token')
+
   useEffect(()=>{
-        dispatch(getUser({id , token}))
+    if(id === null){
+      localStorage.clear()
+      window.location.reload()
+    }else{
+      // socket.auth = {id}
+      socket.emit('addUser' , id);
+      socket.connect()
+      socket.on('getMessage' , (msg)=>{
+        setMsg(msg)
+      });
+      socket.on('getConversation' , c =>{
+        setConversation(c)
+      }) 
+      socket.on('getRmvMsg' , status =>{
+        setStatus(status)
+      })
+      socket.on('getReadMsg' , read =>{
+        setReadMsg(read)
+      })
+    }
+  },[id])
+  useEffect(()=>{
+      dispatch(getUser({id , token}))
       dispatch(getConversation({ myUserId:id, token }))
       
   },[dispatch,id,token])
@@ -30,13 +57,19 @@ function Index() {
     resPage();
   }, [accountUser,desktop ]);
 
+
+
+
+
+
+
   if(user.name === undefined){
     return <Loading />
   }else{ 
     if (page === "main") {
-      return <Desktop />;
+      return <Desktop message={msg} conv={conversation} rmvMsg={status} readMsg={readMsg} />;
     } else {
-      return <Mobile />;
+      return <Mobile conv={conversation} />;
     }
   }
 }

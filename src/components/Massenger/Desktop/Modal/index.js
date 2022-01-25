@@ -48,6 +48,28 @@ function Index(props) {
   const userId = localStorage.getItem('userId')
 
 
+  //get all users
+  const [allUsers , setAllUsers] = useState([])
+  useEffect(()=>{
+    const getUsers = async ()=>{
+      try {
+        const res = await axios.get('/user/allUsers' ,  {headers:{'authorization': `Bearer ${token}`}})
+        if(res.status === 200){
+          res.data.forEach(user =>{
+            if(user._id !== userId ){
+              setAllUsers(oldUser =>[...oldUser , user])
+                            // console.log(user)
+            }
+          })
+        }
+        
+      } catch (error) {
+        console.log(error.response)
+      }
+    }
+    getUsers()
+  },[token,userId])
+
   //close and open modal function
   const [open, setOpen] = React.useState(false);
   const handleClose = () => {
@@ -220,30 +242,23 @@ function Index(props) {
   const [fabUser, setFabUser] = useState("");
   const [fabSearchUser , setFabSearchUser] = useState([])
 
-  const fabHandler =async (e)=>{
+  // console.log(allUsers)
+  const fabHandler = (e)=>{
     setFabUser(e.target.value)
-  
-if(e.target.value !== ""){
-
-  try {
-    const res = await axios.get(`/user/searchUser/${e.target.value}` ,  {headers:{'authorization': `Bearer ${token}`}})
-    if(res.status === 200){
-      res.data.forEach(user =>{
-        if(user._id !== userId ){
-          setFabSearchUser(res.data)
-        }
-      })
-    }
-    
-  } catch (error) {
-    console.log(error.response)
-  }
+    const searchUser = e.target.value
+if(searchUser !== ""){
+  const userFilter = allUsers?.filter(user => {
+    // console.log(user)
+   return user.name.includes(searchUser)
+  })
+  setFabSearchUser(userFilter)
+}else{
+  setFabSearchUser([])
 }
 }
 
 const selectUserItem = (e)=>{
-  console.log(e)
-  console.log(conversation);
+
   if(conversation.length > 0){
 
     conversation?.forEach(c =>{
@@ -252,21 +267,25 @@ const selectUserItem = (e)=>{
    if(res === undefined){
      dispatch(sendReciverUser({userId:e.id}))
      dispatch(updateConversationId({conversationId:""}))
+     setFabSearchUser([])
+     setFabUser('')
      setOpen(false);
       dispatch(modalHandler(false))
       
     }else{
       dispatch(updateConversationId({conversationId:c._id}))
       dispatch(sendReciverUser({userId:res}))
+      setFabSearchUser([])
+      setFabUser('')
       setOpen(false);
-      dispatch(modalHandler(false))
-      console.log(c)
-      
+      dispatch(modalHandler(false))      
     }
   })
 }else{
   dispatch(sendReciverUser({userId:e.id}))
      dispatch(updateConversationId({conversationId:""}))
+     setFabSearchUser([])
+     setFabUser('')
      setOpen(false);
       dispatch(modalHandler(false))
 }
@@ -285,7 +304,7 @@ const [userFriendBio , setUserFriendBio] = useState('')
         try {
           const res = await axios.get(`/user/allUsers/${reciveUserId}`,  {headers:{'authorization': `Bearer ${token}`}})
           if(res.status === 200){
-            console.log(res);
+            // console.log(res);
             setUserFriend(res.data)
             setUserFriendName(res.data.name)
             setUserFriendBio(res.data.bio)
@@ -574,7 +593,7 @@ const [userFriendBio , setUserFriendBio] = useState('')
                 size={props.size === "desktop" ? null : "small"}
                 placeholder="Username"
                 autoFocus
-                onChange={(e) => fabHandler(e)}
+                onChange={fabHandler}
                 value={fabUser}
                 variant="outlined"
                 name="searchUser"

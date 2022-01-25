@@ -1,22 +1,56 @@
 import { Divider, Grid, Skeleton, Stack , Container } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "react-chat-elements/dist/main.css";
 import { ChatItem } from "react-chat-elements";
 import pic from '../../../../assets/userAvatar.png'
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { format } from 'timeago.js';
 function Index(props) {
   const history = useHistory()
+  const currentUser = useSelector((state) => state.userState.user);
+  const token = localStorage.getItem("token");
+  const [usersData, setUsersData] = useState({});
+
+  useEffect(() => {
+    const users = props.data.members.find((user) => user !== currentUser._id);
+    console.log(users)
+    const getUserData = async () => {
+      if (users) {
+        
+        try {
+          const res = await axios.get(`/user/allUsers/${users}`, {
+            headers: { authorization: `Bearer ${token}` },
+          });
+          setUsersData(res.data);
+        } catch (error) {
+          console.log(error.response);
+        }
+        
+      }
+    };
+    getUserData();
+  }, [currentUser, props, token]);
+  
+  console.log(usersData)
+  console.log(props.data)
+
+
+
+
+
     return (
         <Grid container >
         <Container>
 
             {props.active ? (
         <ChatItem
-          avatar={pic}
-          alt={"Reactjs"}
-          title="Facebook"
-          subtitle="What are you doing?"
-          date={new Date()}
+          avatar={usersData.pic === "" ? pic : usersData.pic}
+          alt={"conversation users"}
+          title={usersData.name}
+          subtitle="Hi , I'm ready to chat!"
+          dateString={format(props.data.createdAt)}
           unread={2}
           onClick={()=>history.push('/chat')}
           onContextMenu={()=>alert('hi')}

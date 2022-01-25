@@ -11,9 +11,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Pic from "../../../../../assets/userAvatar.png";
-import { modalHandler, updateState } from "../../../../../Redux";
+import { modalHandler} from "../../../../../Redux";
 
-function Index({ userId, conversationId, delChat }) {
+function Index({ userId, conversationId, delChat ,clearHistory }) {
   //-------redux---------------
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
@@ -65,19 +65,10 @@ function Index({ userId, conversationId, delChat }) {
   };
 
   //clear history
-  const historyHandle = async () => {
+  const historyHandle =  () => {
     if (conversationId) {
-      try {
-        const res = await axios.delete(`/messages/${conversationId}`, {
-          headers: { authorization: `Bearer ${token}` },
-        });
-        if (res.status === 200) {
-          dispatch(updateState());
-          setAnchorEl(null);
-        }
-      } catch (error) {
-        console.log(error.response);
-      }
+      clearHistory(conversationId , userId)
+      setAnchorEl(null);
     }
   };
 
