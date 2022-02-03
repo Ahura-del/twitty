@@ -1,4 +1,4 @@
-import {CONVERSATIONID, GETCONVERSATION, RECIVERUSERID, UPDATECONVERSATION} from './Type'
+import {CONVERSATIONID, GETCONVERSATION, RECIVERUSERID, UPDATECONVERSATION, UPDATEMSG} from './Type'
 
 export const getConversation =(conversation)=>{
     return {
@@ -13,6 +13,11 @@ export const updateConv = ()=>{
     }
 }
 
+export const updateMsg = ()=>{
+    return{
+        type:UPDATEMSG
+    }
+}
 export const handleconvId = ({conversationId})=>{
     return{
         type:CONVERSATIONID,

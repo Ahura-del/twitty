@@ -16,7 +16,7 @@ import personPic from "../../../../assets/person.png";
 import avatarPic from '../../../../assets/userAvatar.png'
 import {useHistory} from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
-import { modalHandler, sendReciverUserId, handleconvId , updateState } from "../../../../Redux";
+import { modalHandler, sendReciverUserId, handleconvId , updateState, getRmvConv } from "../../../../Redux";
 import UserItem from './SearchUserItem/SearchUserItem'
 import axios from 'axios'
 // import {  reciverId } from "../../../../Redux/messagesSlice";
@@ -236,12 +236,14 @@ const selectUserItem = (e)=>{
 
     conversation?.forEach(c =>{
       const res = c.members.find(users => users === e.id)
-   
+   console.log(res)
    if(res === undefined){
      if(props.size === 'mobile'){
       history.push({pathname:'/chat' , state:{user:fabSearchUser[0]}})
       dispatch(handleconvId({conversationId:""}))
       dispatch(sendReciverUserId({userId:e.id}))
+      dispatch(getRmvConv(false))
+
       setFabSearchUser([])
       setFabUser('')
       setOpen(false);
@@ -261,6 +263,7 @@ const selectUserItem = (e)=>{
         history.push({pathname:'/chat' , state:{user:fabSearchUser[0]}})
         dispatch(handleconvId({conversationId:c._id}))
         dispatch(sendReciverUserId({userId:res}))
+
         setFabSearchUser([])
         setFabUser('')
         setOpen(false);

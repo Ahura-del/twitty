@@ -6,10 +6,10 @@ import ChatText from './ChatText/ChatText'
 function ChatMessages({conversationId , msg}) {
     const endPage = useRef()
     const token = localStorage.getItem("token");
-    const message = useSelector(state => state.socketState.message)
+    const {message ,removeMsg } = useSelector(state => state.socketState)
+    const {updateMessage} = useSelector(state => state.conversationState)
+
     const [messages , setMessages] = useState([])
-
-
 
     useEffect(()=>{
       if(conversationId !== ""){
@@ -30,10 +30,12 @@ function ChatMessages({conversationId , msg}) {
         setMessages([])
       }
    
-    },[token,conversationId])
+    },[removeMsg,updateMessage,token,conversationId])
     
     useEffect(()=>{
-      setMessages(oldMsg => [...oldMsg , message])
+   if(messages.length !== 0){
+     setMessages(oldMsg => [...oldMsg , message])
+    }
     },[message])
     // console.log(message)
 
@@ -55,7 +57,7 @@ useEffect(()=>{
     })
     return (
        <Container  sx={{height:"100%"}}>
-       {conversationId ? (<>
+       {messages.length > 0 ? (<>
 
        {messages.map((data,index)=>(
            <ChatText data={data} key={index} />

@@ -1,11 +1,12 @@
-import {GETRMVMSG,GETREADMSG,GETMESSAGE,GETCONVERSATION} from './Type'
+import {GETRMVMSG,GETREADMSG,GETMESSAGE,GETCONVERSATION, GETREMOVECONVERSATION} from './Type'
 
 
 const initialState = {
     message : [],
     conversation:[],
     readMsg:false,
-    removeMsg:false
+    removeMsg:false,
+    removeConv:false
 }
 
 const socketReducer = (state = initialState , action)=>{
@@ -31,6 +32,8 @@ const socketReducer = (state = initialState , action)=>{
                     ...state,
                     removeMsg:!state.removeMsg
                 }
+               case GETREMOVECONVERSATION:
+                   return{...state , removeConv:action.payload}
 
             default: return state
     }

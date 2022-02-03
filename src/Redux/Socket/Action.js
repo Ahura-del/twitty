@@ -1,9 +1,15 @@
-import {GETCONVERSATION ,GETMESSAGE,GETREADMSG,GETRMVMSG} from './Type'
+import {GETCONVERSATION ,GETMESSAGE,GETREADMSG,GETREMOVECONVERSATION,GETRMVMSG} from './Type'
 
 export const getConv = (data)=>{
     return{
         type:GETCONVERSATION,
         payload:data
+    }
+}
+export const getRmvConv = (state)=>{
+    return{
+        type:GETREMOVECONVERSATION,
+        payload:state
     }
 }
 
@@ -24,3 +30,4 @@ export const getRmvMsg = ()=>{
         type:GETRMVMSG,
     }
 }
+

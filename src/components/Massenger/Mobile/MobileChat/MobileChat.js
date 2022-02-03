@@ -22,7 +22,6 @@ function MobileChat() {
         setHeight(e)
     }
     const location = useLocation()
-console.log(reciverUserId)
     const sendMsg = async(text)=>{
     
          //if we haven't conversation

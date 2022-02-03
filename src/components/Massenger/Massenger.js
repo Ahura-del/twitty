@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {useDispatch } from 'react-redux'
-import { getConv, getMessage, getReadMsg, getRmvMsg, handleconvId, updateConv} from '../../Redux'
+import { getConv, getMessage, getReadMsg, getRmvConv, getRmvMsg, handleconvId, updateConv} from '../../Redux'
 import socket from '../socket';
 import Desktop from './Desktop/Desktop'
 import Mobile from './Mobile/Mobile'
@@ -26,11 +26,11 @@ function Massenger() {
        dispatch(getConv(c))
        if(c.length > 0){
          c.forEach(conv =>{
-           console.log(conv)
            dispatch(handleconvId({conversationId:conv.conversationId}))
            dispatch(updateConv())
-
          })
+       }else{
+         dispatch(getRmvConv(true))
        }
       }) 
       socket.on('getRmvMsg' , () =>{

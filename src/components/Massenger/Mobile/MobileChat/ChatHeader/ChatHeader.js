@@ -3,7 +3,7 @@ import { Avatar, Container, Grid, Menu, MenuItem, Typography } from '@mui/materi
 import React, { useState } from 'react'
 import {useHistory} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import {modalHandler, sendReciverUserId, updateConv} from '../../../../../Redux'
+import { modalHandler, sendReciverUserId, updateConv, updateMsg} from '../../../../../Redux'
 import socket from '../../../../socket';
 
 import axios from 'axios'
@@ -63,6 +63,25 @@ function ChatHeader({data}) {
   }
 
 
+  //-----------clear history--------------
+  const clearHistory = async ()=>{
+    try {
+      const res = await axios.delete(`/messages/${conversationId}`, {
+        headers: { authorization: `Bearer ${token}` },
+      });
+      if (res.status === 200) {
+        setAnchorEl(null);
+        dispatch(updateMsg())
+       socket.emit('removeMessage' , {
+         reciverId:data._id,
+         status:true
+       })
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
 
     return (
        <Container style={{height:"100%"}}>
@@ -121,7 +140,7 @@ function ChatHeader({data}) {
             <DeleteForever sx={{mr:2}} />
             Delete chat
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={clearHistory}>
             <Clear sx={{mr:2}} />
             Clear history
             </MenuItem>
