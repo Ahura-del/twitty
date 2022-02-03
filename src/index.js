@@ -16,12 +16,12 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker
-    .register(`${process.env.PUBLIC_URL}/sw.js`)
-    .then(function() {
-      console.log('Service worker registered!');
-    })
-    .catch(() => console.log('pwa not regester'))
-}
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker
+//     .register(`${process.env.PUBLIC_URL}/sw.js`)
+//     .then(function() {
+//       console.log('Service worker registered!');
+//     })
+//     .catch(() => console.log('pwa not regester'))
+// }
 

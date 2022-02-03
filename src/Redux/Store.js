@@ -1,17 +1,17 @@
 import {createStore , combineReducers , applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
+import allUsersReducer from './AllUsers/Reducer'
 import conversationReducer from './Conversation/Reducer'
-import messagesReducer from './Messages/Reducer'
 import modalReducer from './Modal/Reducer'
-import onlineReducer from './OnlineUsers/Reducer'
+import socketReducer from './Socket/Reducer'
 import userReducer from './User/Reducer'
 
 const rootReducer = combineReducers({
   modalState:modalReducer,
   userState:userReducer,
+  allUsersState:allUsersReducer,
   conversationState:conversationReducer,
-  messagesState:messagesReducer,
-  onlineUserState : onlineReducer
+  socketState : socketReducer
 })
 
 const Store = createStore(rootReducer , applyMiddleware(thunk))

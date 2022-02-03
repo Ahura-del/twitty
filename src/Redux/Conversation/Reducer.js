@@ -1,8 +1,10 @@
-import {GETCONVERSATION} from './Type'
+import {CONVERSATIONID, GETCONVERSATION, RECIVERUSERID, UPDATECONVERSATION} from './Type'
 
 const initialState = {
     conversation:[],
-    // update:false
+    update:false,
+    conversationId:'',
+    reciverUserId:''
 }
 
 
@@ -10,11 +12,24 @@ const conversationReducer = (state = initialState , action) =>{
     switch(action.type){
         case GETCONVERSATION : 
             return{
-                ...state,
+                ...state ,
                 conversation:action.payload,
-                // update:!state.update
             }
-
+            case UPDATECONVERSATION:
+                return{
+                    ...state,
+                    update:!state.update
+                }
+                case CONVERSATIONID:
+                    return{
+                        ...state,
+                        conversationId:action.payload
+                    }
+                case RECIVERUSERID:
+                    return{
+                        ...state,
+                    reciverUserId:action.payload
+                    }
             default:return state
     }
 }
