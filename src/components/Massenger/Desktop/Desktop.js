@@ -27,7 +27,6 @@ import AccModal from "./Modal/ModalComponent";
 import { useDispatch , useSelector } from "react-redux";
 import {  modalHandler } from "../../../Redux";
 
-
 function Desktop() {
   //-----------redux---------------
 
@@ -40,7 +39,66 @@ function Desktop() {
 
 
   //--------check notification-------------
-  const [notification, setNotification] = useState(false);
+ const noti = localStorage.getItem('notification')
+
+ const [notification , setNotification] = useState(false)
+ 
+  const [showNotification , setShowNotification]=useState(false)
+  useEffect(()=>{
+    if('Notification' in window){
+      setShowNotification(true)
+    }else{
+      setShowNotification(false)
+    }
+  },[])
+  
+  const handleNotification = ()=>{
+    if('serviceWorker' in navigator && 'Notification' in window){
+      // setNotification(true)
+      Notification.requestPermission(result =>{
+        //   console.log('user chois' , result)
+        if(result === 'granted'){
+            localStorage.setItem('notification' , true)
+        //     console.log('no permision')
+          }else{
+            localStorage.setItem('notification' , false)
+          }
+        })
+
+        //     if('serviceWorker' in navigator){
+        //       const option ={
+        //         body:"hi fayegh",
+        //         icon:'../../../../public/img/icon_x96.png',
+        //         dir:'ltr',
+        //         vibrate:[100 , 50 , 200],
+        //         badge:'../../../../public/img/icon_x96.png'
+        //       }
+        //       navigator.serviceWorker.ready
+        //       .then(swReg=>{
+        //         swReg.showNotification('Twitty' , option)
+        //       })
+        //     }
+
+            
+        //   }
+        // })
+    }else{
+      // setNotification(false)
+      localStorage.setItem('notification' , false)
+
+      alert('your browser dose not suppodrt')
+    }
+  }
+  useEffect(()=>{
+    if(noti){
+      setNotification(true)
+    }else{
+     setNotification(false)
+ 
+    }
+  },[noti])
+
+console.log(notification)
 
   //-------------WidthDimensions------------
 
@@ -134,7 +192,8 @@ function Desktop() {
           />
         </ListItem>
 
-        <ListItem key="Notification" style={{ marginBottom: 20 }}>
+{showNotification ? (
+  <ListItem key="Notification" style={{ marginBottom: 20 }}>
           <ListItemIcon>
             <Notifications style={{ color: "white" }} />
           </ListItemIcon>
@@ -144,13 +203,18 @@ function Desktop() {
             }
           />
           <Switch
-            defaultChecked
+          // defaultChecked = {false}
             color="warning"
-            value={notification}
-            onChange={() => setNotification(!notification)}
+            value= {notification}
+            onChange={handleNotification}
           />
         </ListItem>
+):null}
+   
+
+
       </List>
+
       <List>
         <ListItem
           button

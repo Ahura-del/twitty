@@ -27,17 +27,11 @@ import Header from "./MobileHeader/MobileHeader";
 import AccModal from "../Desktop/Modal/ModalComponent";
 function Mobile() {
 
-  // const userId = localStorage.getItem('userId')
-  // const token = localStorage.getItem('token')
   //---------redux-----------------
   const dispatch = useDispatch();
   const conversation =  useSelector(state => state.conversationState.conversation)
   const user =  useSelector(state=> state.userState.user)
 
-  //---------------conversation --------------
-//   useEffect(()=>{
-//     dispatch(getConversation({myUserId:userId , token}))
-// },[conv,dispatch , userId , token])
 
 const [loading, setLoading] = useState(false);
   const [chatListState, setChatListState] = useState("");

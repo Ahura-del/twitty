@@ -44,11 +44,81 @@ useEffect(()=>{
   },[update,rmvMsg,token,conversationId])
   
 useEffect(()=>{
-  // if(message){
     setMessages(oldMsg => [...oldMsg , message])
-  // }
 },[message])
 
+
+const urlBase64ToUint8Array =(base64String)=> {
+  var padding = '='.repeat((4 - base64String.length % 4) % 4);
+  var base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+
+  var rawData = window.atob(base64);
+  var outputArray = new Uint8Array(rawData.length);
+
+  for (var i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+const configurePushSub = ()=>{
+  if(localStorage.getItem('notification')){
+
+    if(!('serviceWorker' in navigator)){
+      return
+    }
+    let reg ;
+    navigator.serviceWorker.ready
+    .then(swReg =>{
+      reg = swReg;
+      return swReg.pushManager.getSubscription()
+    })
+    .then(sub =>{
+      if(sub === null){
+
+        const vpidPublicKey = process.env.PUBLIC_VPID_KEY;
+        const convertedVpidKey = urlBase64ToUint8Array(vpidPublicKey);
+          reg.pushManager.subscribe({
+          applicationServerKey : convertedVpidKey ,
+          userVisibleOnly : true
+        }).then(newSub =>{
+           axios.post('/notification' , {
+            title:"Twitty App",
+            description : "You have new message",
+            subscription : JSON.stringify(newSub)
+          } , {headers:{
+            'Content-Type':"application/json",
+            'Accept' : 'application/json'
+          }})
+          .catch(err=>{
+            console.log(err)
+            if(Notification.permission !== 'granted'){
+              console.log('permossion was not granted')
+            }else{
+              console.log('Ann error ocurred during the sub')
+            }
+          })
+        })
+
+      }else{
+        axios.post('/notification' , {
+          title:"Twitty App",
+          description : "You have new message",
+          subscription : JSON.stringify(sub)
+        } , {headers:{
+          'Content-Type':"application/json",
+          'Accept' : 'application/json'
+        }})
+      }
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+  }else{
+    return
+  }
+}
   const sendMessage =async (e) => {
     if(conversationId.length === 0){
       try {
@@ -86,6 +156,7 @@ useEffect(()=>{
             // dispatch(updateState())
             dispatch(updateConv())
             setMessages([...resMsg.data])
+            configurePushSub()
           }
         }
 
@@ -112,7 +183,7 @@ useEffect(()=>{
           })
          
             setMessages(oldMsg =>[...oldMsg , res.data])
-        
+            configurePushSub()
           // dispatch(updateState())
         }
       } catch (error) {

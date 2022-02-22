@@ -1,10 +1,12 @@
 import { Container, Grid, Typography } from '@mui/material'
 import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { getRmvConv } from '../../../../../Redux'
 import ChatText from './ChatText/ChatText'
 function ChatMessages({conversationId , msg}) {
     const endPage = useRef()
+    const dispatch = useDispatch()
     const token = localStorage.getItem("token");
     const {message ,removeMsg } = useSelector(state => state.socketState)
     const {updateMessage} = useSelector(state => state.conversationState)
@@ -37,13 +39,19 @@ function ChatMessages({conversationId , msg}) {
      setMessages(oldMsg => [...oldMsg , message])
     }
     },[message])
-    // console.log(message)
+
 
 useEffect(()=>{
   if(msg.text?.length > 0){
     setMessages(prev=>[...prev , msg])
   }
 },[msg])
+
+useEffect(()=>{
+  if(conversationId.length === 0 && messages.length === 0){
+    dispatch(getRmvConv(false))
+  }
+},[])
 
     useEffect(()=>{
         if (endPage.current) {

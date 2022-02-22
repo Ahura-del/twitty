@@ -66,3 +66,44 @@ self.addEventListener('fetch', function(event) {
       })
   );
 });
+
+self.addEventListener('notificationclick' , event =>{
+  const notification = event.notification;
+  const action = event.action;
+
+  if(action === 'confirm'){
+    notification.close()
+  }else{
+    event.waitUntil(
+      clients.matchAll()
+      .then(clis =>{
+        const client = clis.find(c=>{
+          return c.visibilityState === 'visible'
+        })
+        if(client !== undefined){
+          client.navigate(notification.data.url)
+          client.focus()
+        }else{
+          clients.openWindow(notification.data.url)
+        }
+        notification.close()
+      })
+    )
+  }
+})
+
+self.addEventListener('push' , event =>{
+  const option = {
+    body:event.data.description,
+    icon:'/img/icon_x96.png',
+    badge:'/img/icon_x96.png',
+    data:{
+      url:event.data.openUrl
+    }
+  }
+  self.ServiceWorkerRegistration.showNotification(event.data.title , option)
+})
+
+self.addEventListener('notificationclose' , ()=>{
+  console.log('notification closed')
+})
