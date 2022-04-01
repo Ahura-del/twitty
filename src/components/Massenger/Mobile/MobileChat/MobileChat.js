@@ -7,15 +7,14 @@ import AccModal from '../../Desktop/Modal/ModalComponent'
 import socket from '../../../socket';
 
 import { useLocation } from 'react-router-dom'
-import { useDispatch, useSelector } from "react-redux";
-import axios from 'axios'
-import { handleconvId } from '../../../../Redux'
+import {  useSelector } from "react-redux";
+// import { handleconvId } from '../../../../Redux'
+import API from '../../../config/API'
 function MobileChat() {
-    const dispatch = useDispatch()
-    const token = localStorage.getItem('token')
+    // const dispatch = useDispatch()
     const sender = localStorage.getItem("userId");
     const [messages , setMessages] = useState({})
-    const {conversationId , reciverUserId} = useSelector((state) => state.conversationState);
+    const {conversationId } = useSelector((state) => state.conversationState);
 
     const [height , setHeight] = useState(false)
     const changeHeight =(e)=>{
@@ -31,18 +30,18 @@ function MobileChat() {
                 "senderId":sender,
                 "reciverId":location.state.user._id
               }
-              const res = await axios.post('/conversation',convData ,{
-                headers: { "authorization": `Bearer ${token}` },
-              });
+
+              const res = await API({method:'post' , url:'/conversation' , data:convData})
+
                 if(res.status === 200){
                   const msgData ={
                     conversationId : res.data._id,
                     sender,
                     text:text
                   }
-                  const resMsg = await axios.post("/messages", msgData, {
-                    headers: { "authorization": `Bearer ${token}` },
-                  })
+
+                  const resMsg = await API({method:'post' , url:"/messages" , data:msgData})
+
                   if(resMsg.status === 200){
                     // dispatch(handleconvId({conversationId:res.data._id}))
                     socket.emit('sendMessage' , {
@@ -76,9 +75,9 @@ function MobileChat() {
             sender,
             text: text,
           }
-          const res = await axios.post("/messages", msgData, {
-            headers: { "authorization": `Bearer ${token}` },
-          })
+
+          const res = await API({method:'post' , url:"/messages" , data:msgData})
+
           if(res.status === 200){
             socket.emit('sendMessage' , {
               sender,

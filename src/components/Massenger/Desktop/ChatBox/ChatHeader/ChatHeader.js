@@ -7,11 +7,11 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Pic from "../../../../../assets/userAvatar.png";
 import { modalHandler} from "../../../../../Redux";
+import API from "../../../../config/API";
 
 function ChatHeader({ userId, conversationId, delChat ,clearHistory }) {
   //-------redux---------------
@@ -23,16 +23,13 @@ function ChatHeader({ userId, conversationId, delChat ,clearHistory }) {
   useEffect(() => {
     const getUserData = async () => {
       if (userId) {
-        try {
-          const res = await axios.get(`/user/allUsers/${userId}`, {
-            headers: { authorization: `Bearer ${token}` },
-          });
+
+          const res = await API({method:'get' , url:`/user/allUsers/${userId}`})
+
           if (res.status === 200) {
             setUserData(res.data);
           }
-        } catch (error) {
-          console.log(error.response);
-        }
+      
       }
     };
     getUserData();
@@ -95,7 +92,7 @@ function ChatHeader({ userId, conversationId, delChat ,clearHistory }) {
                 }}
               > */}
                 <Avatar
-                  src={userData?.pic ? userData.pic : Pic}
+                  src={userData?.pic? userData.pic : Pic}
                   alt="user"
                   sx={{ width: 50, height: 50 }}
                   style={{ cursor: "pointer" }}

@@ -1,26 +1,28 @@
-import axios from 'axios';
 import React, { Suspense, useEffect, useState } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { addUser, getAllUsers, getConversation } from '../../Redux';
+import API from '../config/API';
 import Loading from '../Loading/Loading';
 import Massenger from '../Massenger/Massenger';
 function Preloader() {
     const dispatch =  useDispatch()
     const updateConv = useSelector(state => state.conversationState.update)
-
+    
     const [loading , setLoading] = useState(false)
-
+    
     const logout = ()=>{
         localStorage.clear()
         window.location.reload()
     }
+    
+    
     useEffect(()=>{
         const id = localStorage.getItem('userId')
         const token = localStorage.getItem('token');
         let users = [];
         const getAllData = async ()=>{
             setLoading(true)
-            await axios.get(`/user/${id}` , {headers:{'authorization': `Bearer ${token}`}})
+            await API({method:'get' , url:`/user/${id}`})
             .then(res =>{
                 if(res.status === 200){
                     dispatch(addUser(res.data))
@@ -30,8 +32,7 @@ function Preloader() {
                     logout()
                 }
             })
-    
-           await axios.get(`/conversation/${id}` , {headers:{'authorization': `Bearer ${token}`}})
+            await API({method:'get' , url:`/conversation/${id}`})
            .then(res=>{
                if(res.status === 200){
                    dispatch(getConversation(res.data))
@@ -41,8 +42,7 @@ function Preloader() {
                    logout()
                }
            })
-
-           await axios.get('/user/allUsers' ,  {headers:{'authorization': `Bearer ${token}`}})
+           await API({method:'get' , url:'/user/allUsers'})
            .then((res)=>{
             if(res.status === 200){
                 res.data.forEach(user =>{
@@ -70,9 +70,8 @@ function Preloader() {
    
     useEffect(()=>{
         const id = localStorage.getItem('userId')
-    const token = localStorage.getItem('token');
         const getConv = async ()=>{
-            await axios.get(`/conversation/${id}` , {headers:{'authorization': `Bearer ${token}`}})
+            await API({method:'get' , url:`/conversation/${id}`})
             .then(res=>{
                 if(res.status === 200){
                     dispatch(getConversation(res.data))

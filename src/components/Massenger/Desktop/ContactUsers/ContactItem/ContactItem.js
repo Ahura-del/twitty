@@ -9,18 +9,18 @@ import "./contactList.css";
 import { useSelector, useDispatch } from "react-redux";
 import {  sendReciverUserId, handleconvId } from "../../../../../Redux";
 import socket from '../../../../socket';
-import axios from "axios";
+import API from "../../../../config/API";
 
 function ContactItem(props) {
   const dispatch = useDispatch();
-  // const socketRef = useRef()
   const { width } = useWidthDimensions();
   const [xs, setXs] = useState({ small: 3, big: 9 });
-  // const [read , setRead] = useState(false)
   const [onlineUser , setOnlineUser] = useState(false)
   const currentUser = useSelector((state) => state.userState.user);
-  const token = localStorage.getItem("token");
+  const getIsRead = useSelector(state => state.socketState.message)
   const [usersData, setUsersData] = useState({});
+const [countMsg , setCountMsg] = useState(0)
+
 
   
   useEffect(()=>{
@@ -40,9 +40,9 @@ function ContactItem(props) {
       if (users) {
        
         try {
-          const res = await axios.get(`/user/allUsers/${users}`, {
-            headers: { authorization: `Bearer ${token}` },
-          });
+
+          const res = await API({method:'get' , url:`/user/allUsers/${users}` })
+
           setUsersData(res.data);
           // console.log(res.data)
         } catch (error) {
@@ -52,7 +52,7 @@ function ContactItem(props) {
       }
     };
     getUserData();
-  }, [currentUser, props, token]);
+  }, [currentUser, props]);
 
   useEffect(() => {
     if (width <= 1300 && width > 700) {
@@ -87,6 +87,45 @@ function ContactItem(props) {
     }
   }
 // console.log(props.online)
+// const id = localStorage.getItem('userId')
+useEffect(()=>{
+    const getReadMessage = async ()=>{
+
+      await API({method:'get' , url:`/messages/${props.data._id}`})
+        .then(res=>{
+          let count = 0;
+          res.data.forEach(msg=>{
+            if(msg.sender === usersData._id){
+              if(!msg.isRead){
+                count++
+              }else{
+                count = 0                
+              }
+            }else{
+              count = 0
+            }
+          })
+              setCountMsg(count)
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+    getReadMessage()
+},[usersData,getIsRead,props])
+
+const updateMessages = async ()=>{
+  await API({method:'put' , url:`/messages/${props.data._id}` , data: {isRead:true}})
+  .then(res=>{
+    if(res.status === 200){
+      setCountMsg(0)
+    }
+  })
+  .catch(err=>{
+    console.log(err)
+  })
+}
+
   return (
     <>
     
@@ -97,11 +136,12 @@ function ContactItem(props) {
           title={xs.small === 1 ? "" : usersData.name}
           subtitle={subtitleHandler()}
           dateString={format(props.data.createdAt)}
-          unread={xs.small ===1 ? 0 : 1}
+          unread={xs.small ===1 ? 0 : countMsg}
           avatarFlexible={true}
           statusColor={onlineHandler()}
           statusText=""
           onClick={() => {
+            updateMessages()
             dispatch(handleconvId({ conversationId: props.data._id }));
             dispatch(sendReciverUserId({ userId: usersData._id }));
 

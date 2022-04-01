@@ -51,26 +51,6 @@ function ContactUsers(props) {
   }, [props.chatList]);
 
 
-  //----------online user --------------
-
-  // useEffect(()=>{
-  //   socket.on('getUsers' , users =>{
-  //     users.forEach(onlineUser =>{
-
-  //       chatList.forEach(user=>{
-  //         const allUsers = user?.members?.find((u) => u !== currentUser._id);
-  //         // onlineUser.userId === allUsers ? setOnlineUser(true) : setOnlineUser(false)
-  //         if(onlineUser.userId === allUsers){
-  //           console.log(onlineUser.userId)
-  //           setOnlineUser(true) 
-  //         }
-  //       })
-        
-  //     })
-  //   })
-  // },[chatList,currentUser])
-
-
 
   //-------------WidthDimensions------------
 

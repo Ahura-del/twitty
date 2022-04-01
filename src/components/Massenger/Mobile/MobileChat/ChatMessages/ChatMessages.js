@@ -1,8 +1,8 @@
 import { Container, Grid, Typography } from '@mui/material'
-import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getRmvConv } from '../../../../../Redux'
+import API from '../../../../config/API'
 import ChatText from './ChatText/ChatText'
 function ChatMessages({conversationId , msg}) {
     const endPage = useRef()
@@ -17,9 +17,9 @@ function ChatMessages({conversationId , msg}) {
       if(conversationId !== ""){
         const fetchMsg = async ()=>{
           try {
-            const res = await axios.get(`messages/${conversationId}` , {
-              headers: { "authorization": `Bearer ${token}` }
-            })
+
+            const res = await API({method:'get' , url:`messages/${conversationId}`})
+
             if(res.status === 200){
               setMessages(res?.data)
             }
@@ -38,7 +38,7 @@ function ChatMessages({conversationId , msg}) {
    if(messages.length !== 0){
      setMessages(oldMsg => [...oldMsg , message])
     }
-    },[message])
+    },[message , messages.length])
 
 
 useEffect(()=>{
@@ -51,7 +51,7 @@ useEffect(()=>{
   if(conversationId.length === 0 && messages.length === 0){
     dispatch(getRmvConv(false))
   }
-},[])
+},[conversationId.length,dispatch,messages.length])
 
     useEffect(()=>{
         if (endPage.current) {

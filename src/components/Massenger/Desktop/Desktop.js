@@ -1,5 +1,7 @@
+/* eslint-disable */
 import {
   Avatar,
+  Button,
   Drawer,
   Grid,
   List,
@@ -7,12 +9,11 @@ import {
   ListItemAvatar,
   ListItemIcon,
   ListItemText,
-  Switch,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./desktop.css";
-import pic from "../../../assets/userAvatar.png";
+// import pic from "../../../assets/userAvatar.png";
 import ChatBox from "./ChatBox/ChatBox";
 import ChatList from "./ContactUsers/ContactUsers";
 import {
@@ -26,79 +27,162 @@ import { Box } from "@mui/system";
 import AccModal from "./Modal/ModalComponent";
 import { useDispatch , useSelector } from "react-redux";
 import {  modalHandler } from "../../../Redux";
-
+import API from "../../config/API";
 function Desktop() {
   //-----------redux---------------
 
   const dispatch = useDispatch();
-
   const user =  useSelector(state=> state.userState.user)
   const conversation =  useSelector(state => state.conversationState.conversation)
+
   // const conv =  useSelector(state => state.socketState.conversation)
-  //---------get data -----------------
-
-
-  //--------check notification-------------
- const noti = localStorage.getItem('notification')
-
- const [notification , setNotification] = useState(false)
- 
-  const [showNotification , setShowNotification]=useState(false)
-  useEffect(()=>{
-    if('Notification' in window){
-      setShowNotification(true)
-    }else{
-      setShowNotification(false)
-    }
-  },[])
   
+  //--------check notification-------------
+
+ const [notification , setNotification] = useState()
+ const [showNotification , setShowNotification]=useState(false)
+
+ const convertedVapidKey = urlBase64ToUint8Array(process.env.REACT_APP_PUBLIC_VAPID_KEY)
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = "=".repeat((4 - base64String.length % 4) % 4)
+  // eslint-disable-next-line
+  const base64 = (base64String + padding).replace(/\-/g, "+").replace(/_/g, "/")
+
+  const rawData = window.atob(base64)
+  const outputArray = new Uint8Array(rawData.length)
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i)
+  }
+  return outputArray
+}
+ const sendSubscription = useCallback((subscription)=>{
+  return fetch('/subscription', {
+    method: 'POST',
+    body: JSON.stringify({
+      subscription:subscription,
+      body:{id:user._id}
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+},[user._id])
+const subscribeUser = ()=>{
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.ready.then(function(registration) {
+      if (!registration.pushManager) {
+        console.log('Push manager unavailable.')
+        return
+      }
+
+      registration.pushManager.getSubscription().then(function(existedSubscription) {
+        if (existedSubscription === null) {
+          console.log('No subscription detected, make a request.')
+          registration.pushManager.subscribe({
+            applicationServerKey: convertedVapidKey,
+            userVisibleOnly: true,
+          }).then(function(newSubscription) {
+
+            sendSubscription(newSubscription)
+          }).catch(function(e) {
+            if (Notification.permission !== 'granted') {
+              console.log('Permission was not granted.')
+            } else {
+              console.error('An error ocurred during the subscription process.', e)
+            }
+          })
+        } else {
+          sendSubscription(existedSubscription)
+        }
+      })
+    })
+      .catch(function(e) {
+        console.error('An error ocurred during Service Worker registration.', e)
+      })
+  }
+}
   const handleNotification = ()=>{
     if('serviceWorker' in navigator && 'Notification' in window){
       // setNotification(true)
       Notification.requestPermission(result =>{
-        //   console.log('user chois' , result)
+          console.log('user chois' , result)
         if(result === 'granted'){
-            localStorage.setItem('notification' , true)
-        //     console.log('no permision')
+            setNotification(true)
+            subscribeUser()
           }else{
-            localStorage.setItem('notification' , false)
+            setNotification(false)
           }
         })
 
-        //     if('serviceWorker' in navigator){
-        //       const option ={
-        //         body:"hi fayegh",
-        //         icon:'../../../../public/img/icon_x96.png',
-        //         dir:'ltr',
-        //         vibrate:[100 , 50 , 200],
-        //         badge:'../../../../public/img/icon_x96.png'
-        //       }
-        //       navigator.serviceWorker.ready
-        //       .then(swReg=>{
-        //         swReg.showNotification('Twitty' , option)
-        //       })
-        //     }
+            // if('serviceWorker' in navigator){
+            //   const option ={
+            //     body:"hi fayegh",
+            //     icon:'../../../../public/img/icon_x96.png',
+            //     dir:'ltr',
+            //     vibrate:[100 , 50 , 200],
+            //     badge:'../../../../public/img/icon_x96.png'
+            //   }
+            //   navigator.serviceWorker.ready
+            //   .then(swReg=>{
+            //     swReg.showNotification('Twitty' , option)
+            //   })
+            // }
 
             
-        //   }
+          // }
         // })
     }else{
       // setNotification(false)
-      localStorage.setItem('notification' , false)
-
-      alert('your browser dose not suppodrt')
+      alert('your browser dose not suppodrt PWA')
     }
   }
-  useEffect(()=>{
-    if(noti){
-      setNotification(true)
-    }else{
-     setNotification(false)
  
-    }
-  },[noti])
+useEffect(()=>{
+  const noti = Notification.permission
+  if(noti === "granted"){
+    setShowNotification(true)
+  }else{
+    setShowNotification(false)
+  }
+},[notification])
 
-console.log(notification)
+
+useEffect(()=>{
+  const notification = Notification.permission
+  if(showNotification){
+
+    if(notification === 'granted'){
+
+      API({method:'get' , url:`/subscription/${user._id}`})
+      .then(result=>{
+      if(result.status === 200){
+        navigator.serviceWorker.ready.then(registration=>{
+          registration.pushManager.getSubscription().then(res=>{
+            if(result.data.subscription?.endpoint !== res?.endpoint){
+              registration.pushManager.subscribe({
+                applicationServerKey: convertedVapidKey,
+                userVisibleOnly: true,
+              }).then(function(newSubscription) {
+
+                sendSubscription(newSubscription)
+              })
+
+            }else{
+              return
+            }
+          })
+        })
+      }else{
+        return
+      }
+      
+    })
+    .catch(err=> console.log(err))
+  }
+}
+},[notification,convertedVapidKey,sendSubscription,showNotification,user._id])
 
   //-------------WidthDimensions------------
 
@@ -151,7 +235,7 @@ console.log(notification)
           onClick={toggleDrawer(anchor, false, true, "profile")}
         >
           <ListItemAvatar>
-            <Avatar alt="account" src={user.pic ? user.pic : pic} sx={{ width: 40, height: 40 }} />
+            <Avatar alt="account" src={user.pic?.length> 0 && user.pic } sx={{ width: 40, height: 40 }} />
           </ListItemAvatar>
           <ListItemText
             primary={
@@ -192,22 +276,26 @@ console.log(notification)
           />
         </ListItem>
 
-{showNotification ? (
-  <ListItem key="Notification" style={{ marginBottom: 20 }}>
+{!showNotification ? (
+  <ListItem key="Notification"  style={{ marginBottom: 20 , display:'flex' , justifyContent:"center" }}>
+    <Button variant="outlined" color="warning" onClick={handleNotification}>
+
           <ListItemIcon>
-            <Notifications style={{ color: "white" }} />
+            <Notifications color="warning" />
           </ListItemIcon>
           <ListItemText
             primary={
               <Typography sx={{ fontSize: 14 }}>Notification</Typography>
             }
-          />
-          <Switch
+            />
+          {/* <Switch
           // defaultChecked = {false}
-            color="warning"
-            value= {notification}
-            onChange={handleNotification}
-          />
+          disabled = {notification ? true : false}
+          color="warning"
+          value= {notification}
+          onChange={handleNotification}
+        /> */}
+        </Button>
         </ListItem>
 ):null}
    

@@ -49,7 +49,7 @@ function Register() {
           "email":email,
           "password" : pass
         }
-         
+
           const res = await axios.post('/auth/register' , data)
           if(res.status === 200){
             setName('')

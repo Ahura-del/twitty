@@ -5,20 +5,13 @@ import {useHistory} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { modalHandler, sendReciverUserId, updateConv, updateMsg} from '../../../../../Redux'
 import socket from '../../../../socket';
-
-import axios from 'axios'
+import API from '../../../../config/API'
 function ChatHeader({data}) {
     //-------history-----------------
     const history = useHistory()
   //------------modal----------------
   const dispatch = useDispatch()
   const {conversationId} = useSelector((state) => state.conversationState);
-  const token = localStorage.getItem("token");
-
-  // const avatarModal = ()=>{
-  //   dispatch(updateState({state:true , label:"avatar"}))
-  //   setAnchorEl(null);
-  // }
 
     //-----------menu----------------
 
@@ -44,7 +37,8 @@ function ChatHeader({data}) {
     if(data){
 
       try {
-        const res = await axios.delete(`/conversation/${data._id}` ,{headers:{'authorization': `Bearer ${token}`}} )
+        const res = await API({method:'delete' , url:`/conversation/${data._id}`})
+
 
         if(res.status === 200){
           socket.emit('removeConversation' , {conversationId}) 
@@ -66,9 +60,9 @@ function ChatHeader({data}) {
   //-----------clear history--------------
   const clearHistory = async ()=>{
     try {
-      const res = await axios.delete(`/messages/${conversationId}`, {
-        headers: { authorization: `Bearer ${token}` },
-      });
+
+      const res = await API({method:'delete' , url:`/messages/${conversationId}`})
+
       if (res.status === 200) {
         setAnchorEl(null);
         dispatch(updateMsg())
@@ -105,7 +99,7 @@ function ChatHeader({data}) {
                             </Grid>
                             <Grid item>
                                 <Typography sx={{color:"#999" , fontSize:14}}>
-                                    Online
+                                Available
                                 </Typography>
                             </Grid>
                         </Grid>

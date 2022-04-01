@@ -18,7 +18,7 @@ import {useHistory} from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import { modalHandler, sendReciverUserId, handleconvId , updateState, getRmvConv } from "../../../../Redux";
 import UserItem from './SearchUserItem/SearchUserItem'
-import axios from 'axios'
+import API from "../../../config/API";
 // import {  reciverId } from "../../../../Redux/messagesSlice";
 
 function ModalComponent(props) {
@@ -91,7 +91,9 @@ function ModalComponent(props) {
         "bio":accBio,
         "pic":pic
       }
-      const sendData = await axios.put(`/user/${user._id}` , data , {headers:{'authorization': `Bearer ${token}`}})
+
+      const sendData = await API({method:'put' , url:`/user/${user._id}` , data})
+
       if(sendData.status === 200){
         setOpen(false);
         dispatch(modalHandler(false));
@@ -151,7 +153,9 @@ function ModalComponent(props) {
         oldPass,
         newPass
       }
-      const updatePass = await axios.put(`/user/newPass/${user._id}` , data ,{headers:{'authorization': `Bearer ${token}`}})
+
+      const updatePass = await API({method:'put' , url:`/user/newPass/${user._id}` , data})
+
       if(updatePass.status === 200){
         setOldPass('')
         setNewPass('')
@@ -186,7 +190,9 @@ function ModalComponent(props) {
     }
     try {
       // const data = {delPass}
-      const delAcc = await axios.delete(`/user/${user._id}`,{headers:{'authorization': `Bearer ${token}`} , data:{delPass}})
+
+      const delAcc = await API({method:'delete' , url:`/user/${user._id}`,data:{delPass}})
+
       if(delAcc.status === 200){
         localStorage.clear()
         history.push('/')
@@ -311,7 +317,9 @@ const [userFriendBio , setUserFriendBio] = useState('')
     if(reciveUserId){
       const getUser = async()=>{
         try {
-          const res = await axios.get(`/user/allUsers/${reciveUserId}`,  {headers:{'authorization': `Bearer ${token}`}})
+
+          const res = await API({method:'get' , url:`/user/allUsers/${reciveUserId}`})
+
           if(res.status === 200){
             // console.log(res);
             setUserFriend(res.data)

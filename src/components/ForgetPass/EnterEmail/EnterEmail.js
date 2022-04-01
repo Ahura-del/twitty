@@ -20,6 +20,7 @@ function EnterEmail() {
       return;
     } 
     try {
+      
       const fpassEmail = await axios.get(`/user/fPass/${email}`)
       if(fpassEmail.status===200){
         setEmail('')

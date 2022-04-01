@@ -5,27 +5,38 @@ import { ChatItem } from "react-chat-elements";
 import pic from '../../../../assets/userAvatar.png'
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 import { format } from 'timeago.js';
 import { handleconvId } from '../../../../Redux';
+import socket from '../../../socket';
+import API from '../../../config/API';
 function MobleContactList(props) {
   const history = useHistory()
   const dispatch = useDispatch()
+  const getIsRead = useSelector(state => state.socketState.message)
   const currentUser = useSelector((state) => state.userState.user);
-  const token = localStorage.getItem("token");
   const [usersData, setUsersData] = useState({});
-
+  const [countMsg , setCountMsg] = useState(0)
+  const [onlineUser , setOnlineUser] = useState(false)
   
+  useEffect(()=>{
+    const users = props.data.members?.find((user) => user !== currentUser._id);
+    socket.on('getUsers' , u=>{
+      u.forEach(user =>{
+       if(user.userId === users){
+          setOnlineUser(true)
+        }
+      })
+    })
+  },[currentUser,props])
   useEffect(() => {
     const users = props.data.members?.find((user) => user !== currentUser._id);
 
     const getUserData = async () => {
       if (users) {
-        
+
         try {
-          const res = await axios.get(`/user/allUsers/${users}`, {
-            headers: { authorization: `Bearer ${token}` },
-          });
+          const res = await API({method:'get' , url:`/user/allUsers/${users}`})
+
           setUsersData(res.data);
         } catch (error) {
           console.log(error.response);
@@ -34,11 +45,48 @@ function MobleContactList(props) {
       }
     };
     getUserData();
-  }, [currentUser, props, token]);
+  }, [currentUser, props]);
   
   // console.log(usersData)
   // console.log(props)
+  useEffect(()=>{
+    const getReadMessage = async ()=>{
 
+      await API({method:'get' , url:`/messages/${props.data._id}`})
+        .then(res=>{
+          let count = 0;
+          res.data.forEach(msg=>{
+            if(msg.sender === usersData._id){
+              if(!msg.isRead){
+                count++
+              }else{
+                count = 0                
+              }
+            }else{
+              count = 0
+            }
+          })
+              setCountMsg(count)
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+    getReadMessage()
+},[usersData,getIsRead,props])
+
+const updateMessages = async ()=>{
+
+  await API({method:'put' , url:`/messages/${props.data._id}` , data:{isRead:true}})
+  .then(res=>{
+    if(res.status === 200){
+      setCountMsg(0)
+    }
+  })
+  .catch(err=>{
+    console.log(err)
+  })
+}
 
   
 
@@ -55,8 +103,9 @@ function MobleContactList(props) {
           title={usersData.name}
           subtitle="Hi , I'm ready to chat!"
           dateString={format(props.data.createdAt)}
-          unread={2}
+          unread={countMsg}
           onClick={()=>{
+            updateMessages()
             history.push({pathname:'/chat' , state:{user:usersData}})
             dispatch(handleconvId({conversationId:props.data._id}))
             
@@ -64,7 +113,7 @@ function MobleContactList(props) {
           onContextMenu={()=>alert('hi')}
           avatarFlexible={true}
           statusText=""
-          statusColor="green"
+          statusColor={onlineUser ? "green" : 'red'}
         />
       ) : (
         <Stack spacing={1}>

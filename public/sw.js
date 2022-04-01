@@ -60,7 +60,7 @@ self.addEventListener('fetch', function(event) {
                 })
             })
             .catch(function(err) {
-
+              console.log(err)
             });
         }
       })
@@ -68,40 +68,65 @@ self.addEventListener('fetch', function(event) {
 });
 
 self.addEventListener('notificationclick' , event =>{
-  const notification = event.notification;
-  const action = event.action;
 
-  if(action === 'confirm'){
-    notification.close()
-  }else{
+  const rootUrl = new URL('/', location).href;
+    event.notification.close();
+    // Enumerate windows, and call window.focus(), or open a new one.
     event.waitUntil(
-      clients.matchAll()
-      .then(clis =>{
-        const client = clis.find(c=>{
-          return c.visibilityState === 'visible'
-        })
-        if(client !== undefined){
-          client.navigate(notification.data.url)
-          client.focus()
-        }else{
-          clients.openWindow(notification.data.url)
+      clients.matchAll().then(matchedClients => {
+        for (let client of matchedClients) {
+          if (client.url === rootUrl) {
+            return client.focus();
+          }
         }
-        notification.close()
+        return clients.openWindow("/");
       })
-    )
-  }
+    );
+
+
+
+//   const notification = event.notification;
+//   const action = event.action;
+// console.log(notification)
+//   if(action === 'confirm'){
+//     notification.close()
+//   }else{
+//     event.waitUntil(
+//       clients.matchAll()
+//       .then(clis =>{
+//         const client = clis.find(c=>{
+//           return c.visibilityState === 'visible'
+//         })
+//         if(client !== undefined){
+//           client.navigate(notification.data.url)
+//           client.focus()
+//         }else{
+//           clients.openWindow(notification.data.url)
+//         }
+//         notification.close()
+//       })
+//     )
+//   }
 })
 
 self.addEventListener('push' , event =>{
+  // const data = event.data.json()
+  const getData =event.data.text()
+  const data = JSON.parse(getData)
+
   const option = {
-    body:event.data.description,
+    body:data.description,
     icon:'/img/icon_x96.png',
     badge:'/img/icon_x96.png',
+    vibrate: [100, 50, 100],
     data:{
-      url:event.data.openUrl
+      url:data.openUrl
     }
   }
-  self.ServiceWorkerRegistration.showNotification(event.data.title , option)
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, option)
+  );
 })
 
 self.addEventListener('notificationclose' , ()=>{
