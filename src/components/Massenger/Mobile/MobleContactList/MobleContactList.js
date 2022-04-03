@@ -55,18 +55,21 @@ function MobleContactList(props) {
       await API({method:'get' , url:`/messages/${props.data._id}`})
         .then(res=>{
           let count = 0;
-          res.data.forEach(msg=>{
-            if(msg.sender === usersData._id){
-              if(!msg.isRead){
-                count++
+          if(res.data.length > 0){
+
+            res.data?.forEach(msg=>{
+              if(msg.sender === usersData._id){
+                if(!msg.isRead){
+                  count++
+                }else{
+                  count = 0                
+                }
               }else{
-                count = 0                
+                count = 0
               }
-            }else{
-              count = 0
-            }
-          })
-              setCountMsg(count)
+            })
+            setCountMsg(count)
+          }
         })
         .catch(err=>{
             console.log(err)

@@ -1,4 +1,4 @@
-import React, { useEffect, useState  } from "react";
+import React, { useCallback, useEffect, useState  } from "react";
 import { Grid, Typography } from "@mui/material";
 import ChatHeader from "./ChatHeader/ChatHeader";
 import ChatMessage from "./ChatMessage/ChatMessage";
@@ -11,44 +11,83 @@ import API from "../../../config/API";
 
 function ChatBox() {
   const dispatch = useDispatch();
-  const [messages , setMessages] = useState([])
+  const [messages , setMessages] = useState()
   const [update , setUpdate] = useState(false)
   const { reciverUserId , conversationId} = useSelector((state) => state.conversationState);
   const message = useSelector(state => state.socketState.message)
+  const allMessages = useSelector(state => state.conversationState.messages)
   const conv =  useSelector(state => state.socketState.conversation)
   const rmvMsg = useSelector(state=> state.socketState.removeMsg)
   const sender = localStorage.getItem("userId");
-  const token = localStorage.getItem("token");
 
+  // useEffect(()=>{
+  //   if('caches' in window){
+  //     caches.match(`http://localhost:3000/messages/${conversationId}`)
+  //     .then(res => {
+  //       if(res){
+  //         return res.json()
+  //       }
+  //     })
+  //     .then(result=>{
+  //       console.log(result)
+  //     })
+  //   }
+  // },[])
+  // const fetchMsg =  useCallback(  ()=>{
+  //   API({method:'get' , url:`messages/${conversationId}`})
+  //   .then(res => {
+  //     console.log(res)
+  //     if(res.status === 200){
+  //       setMessages(res?.data)
+  //     }else{
+  //       setMessages([])
+  //     }
 
+  //   })
+  //   .catch(err=>{
+  //     console.log(err)
+  //   })
+  //   // if(res.status === 200){
+  //   // }else{
+  //     // setMessages([]) 
+  //   // }
+  // },[conversationId])
+  // console.log(fetchMsg())
 useEffect(()=>{
-    if(conversationId?.length > 0){
-      const fetchMsg = async ()=>{
+  if(navigator.onLine){
+    if(allMessages.length > 0){
+      setMessages(JSON.parse(allMessages))
 
-          const res = await API({method:'get' , url:`messages/${conversationId}`})
-
-          if(res.status === 200){
-            setMessages(res?.data)
-          }
-       
-      }
-      fetchMsg()
     }else{
       setMessages([])
     }
- 
-  },[update,rmvMsg,token,conversationId])
+  }else{
+    setMessages([])
+    
+  }
+  },[update,rmvMsg,allMessages])
   
-useEffect(()=>{
-    setMessages(oldMsg => [...oldMsg , message])
-},[message])
 
+  useEffect(()=>{
+    if(message.length !== 0){
+      console.log('hi' , message)
+      setMessages(oldMsg => [...oldMsg , message])
+    }
+  },[message])
+  // console.log(messages)
 
+// console.log(messages)
 
   const sendMessage =async (e) => {
+    const checkInternet = navigator.onLine
     if(e.length < 1){
       return
     }
+
+    if(!checkInternet){
+      return alert('Please connect to the internet')
+    }
+
     if(conversationId.length === 0){
       // try {
         const convData = {
@@ -172,7 +211,6 @@ useEffect(()=>{
     } 
   }, [dispatch,conv]);
 
-// console.log(messages)
   return (
     <Grid
       container
@@ -189,7 +227,9 @@ useEffect(()=>{
             xs={9}
             sx={{ pt: 2, height: "100%", width: "100%", overflowY: "auto" }}
           >
-            <ChatMessage messages={messages} />
+            {messages.length > 0 && (
+              <ChatMessage messages={messages} />
+            )}
           </Grid>
           <Grid item xs={2} sx={{ height: "100%", width: "100%" }}>
             <ChatFooter sendHandler={sendMessage} />

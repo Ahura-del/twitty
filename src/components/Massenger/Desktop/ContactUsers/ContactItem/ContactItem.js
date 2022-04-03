@@ -7,9 +7,10 @@ import { format } from "timeago.js";
 import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
 import "./contactList.css";
 import { useSelector, useDispatch } from "react-redux";
-import {  sendReciverUserId, handleconvId } from "../../../../../Redux";
+import {  sendReciverUserId, handleconvId, getMessages } from "../../../../../Redux";
 import socket from '../../../../socket';
 import API from "../../../../config/API";
+import axios from "axios";
 
 function ContactItem(props) {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ function ContactItem(props) {
   const [onlineUser , setOnlineUser] = useState(false)
   const currentUser = useSelector((state) => state.userState.user);
   const getIsRead = useSelector(state => state.socketState.message)
+  const token = localStorage.getItem('token')
   const [usersData, setUsersData] = useState({});
 const [countMsg , setCountMsg] = useState(0)
 
@@ -94,18 +96,21 @@ useEffect(()=>{
       await API({method:'get' , url:`/messages/${props.data._id}`})
         .then(res=>{
           let count = 0;
-          res.data.forEach(msg=>{
-            if(msg.sender === usersData._id){
-              if(!msg.isRead){
-                count++
+          if(res.data.length > 0){
+
+            res.data.forEach(msg=>{
+              if(msg.sender === usersData._id){
+                if(!msg.isRead){
+                  count++
+                }else{
+                  count = 0                
+                }
               }else{
-                count = 0                
+                count = 0
               }
-            }else{
-              count = 0
-            }
-          })
-              setCountMsg(count)
+            })
+            setCountMsg(count)
+          }
         })
         .catch(err=>{
             console.log(err)
@@ -125,6 +130,25 @@ const updateMessages = async ()=>{
     console.log(err)
   })
 }
+const fetchMessages = async (convId)=>{
+  
+   await axios.get(`messages/${convId}` , {headers:{'authorization': `Bearer ${token}`}} )
+    // API({method:'get' , url:`messages/${convId}`})
+    .then(res => {
+      // console.log(JSON.stringify(res.data))
+      if(res.status === 200){
+        dispatch(getMessages(JSON.stringify(res.data)))
+       
+      }else{
+        dispatch(getMessages([]))
+      }
+      
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+
+}
 
   return (
     <>
@@ -142,6 +166,7 @@ const updateMessages = async ()=>{
           statusText=""
           onClick={() => {
             updateMessages()
+            fetchMessages(props.data._id)
             dispatch(handleconvId({ conversationId: props.data._id }));
             dispatch(sendReciverUserId({ userId: usersData._id }));
 

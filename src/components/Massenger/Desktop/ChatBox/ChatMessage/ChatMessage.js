@@ -5,6 +5,7 @@ import "./ChatMessage.css";
 
 function ChatMessage({ messages }) {
   const endPage = useRef();
+console.log(messages)
 
   useEffect(() => {
     if (endPage.current) {
@@ -21,7 +22,7 @@ function ChatMessage({ messages }) {
        <Typography sx={{color:"gray" , textAlign:"center"}} variant="h3" >No message!</Typography>
      </Grid>) : (
       <Grid container rowSpacing={2}>
-        {messages?.map((item, index) => (
+        { messages === undefined ? null :  messages?.map((item, index) => (
           <ChatText
             text={item.text}
             sender={item.sender}

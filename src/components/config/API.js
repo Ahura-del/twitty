@@ -1,8 +1,8 @@
 import axios from "axios"
 
-const token = localStorage.getItem('token')
 
 const API = ({method , url , data}) => {
+    const token = localStorage.getItem('token')
     try {
      return   axios({
             method:method,

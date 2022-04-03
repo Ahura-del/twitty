@@ -1,4 +1,4 @@
-import {CONVERSATIONID, GETCONVERSATION, RECIVERUSERID, UPDATECONVERSATION, UPDATEMSG} from './Type'
+import {CONVERSATIONID, GETCONVERSATION, RECIVERUSERID, UPDATECONVERSATION, UPDATEMSG , MESSAGES} from './Type'
 
 export const getConversation =(conversation)=>{
     return {
@@ -29,5 +29,11 @@ export const sendReciverUserId = ({userId})=>{
     return{
         type:RECIVERUSERID,
         payload:userId
+    }
+}
+export const getMessages = (msg)=>{
+    return{
+        type:MESSAGES,
+        payload:msg
     }
 }

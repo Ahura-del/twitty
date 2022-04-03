@@ -21,7 +21,12 @@ function MobileChat() {
         setHeight(e)
     }
     const location = useLocation()
+
     const sendMsg = async(text)=>{
+      const checkInternet = navigator.onLine
+      if(!checkInternet){
+        return alert('please connect to the internet')
+      }
     
          //if we haven't conversation
          if(conversationId.length === 0){

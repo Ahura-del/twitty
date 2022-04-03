@@ -1,16 +1,16 @@
 
-var CACHE_STATIC_NAME = 'static-v1';
-var CACHE_DYNAMIC_NAME = 'dynamic-v1';
+var CACHE_STATIC_NAME = 'static-v4';
+var CACHE_DYNAMIC_NAME = 'dynamic-v4';
 var CACHE_FILES =[
   '/',
   '/index.html',
-  '/static/js/2.827fa8a9.chunk.js',
-  '/static/js/main.c4e389ac.chunk.js',
+  '/static/js/2.500ffabc.chunk.js',
+  // '/static/js/main.2b777f1b.chunk.js',
   '/static/js/runtime-main.4a260c4c.js',
-  '/static/css/2.56cb10f9.chunk.css',
+  '/static/css/2.e3d72c3e.chunk.css',
   '/static/css/main.f9a5d841.chunk.css',
-  '/static/media/chat.665b5137.png',
-  '/static/media/logo.2518cfce.svg',
+  'logo192.png',
+  'logo512.png',
   '/apple-touch-icon.png',
   '/favicon.ico',
   'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap',
@@ -60,7 +60,7 @@ self.addEventListener('fetch', function(event) {
                 })
             })
             .catch(function(err) {
-              console.log(err)
+              return caches.match(event.request);
             });
         }
       })
@@ -84,29 +84,6 @@ self.addEventListener('notificationclick' , event =>{
     );
 
 
-
-//   const notification = event.notification;
-//   const action = event.action;
-// console.log(notification)
-//   if(action === 'confirm'){
-//     notification.close()
-//   }else{
-//     event.waitUntil(
-//       clients.matchAll()
-//       .then(clis =>{
-//         const client = clis.find(c=>{
-//           return c.visibilityState === 'visible'
-//         })
-//         if(client !== undefined){
-//           client.navigate(notification.data.url)
-//           client.focus()
-//         }else{
-//           clients.openWindow(notification.data.url)
-//         }
-//         notification.close()
-//       })
-//     )
-//   }
 })
 
 self.addEventListener('push' , event =>{

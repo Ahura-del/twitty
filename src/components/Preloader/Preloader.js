@@ -12,11 +12,17 @@ function Preloader() {
     
     const logout = ()=>{
         localStorage.clear()
+        caches.delete('static-v4')
+        caches.delete('dynamic-v4')
+
         window.location.reload()
     }
     
+
+
     
     useEffect(()=>{
+ 
         const id = localStorage.getItem('userId')
         const token = localStorage.getItem('token');
         let users = [];
@@ -39,7 +45,7 @@ function Preloader() {
                }
            }).catch((err)=>{
                if(err.response){
-                   logout()
+                 logout()
                }
            })
            await API({method:'get' , url:'/user/allUsers'})
