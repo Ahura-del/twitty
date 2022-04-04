@@ -32,7 +32,6 @@ function ChatHeader({data}) {
   };
 
   //----------delete chat -------------
-
   const delChatHandler =async ()=>{
     if(data){
 

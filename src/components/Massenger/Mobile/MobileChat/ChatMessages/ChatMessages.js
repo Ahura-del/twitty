@@ -7,17 +7,18 @@ import ChatText from './ChatText/ChatText'
 function ChatMessages({conversationId , msg}) {
     const endPage = useRef()
     const dispatch = useDispatch()
-    const token = localStorage.getItem("token");
     const {message ,removeMsg } = useSelector(state => state.socketState)
     const {updateMessage} = useSelector(state => state.conversationState)
 
     const [messages , setMessages] = useState([])
 
     useEffect(()=>{
-      if(conversationId !== ""){
-        const fetchMsg = async ()=>{
-          try {
+      // if(navigator.onLine){
 
+        if(conversationId !== ""){
+          const fetchMsg = async ()=>{
+          try {
+            
             const res = await API({method:'get' , url:`messages/${conversationId}`})
 
             if(res.status === 200){
@@ -31,14 +32,24 @@ function ChatMessages({conversationId , msg}) {
       }else{
         setMessages([])
       }
+    // }else{
+      // if('caches' in window){
+        // caches.match('http://localhost:3000/messages')
+        // .then()
+      // }
+    // }
    
-    },[removeMsg,updateMessage,token,conversationId])
+    },[removeMsg,updateMessage,conversationId])
     
+    // console.log(messages)
+    // console.log(message)
+
+    // console.log(msg)
     useEffect(()=>{
    if(messages.length !== 0){
      setMessages(oldMsg => [...oldMsg , message])
     }
-    },[message , messages.length])
+    },[message])
 
 
 useEffect(()=>{
@@ -51,7 +62,7 @@ useEffect(()=>{
   if(conversationId.length === 0 && messages.length === 0){
     dispatch(getRmvConv(false))
   }
-},[conversationId.length,dispatch,messages.length])
+},[conversationId,dispatch,messages])
 
     useEffect(()=>{
         if (endPage.current) {
@@ -62,7 +73,7 @@ useEffect(()=>{
                 inline: 'nearest'
               })
             }
-    })
+    },[])
     return (
        <Container  sx={{height:"100%"}}>
        {messages.length > 0 ? (<>

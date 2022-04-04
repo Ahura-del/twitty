@@ -22,6 +22,7 @@ function MobileChat() {
     }
     const location = useLocation()
 
+    
     const sendMsg = async(text)=>{
       const checkInternet = navigator.onLine
       if(!checkInternet){

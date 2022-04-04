@@ -1,4 +1,4 @@
-import { Divider, Grid, Skeleton, Stack , Container } from '@mui/material'
+import { Divider, Grid, Skeleton, Stack , Container, Menu, MenuItem, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import "react-chat-elements/dist/main.css";
 import { ChatItem } from "react-chat-elements";
@@ -6,7 +6,7 @@ import pic from '../../../../assets/userAvatar.png'
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'timeago.js';
-import { handleconvId } from '../../../../Redux';
+import { handleconvId, updateConv } from '../../../../Redux';
 import socket from '../../../socket';
 import API from '../../../config/API';
 function MobleContactList(props) {
@@ -48,7 +48,7 @@ function MobleContactList(props) {
   }, [currentUser, props]);
   
   // console.log(usersData)
-  // console.log(props)
+  // console.log(usersData)
   useEffect(()=>{
     const getReadMessage = async ()=>{
 
@@ -91,11 +91,36 @@ const updateMessages = async ()=>{
   })
 }
 
+const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick =  (event) => {
+    event.preventDefault()
+    setAnchorEl(event.currentTarget);
+    
+    //   setCopyText(pText.current.textContent);
+    // setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+const deleteContact = (convId)=>{
+  API({method:'delete' , url:`/conversation/${convId}`})
+  .then(res =>{
+    if(res.status === 200){
+      setAnchorEl(null)
+      dispatch(updateConv())
+    }
+  })
+  .catch(err=>{
+    console.log(err)
+  })
+}
   
 
 
 
     return (
+      <>
         <Grid container >
         <Container>
 
@@ -113,7 +138,7 @@ const updateMessages = async ()=>{
             dispatch(handleconvId({conversationId:props.data._id}))
             
             }}
-          onContextMenu={()=>alert('hi')}
+          onContextMenu={(e)=>handleClick(e)}
           avatarFlexible={true}
           statusText=""
           statusColor={onlineUser ? "green" : 'red'}
@@ -164,6 +189,31 @@ const updateMessages = async ()=>{
       />
         </Container>
         </Grid>
+
+
+        <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+         
+          >
+            <MenuItem onClick={()=> deleteContact(usersData._id)}>
+
+              <Typography>
+                Delete
+              </Typography>
+            </MenuItem>
+          </Menu>
+
+        </>
     )
 }
 
