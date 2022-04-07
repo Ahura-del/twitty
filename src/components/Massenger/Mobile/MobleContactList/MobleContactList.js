@@ -6,7 +6,7 @@ import pic from '../../../../assets/userAvatar.png'
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'timeago.js';
-import { handleconvId, updateConv } from '../../../../Redux';
+import { alertHandle, handleconvId, updateConv } from '../../../../Redux';
 import socket from '../../../socket';
 import API from '../../../config/API';
 function MobleContactList(props) {
@@ -96,14 +96,14 @@ const [anchorEl, setAnchorEl] = useState(null);
   const handleClick =  (event) => {
     event.preventDefault()
     setAnchorEl(event.currentTarget);
-    
-    //   setCopyText(pText.current.textContent);
-    // setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
 const deleteContact = (convId)=>{
+  if(!navigator.onLine){
+    return dispatch(alertHandle(true))
+  }
   API({method:'delete' , url:`/conversation/${convId}`})
   .then(res =>{
     if(res.status === 200){

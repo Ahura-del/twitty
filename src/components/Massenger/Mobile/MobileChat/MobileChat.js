@@ -1,5 +1,5 @@
-import { Grid } from '@mui/material'
-import React, { useState } from 'react'
+import { Alert, Grid } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import ChatHeader from './ChatHeader/ChatHeader'
 import ChatMessage from './ChatMessages/ChatMessages'
 import ChatFooter from './ChatFooter/ChatFooter'
@@ -7,14 +7,16 @@ import AccModal from '../../Desktop/Modal/ModalComponent'
 import socket from '../../../socket';
 
 import { useLocation } from 'react-router-dom'
-import {  useSelector } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
 // import { handleconvId } from '../../../../Redux'
 import API from '../../../config/API'
+import { alertHandle } from '../../../../Redux'
 function MobileChat() {
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
     const sender = localStorage.getItem("userId");
     const [messages , setMessages] = useState({})
     const {conversationId } = useSelector((state) => state.conversationState);
+    const AlertState = useSelector((state) => state.modalState.alert);
 
     const [height , setHeight] = useState(false)
     const changeHeight =(e)=>{
@@ -24,9 +26,8 @@ function MobileChat() {
 
     
     const sendMsg = async(text)=>{
-      const checkInternet = navigator.onLine
-      if(!checkInternet){
-        return alert('please connect to the internet')
+      if(!navigator.onLine){
+        return dispatch(alertHandle(true))
       }
     
          //if we haven't conversation
@@ -101,12 +102,35 @@ function MobileChat() {
 
       }
     }
+
+    useEffect(() => {
+      if (AlertState) {
+        setTimeout(() => {
+          dispatch(alertHandle(false));
+        }, 3000);
+      }
+    }, [AlertState,dispatch]);
+    useEffect(()=>{
+      if(!navigator.onLine){
+        setMessages('offline')
+      }
+    },[])
+
     return (
         <>
+        {AlertState && (
+        <div
+          style={{ width: "100%", display: "flex", justifyContent: "center"  }}
+        >
+          <div style={{ width: "100%", position: "absolute", zIndex: 2 }}>
+            <Alert severity="error">Please connect to the internet</Alert>
+          </div>
+        </div>
+      )}
         <AccModal />
         <Grid container direction="column" style={{overflow:"hidden" , width:"100%" }} sx={height ? {height:"unset"} : {height:"100vh"}}>
             <Grid item xs={1} sx={{bgcolor:"#2F3135" , width:"100%" , height:"100%" }}>
-                <ChatHeader data={location.state.user}  /> 
+                <ChatHeader data={location.state?.user}  /> 
             </Grid>
             <Grid item xs={10} sx={{ bgcolor:"#363A3F" , overflowY:"auto" , height:"100%"  , width:"100%"}}>
                <ChatMessage conversationId={conversationId} msg={messages} />

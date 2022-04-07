@@ -1,8 +1,9 @@
-import {MODAL , UPDATESTATE} from './Type'
+import {ALERT, MODAL , UPDATESTATE} from './Type'
 
 const initialState = {
     state:false,
     label:"",
+    alert:false,
     reciveUserId:'',
     update:false
 }
@@ -16,6 +17,10 @@ const modalReducer = (state = initialState , action) =>{
                 label:action.label,
                 reciveUserId:action.reciveUserId
             };
+            case ALERT:
+                return{
+                    alert:action.payload
+                }
             case UPDATESTATE:
                 return{
                     update:!state.update

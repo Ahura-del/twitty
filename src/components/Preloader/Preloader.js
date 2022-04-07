@@ -12,8 +12,8 @@ function Preloader() {
     
     const logout = ()=>{
         localStorage.clear()
-        caches.delete('static-v4')
-        caches.delete('dynamic-v4')
+        caches.clear()
+
 
         window.location.reload()
     }

@@ -1,4 +1,4 @@
-export {modalHandler , updateState} from './Modal/Action'
+export {modalHandler , updateState , alertHandle} from './Modal/Action'
 export {addUser} from './User/Action'
 export {getConversation , updateConv, sendReciverUserId, handleconvId , updateMsg , getMessages} from './Conversation/Action'
 export {getConv,getReadMsg,getMessage,getRmvMsg,getRmvConv} from './Socket/Action'

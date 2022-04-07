@@ -3,7 +3,7 @@ import { Avatar, Container, Grid, Menu, MenuItem, Typography } from '@mui/materi
 import React, { useState } from 'react'
 import {useHistory} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { modalHandler, sendReciverUserId, updateConv, updateMsg} from '../../../../../Redux'
+import { alertHandle, modalHandler, sendReciverUserId, updateConv, updateMsg} from '../../../../../Redux'
 import socket from '../../../../socket';
 import API from '../../../../config/API'
 function ChatHeader({data}) {
@@ -12,7 +12,6 @@ function ChatHeader({data}) {
   //------------modal----------------
   const dispatch = useDispatch()
   const {conversationId} = useSelector((state) => state.conversationState);
-
     //-----------menu----------------
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -33,6 +32,9 @@ function ChatHeader({data}) {
 
   //----------delete chat -------------
   const delChatHandler =async ()=>{
+    if(!navigator.onLine){
+      return dispatch(alertHandle(true))
+    }
     if(data){
 
       try {
@@ -58,6 +60,9 @@ function ChatHeader({data}) {
 
   //-----------clear history--------------
   const clearHistory = async ()=>{
+    if(!navigator.onLine){
+      return dispatch(alertHandle(true))
+    }
     try {
 
       const res = await API({method:'delete' , url:`/messages/${conversationId}`})
@@ -87,7 +92,7 @@ function ChatHeader({data}) {
                 <Grid item>
                 <Grid container onClick={avatarModal}>
                     <Grid item sx={{mr:2}}>
-                        <Avatar src={data.pic === "" ? '' : data.pic} alt="user avatar" sx={{width:50 , height:50 , cursor:"pointer"}} onClick={avatarModal} />
+                        <Avatar src={data?.pic === "" ? '' : data.pic} alt="user avatar" sx={{width:50 , height:50 , cursor:"pointer"}} onClick={avatarModal} />
                     </Grid>
                     <Grid item>
                         <Grid container direction="column" sx={{height:"100%"}} justifyContent="space-between">

@@ -7,6 +7,7 @@ function ChatText(props) {
   useEffect(() => {
     props.sender === id ? setDir("send") : setDir("recive");
   }, [props , id]);
+
   return (
     <Grid item xs={12}>
       <Grid

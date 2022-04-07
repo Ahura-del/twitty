@@ -76,7 +76,32 @@ useEffect(()=>{
     },[])
     return (
        <Container  sx={{height:"100%"}}>
-       {messages.length > 0 ? (<>
+       {msg === 'offline' ? (
+            <Grid container sx={{ width: "100%", height: "100%" }}>
+              <Grid
+                sx={{
+                  height: "100%",
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignContent: "center",
+                  textAlign: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <Typography
+                  sx={{ flexBasis: "100%", color: "#FA6D38", fontSize: "24px" }}
+                >
+                  You're Offline!
+                </Typography>
+                <Typography
+                  sx={{ flexBasis: "100%", color: "#FA6D38", fontSize: "24px" }}
+                >
+                  Please connect to the network
+                </Typography>
+              </Grid>
+            </Grid>
+          )  :    messages.length > 0 ? (<>
 
        {messages.map((data,index)=>(
            <ChatText data={data} key={index} />

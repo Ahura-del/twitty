@@ -21,8 +21,9 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useCallback, useEffect, useState } from "react";
+import Alert from "../../config/AlertHandle";
 import { useDispatch, useSelector } from "react-redux";
-import { modalHandler } from "../../../Redux";
+import { alertHandle, modalHandler } from "../../../Redux";
 import ContactList from "./MobleContactList/MobleContactList";
 import Header from "./MobileHeader/MobileHeader";
 import AccModal from "../Desktop/Modal/ModalComponent";
@@ -33,6 +34,7 @@ function Mobile() {
   const conversation = useSelector(
     (state) => state.conversationState.conversation
   );
+  const AlertState = useSelector((state) => state.modalState.alert);
   const user = useSelector((state) => state.userState.user);
   const [loading, setLoading] = useState(false);
   const [chatListState, setChatListState] = useState("");
@@ -71,18 +73,21 @@ function Mobile() {
     }
     return outputArray;
   }
-  const sendSubscription =useCallback((subscription) => {
-    return fetch("/subscription", {
-      method: "POST",
-      body: JSON.stringify({
-        subscription: subscription,
-        body: { id: user._id },
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  },[user._id]);
+  const sendSubscription = useCallback(
+    (subscription) => {
+      return fetch("/subscription", {
+        method: "POST",
+        body: JSON.stringify({
+          subscription: subscription,
+          body: { id: user._id },
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    [user._id]
+  );
   const subscribeUser = () => {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.ready
@@ -176,8 +181,7 @@ function Mobile() {
     const notification = Notification.permission;
     if (showNotification) {
       if (notification === "granted") {
-         API({method:'get' , url:`/subscription/${user._id}`})
-
+        API({ method: "get", url: `/subscription/${user._id}` })
           .then((result) => {
             if (result.status === 200) {
               navigator.serviceWorker.ready.then((registration) => {
@@ -203,8 +207,20 @@ function Mobile() {
           .catch((err) => console.log(err));
       }
     }
-  }, [notification,convertedVapidKey,sendSubscription,showNotification,user._id]);
-
+  }, [
+    notification,
+    convertedVapidKey,
+    sendSubscription,
+    showNotification,
+    user._id,
+  ]);
+  useEffect(() => {
+    if (AlertState) {
+      setTimeout(() => {
+        dispatch(alertHandle(false));
+      }, 3000);
+    }
+  }, [AlertState]);
   //-----------Drawer---------------
   const [position, setPosition] = useState({ left: false });
   const iOS =
@@ -343,6 +359,16 @@ function Mobile() {
 
   return (
     <>
+      {AlertState && (
+        <div
+          style={{ width: "100%", display: "flex", justifyContent: "center"  }}
+        >
+          <div style={{ width: "100%", position: "absolute", zIndex: 2 }}>
+            <Alert severity="error">Please connect to the internet</Alert>
+          </div>
+        </div>
+      )}
+
       <AccModal size="mobile" />
       <SwipeableDrawer
         anchor={"left"}

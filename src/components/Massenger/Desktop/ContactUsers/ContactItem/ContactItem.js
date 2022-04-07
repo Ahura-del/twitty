@@ -1,4 +1,4 @@
-import { Divider, Grid, Skeleton, Stack } from "@mui/material";
+import { Divider, Grid, Skeleton, Stack , Menu, MenuItem, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import pic from "../../../../../assets/userAvatar.png";
 import "react-chat-elements/dist/main.css";
@@ -7,7 +7,7 @@ import { format } from "timeago.js";
 import useWidthDimensions from "../../../../../Hook/useWidthDimensions";
 import "./contactList.css";
 import { useSelector, useDispatch } from "react-redux";
-import {  sendReciverUserId, handleconvId, getMessages } from "../../../../../Redux";
+import {  sendReciverUserId, handleconvId, getMessages, updateConv, alertHandle } from "../../../../../Redux";
 import socket from '../../../../socket';
 import API from "../../../../config/API";
 import axios from "axios";
@@ -149,6 +149,31 @@ const fetchMessages = async (convId)=>{
     })
 
 }
+const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick =  (event) => {
+    event.preventDefault()
+    setAnchorEl(event.currentTarget);
+ setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+const deleteContact = (convId)=>{
+  if(!navigator.onLine){
+    return dispatch(alertHandle(true))
+  }
+  API({method:'delete' , url:`/conversation/${convId}`})
+  .then(res =>{
+    if(res.status === 200){
+      setAnchorEl(null)
+      dispatch(updateConv())
+    }
+  })
+  .catch(err=>{
+    console.log(err)
+  })
+}
 
   return (
     <>
@@ -164,6 +189,7 @@ const fetchMessages = async (convId)=>{
           avatarFlexible={true}
           statusColor={onlineHandler()}
           statusText=""
+          onContextMenu={(e)=>handleClick(e)}
           onClick={() => {
             updateMessages()
             fetchMessages(props.data._id)
@@ -222,6 +248,27 @@ const fetchMessages = async (convId)=>{
         className="divider"
       />
      
+     <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+         
+          >
+            <MenuItem onClick={()=> deleteContact(usersData._id)}>
+
+              <Typography>
+                Delete
+              </Typography>
+            </MenuItem>
+          </Menu>
     </>
   );
 }

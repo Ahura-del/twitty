@@ -16,7 +16,7 @@ import personPic from "../../../../assets/person.png";
 import avatarPic from '../../../../assets/userAvatar.png'
 import {useHistory} from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
-import { modalHandler, sendReciverUserId, handleconvId , updateState, getRmvConv } from "../../../../Redux";
+import { modalHandler, sendReciverUserId, handleconvId , updateState, getRmvConv, alertHandle } from "../../../../Redux";
 import UserItem from './SearchUserItem/SearchUserItem'
 import API from "../../../config/API";
 // import {  reciverId } from "../../../../Redux/messagesSlice";
@@ -81,6 +81,9 @@ function ModalComponent(props) {
   //profile account save btn
   const updateProfile = async (e)=>{
     e.preventDefault()
+    if(!navigator.onLine){
+      return dispatch(alertHandle(true))
+    }
     if(accName === ""){
       setProfileError({color:"error" , text:"Please set a username"})
       return
@@ -112,6 +115,9 @@ function ModalComponent(props) {
   const [newPass , setNewPass] = useState('')
   const [reNewPass , setReNewPass] = useState('')
   const changePassword = async ()=>{
+    if(!navigator.onLine){
+      return dispatch(alertHandle(true))
+    }
     if(oldPass === ""){
       setPasswordError({old:{color:"error" , text:"Please set old password"}})
       setTimeout(()=>{
@@ -181,6 +187,9 @@ function ModalComponent(props) {
   const [delAccError , setDelAccError] = useState({color:"" , text:""})
   const [delPass , setDelPass] = useState('')
   const deleteAccount = async ()=>{
+    if(!navigator.onLine){
+      return dispatch(alertHandle(true))
+    }
     if(delPass === ""){
       setDelAccError({color:"error" , text:"Please enter you'r account password"})
       setTimeout(()=>{
@@ -226,14 +235,19 @@ function ModalComponent(props) {
   const fabHandler = (e)=>{
     setFabUser(e.target.value)
     const searchUser = e.target.value
-if(searchUser !== ""){
-  const userFilter = allUsers?.filter(user => {
-   return user.name.includes(searchUser)
-  })
-  setFabSearchUser(userFilter)
-}else{
-  setFabSearchUser([])
-}
+    if(navigator.onLine){
+
+      if(searchUser !== ""){
+        const userFilter = allUsers?.filter(user => {
+          return user.name.includes(searchUser)
+        })
+        setFabSearchUser(userFilter)
+      }else{
+        setFabSearchUser([])
+      }
+    }else{
+      dispatch(alertHandle(true))
+    }
 }
 // console.log(fabSearchUser)
 const selectUserItem = (e)=>{
