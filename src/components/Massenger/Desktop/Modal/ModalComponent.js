@@ -95,7 +95,7 @@ function ModalComponent(props) {
         "pic":pic
       }
 
-      const sendData = await API({method:'put' , url:`/user/${user._id}` , data})
+      const sendData = await API({method:'put' , url:`${window.api}/user/${user._id}` , data})
 
       if(sendData.status === 200){
         setOpen(false);
@@ -160,7 +160,7 @@ function ModalComponent(props) {
         newPass
       }
 
-      const updatePass = await API({method:'put' , url:`/user/newPass/${user._id}` , data})
+      const updatePass = await API({method:'put' , url:`${window.api}/user/newPass/${user._id}` , data})
 
       if(updatePass.status === 200){
         setOldPass('')
@@ -200,7 +200,7 @@ function ModalComponent(props) {
     try {
       // const data = {delPass}
 
-      const delAcc = await API({method:'delete' , url:`/user/${user._id}`,data:{delPass}})
+      const delAcc = await API({method:'delete' , url:`${window.api}/user/${user._id}`,data:{delPass}})
 
       if(delAcc.status === 200){
         localStorage.clear()
@@ -332,7 +332,7 @@ const [userFriendBio , setUserFriendBio] = useState('')
       const getUser = async()=>{
         try {
 
-          const res = await API({method:'get' , url:`/user/allUsers/${reciveUserId}`})
+          const res = await API({method:'get' , url:`${window.api}/user/allUsers/${reciveUserId}`})
 
           if(res.status === 200){
             // console.log(res);

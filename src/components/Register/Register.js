@@ -50,7 +50,7 @@ function Register() {
           "password" : pass
         }
 
-          const res = await axios.post('/auth/register' , data)
+          const res = await axios.post(`${window.api}/auth/register` , data)
           if(res.status === 200){
             setName('')
             setEmail('')

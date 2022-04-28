@@ -24,7 +24,7 @@ function ChatHeader({ userId, conversationId, delChat ,clearHistory }) {
     const getUserData = async () => {
       if (userId) {
 
-          const res = await API({method:'get' , url:`/user/allUsers/${userId}`})
+          const res = await API({method:'get' , url:`${window.api}/user/allUsers/${userId}`})
 
           if (res.status === 200) {
             setUserData(res.data);

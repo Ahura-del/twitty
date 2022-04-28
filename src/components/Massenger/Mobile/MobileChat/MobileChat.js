@@ -38,7 +38,7 @@ function MobileChat() {
                 "reciverId":location.state.user._id
               }
 
-              const res = await API({method:'post' , url:'/conversation' , data:convData})
+              const res = await API({method:'post' , url:`${window.api}/conversation` , data:convData})
 
                 if(res.status === 200){
                   const msgData ={
@@ -47,7 +47,7 @@ function MobileChat() {
                     text:text
                   }
 
-                  const resMsg = await API({method:'post' , url:"/messages" , data:msgData})
+                  const resMsg = await API({method:'post' , url:`${window.api}/messages` , data:msgData})
 
                   if(resMsg.status === 200){
                     // dispatch(handleconvId({conversationId:res.data._id}))
@@ -83,7 +83,7 @@ function MobileChat() {
             text: text,
           }
 
-          const res = await API({method:'post' , url:"/messages" , data:msgData})
+          const res = await API({method:'post' , url:`${window.api}/messages` , data:msgData})
 
           if(res.status === 200){
             socket.emit('sendMessage' , {

@@ -17,7 +17,7 @@ function Validation() {
       return;
     } else {
       try {
-        const res = await axios.put(`/user/verify/${location.state.id}`, {
+        const res = await axios.put(`${window.api}/user/verify/${location.state.id}`, {
           isVerified: true,
         });
         if (res.status === 200) {

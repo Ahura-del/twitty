@@ -35,7 +35,7 @@ function MobleContactList(props) {
       if (users) {
 
         try {
-          const res = await API({method:'get' , url:`/user/allUsers/${users}`})
+          const res = await API({method:'get' , url:`${window.api}/user/allUsers/${users}`})
 
           setUsersData(res.data);
         } catch (error) {
@@ -52,7 +52,7 @@ function MobleContactList(props) {
   useEffect(()=>{
     const getReadMessage = async ()=>{
 
-      await API({method:'get' , url:`/messages/${props.data._id}`})
+      await API({method:'get' , url:`${window.api}/messages/${props.data._id}`})
         .then(res=>{
           let count = 0;
           if(res.data.length > 0){
@@ -80,7 +80,7 @@ function MobleContactList(props) {
 
 const updateMessages = async ()=>{
 
-  await API({method:'put' , url:`/messages/${props.data._id}` , data:{isRead:true}})
+  await API({method:'put' , url:`${window.api}/messages/${props.data._id}` , data:{isRead:true}})
   .then(res=>{
     if(res.status === 200){
       setCountMsg(0)
@@ -104,7 +104,7 @@ const deleteContact = (convId)=>{
   if(!navigator.onLine){
     return dispatch(alertHandle(true))
   }
-  API({method:'delete' , url:`/conversation/${convId}`})
+  API({method:'delete' , url:`${window.api}/conversation/${convId}`})
   .then(res =>{
     if(res.status === 200){
       setAnchorEl(null)

@@ -155,7 +155,7 @@ useEffect(()=>{
 
     if(notification === 'granted'){
 
-      API({method:'get' , url:`/subscription/${user._id}`})
+      API({method:'get' , url:`${window.api}/subscription/${user._id}`})
       .then(result=>{
       if(result.status === 200){
         navigator.serviceWorker.ready.then(registration=>{

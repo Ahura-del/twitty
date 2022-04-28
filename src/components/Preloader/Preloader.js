@@ -28,7 +28,7 @@ function Preloader() {
         let users = [];
         const getAllData = async ()=>{
             setLoading(true)
-            await API({method:'get' , url:`/user/${id}`})
+            await API({method:'get' , url:`${window.api}/user/${id}`})
             .then(res =>{
                 if(res.status === 200){
                     dispatch(addUser(res.data))
@@ -38,7 +38,7 @@ function Preloader() {
                     logout()
                 }
             })
-            await API({method:'get' , url:`/conversation/${id}`})
+            await API({method:'get' , url:`${window.api}/conversation/${id}`})
            .then(res=>{
                if(res.status === 200){
                    dispatch(getConversation(res.data))
@@ -48,7 +48,7 @@ function Preloader() {
                  logout()
                }
            })
-           await API({method:'get' , url:'/user/allUsers'})
+           await API({method:'get' , url:`${window.api}/user/allUsers`})
            .then((res)=>{
             if(res.status === 200){
                 res.data.forEach(user =>{
@@ -77,7 +77,7 @@ function Preloader() {
     useEffect(()=>{
         const id = localStorage.getItem('userId')
         const getConv = async ()=>{
-            await API({method:'get' , url:`/conversation/${id}`})
+            await API({method:'get' , url:`${window.api}/conversation/${id}`})
             .then(res=>{
                 if(res.status === 200){
                     dispatch(getConversation(res.data))

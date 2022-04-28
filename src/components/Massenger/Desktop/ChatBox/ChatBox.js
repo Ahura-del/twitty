@@ -73,7 +73,7 @@ function ChatBox() {
 
       const res = await API({
         method: "post",
-        url: "/conversation",
+        url: `${window.api}/conversation`,
         data: convData,
       });
       if (res.status === 200) {
@@ -85,7 +85,7 @@ function ChatBox() {
         };
         const resMsg = await API({
           method: "post",
-          url: "/messages",
+          url: `${window.api}/messages`,
           data: msgData,
         });
         if (resMsg.status === 200) {
@@ -125,7 +125,7 @@ function ChatBox() {
 
         const res = await API({
           method: "post",
-          url: "/messages",
+          url: `${window.api}/messages`,
           data: msgData,
         });
 
@@ -157,7 +157,7 @@ function ChatBox() {
     }
     if (id) {
       try {
-        const res = await API({ method: "delete", url: `/conversation/${id}` });
+        const res = await API({ method: "delete", url: `${window.api}/conversation/${id}` });
 
         if (res.status === 200) {
           socket.emit("removeConversation", { conversationId });
@@ -177,7 +177,7 @@ function ChatBox() {
       return dispatch(alertHandle(true));
     }
     try {
-      const res = await API({ method: "delete", url: `/messages/${convId}` });
+      const res = await API({ method: "delete", url: `${window.api}/messages/${convId}` });
 
       if (res.status === 200) {
         // dispatch(updateState())

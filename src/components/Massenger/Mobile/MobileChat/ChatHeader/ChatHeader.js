@@ -38,7 +38,7 @@ function ChatHeader({data}) {
     if(data){
 
       try {
-        const res = await API({method:'delete' , url:`/conversation/${data._id}`})
+        const res = await API({method:'delete' , url:`${window.api}/conversation/${data._id}`})
 
 
         if(res.status === 200){
@@ -65,7 +65,7 @@ function ChatHeader({data}) {
     }
     try {
 
-      const res = await API({method:'delete' , url:`/messages/${conversationId}`})
+      const res = await API({method:'delete' , url:`${window.api}/messages/${conversationId}`})
 
       if (res.status === 200) {
         setAnchorEl(null);

@@ -43,7 +43,7 @@ const [countMsg , setCountMsg] = useState(0)
        
         try {
 
-          const res = await API({method:'get' , url:`/user/allUsers/${users}` })
+          const res = await API({method:'get' , url:`${window.api}/user/allUsers/${users}` })
 
           setUsersData(res.data);
           // console.log(res.data)
@@ -93,7 +93,7 @@ const [countMsg , setCountMsg] = useState(0)
 useEffect(()=>{
     const getReadMessage = async ()=>{
 
-      await API({method:'get' , url:`/messages/${props.data._id}`})
+      await API({method:'get' , url:`${window.api}/messages/${props.data._id}`})
         .then(res=>{
           let count = 0;
           if(res.data.length > 0){
@@ -120,7 +120,7 @@ useEffect(()=>{
 },[usersData,getIsRead,props])
 
 const updateMessages = async ()=>{
-  await API({method:'put' , url:`/messages/${props.data._id}` , data: {isRead:true}})
+  await API({method:'put' , url:`${window.api}/messages/${props.data._id}` , data: {isRead:true}})
   .then(res=>{
     if(res.status === 200){
       setCountMsg(0)
@@ -132,7 +132,7 @@ const updateMessages = async ()=>{
 }
 const fetchMessages = async (convId)=>{
   
-   await axios.get(`messages/${convId}` , {headers:{'authorization': `Bearer ${token}`}} )
+   await axios.get(`${window.api}/messages/${convId}` , {headers:{'authorization': `Bearer ${token}`}} )
     // API({method:'get' , url:`messages/${convId}`})
     .then(res => {
       // console.log(JSON.stringify(res.data))
@@ -163,7 +163,7 @@ const deleteContact = (convId)=>{
   if(!navigator.onLine){
     return dispatch(alertHandle(true))
   }
-  API({method:'delete' , url:`/conversation/${convId}`})
+  API({method:'delete' , url:`${window.api}/conversation/${convId}`})
   .then(res =>{
     if(res.status === 200){
       setAnchorEl(null)

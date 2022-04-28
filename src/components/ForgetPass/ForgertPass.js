@@ -62,7 +62,7 @@ function ForgertPass() {
     };
     if (parseInt(e) === location.state.code) {
       const resetPass = await axios.put(
-        `/user/fPass/${location.state.id}`,
+        `${window.api}/user/fPass/${location.state.id}`,
         data
       );
       if (resetPass.status === 200) {

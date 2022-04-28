@@ -19,7 +19,7 @@ function ChatMessages({conversationId , msg}) {
           const fetchMsg = async ()=>{
           try {
             
-            const res = await API({method:'get' , url:`messages/${conversationId}`})
+            const res = await API({method:'get' , url:`${window.api}/messages/${conversationId}`})
 
             if(res.status === 200){
               setMessages(res?.data)

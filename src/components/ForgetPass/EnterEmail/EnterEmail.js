@@ -21,7 +21,7 @@ function EnterEmail() {
     } 
     try {
       
-      const fpassEmail = await axios.get(`/user/fPass/${email}`)
+      const fpassEmail = await axios.get(`${window.api}/user/fPass/${email}`)
       if(fpassEmail.status===200){
         setEmail('')
         history.push({pathname:'/fpass' , state:fpassEmail.data})

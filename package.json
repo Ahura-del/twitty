@@ -2,7 +2,6 @@
   "name": "twitty",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://127.0.0.1:5000",
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
@@ -29,8 +28,8 @@
     "timeago.js": "^4.0.2"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts --openssl-legacy-provider build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

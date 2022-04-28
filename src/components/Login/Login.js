@@ -33,7 +33,7 @@ function Login() {
         email,
         "password":pass
       }
-      const login = await axios.post('/auth/login' , data)
+      const login = await axios.post(`${window.api}/auth/login` , data)
       if(login.status === 201){
         setEmail('')
         setPass('')
