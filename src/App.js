@@ -10,7 +10,7 @@ import Chat from './components/Massenger/Mobile/MobileChat/MobileChat';
 import {BrowserRouter as Router , Switch , Route} from 'react-router-dom'
 import { useSelector } from 'react-redux'
 function App() {
-  window.api = process.env.APIURL
+  window.api = process.env.REACT_APP_APIURL
   const update = useSelector(state => state.modalState.update)
   const [state , setState] = useState(false)
   const stateToken =  localStorage.getItem('token')
