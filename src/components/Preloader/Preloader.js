@@ -7,6 +7,8 @@ import Massenger from '../Massenger/Massenger';
 function Preloader() {
     const dispatch =  useDispatch()
     const updateConv = useSelector(state => state.conversationState.update)
+    const updateModal = useSelector(state => state.modalState.update)
+
     
     const [loading , setLoading] = useState(false)
     
@@ -87,9 +89,20 @@ function Preloader() {
                     logout()
                 }
             })
+
+            await API({method:'get' , url:`${window.api}/user/${id}`})
+            .then(res =>{
+                if(res.status === 200){
+                    dispatch(addUser(res.data))
+                }
+            }).catch((err) =>{
+                if(err.response){
+                    logout()
+                }
+            })
         } 
         getConv()
-    },[dispatch,updateConv])
+    },[dispatch,updateConv,updateModal])
 
         
         if(loading){
